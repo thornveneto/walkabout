@@ -8,7 +8,7 @@
 #include <map>
 #include "GameWorld.h"
 #include "Explosion.h"
-#include "Warrior.h"
+#include "Unit.h"
 #include "CellCube.h"
 
 #include "State.h"

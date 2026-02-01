@@ -1,6 +1,6 @@
-#include "Warrior.h"
+#include "Unit.h"
 
-void Warrior::draw(WorldRenderer& world_renderer) {
+void Unit::draw(WorldRenderer& world_renderer) {
     Vector2D screen_point = world_renderer.tm * centroid;
 
     world_renderer.draw_circle(
@@ -11,6 +11,6 @@ void Warrior::draw(WorldRenderer& world_renderer) {
     );
 }
 
-void Warrior::shoot_at(IJ target_tile, WorldRenderer& world_renderer) {
+void Unit::shoot_at(IJ target_tile, WorldRenderer& world_renderer) {
     _game_world.spawn_projectile(tile_ij, target_tile, world_renderer);
 }

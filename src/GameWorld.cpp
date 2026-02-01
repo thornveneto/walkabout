@@ -1,6 +1,6 @@
 #include "GameWorld.h"
 #include "Explosion.h"
-#include "Warrior.h"
+#include "Unit.h"
 #include "Projectile.h"
 
 void GameWorld::toggle_pause() {
@@ -39,7 +39,7 @@ int GameWorld::spawn_warrior(IJ at_tile, WorldRenderer& world_renderer) {
     int warrior_id = allocate_entity_id();
 
 
-    entity_map.emplace(warrior_id, std::make_unique<Warrior>(at_tile, world_renderer, *this));
+    entity_map.emplace(warrior_id, std::make_unique<Unit>(at_tile, world_renderer, *this));
 
     terrain.tile_at(at_tile).add_guest(entity_map[warrior_id].get());
 

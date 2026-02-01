@@ -12,7 +12,7 @@ FetchContent_Declare(SFML
     SYSTEM)
 FetchContent_MakeAvailable(SFML)
 
-add_executable(main src/main.cpp "src/Matrix2D.h" "src/WorldRenderer.h" "src/MovingEntity.h" "src/Terrain.h" "src/Tile.h" "src/Wall.h" "src/GameWorld.h" "src/LineSegment.h" "src/Explosion.h" "src/Effect.h" "src/GameWorld.cpp" "src/MovingEntity.cpp" "src/Warrior.h" "src/Warrior.cpp" "src/Projectile.h" "src/Projectile.cpp" "src/State.h" "src/StateMachine.h" "src/CellCube.h" "src/Tile.cpp" "src/UIState.h" "src/DummyCommandState.h" "src/UnitCommandSelectionState.h" "src/UnitCommandExecutionState.h" "src/UIState.cpp" "src/UnitCommandExecutionState.cpp" "src/UnitCommandSelectionState.cpp" "src/Terrain.cpp" "src/WorldRenderer.cpp" "src/UI_InputEvent.h" "src/XY.h" "src/CellAttackCube.h" "src/Wall.cpp" "src/IJ.h")
+add_executable(main src/main.cpp "src/Matrix2D.h" "src/WorldRenderer.h" "src/MovingEntity.h" "src/Terrain.h" "src/Tile.h" "src/Wall.h" "src/GameWorld.h" "src/LineSegment.h" "src/Explosion.h" "src/Effect.h" "src/GameWorld.cpp" "src/MovingEntity.cpp" "src/Unit.h" "src/Unit.cpp" "src/Projectile.h" "src/Projectile.cpp" "src/State.h" "src/StateMachine.h" "src/CellCube.h" "src/Tile.cpp" "src/UIState.h" "src/DummyCommandState.h" "src/UnitCommandSelectionState.h" "src/UnitCommandExecutionState.h" "src/UIState.cpp" "src/UnitCommandExecutionState.cpp" "src/UnitCommandSelectionState.cpp" "src/Terrain.cpp" "src/WorldRenderer.cpp" "src/UI_InputEvent.h" "src/XY.h" "src/CellAttackCube.h" "src/Wall.cpp" "src/IJ.h")
 target_compile_features(main PRIVATE cxx_std_17)
 
 target_link_libraries(main PRIVATE SFML::Graphics)

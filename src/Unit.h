@@ -3,9 +3,9 @@
 #include "GameWorld.h"
 #include "WorldRenderer.h"
 #include "IJ.h"
-class Warrior : public MovingEntity {
+class Unit : public MovingEntity {
 public:
-	Warrior(IJ at_tile, WorldRenderer& world_renderer, GameWorld& game_world) : MovingEntity(at_tile, world_renderer, game_world) {
+	Unit(IJ at_tile, WorldRenderer& world_renderer, GameWorld& game_world) : MovingEntity(at_tile, world_renderer, game_world) {
 
 	}
 

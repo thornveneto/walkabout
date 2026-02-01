@@ -1,5 +1,5 @@
 #include "UnitCommandExecutionState.h"
-#include "Warrior.h"
+#include "Unit.h"
 
 void UnitCommandExecutionState::on_enter() noexcept {}
 
@@ -13,7 +13,7 @@ void UnitCommandExecutionState::process_event(const UI_InputEvent& event) noexce
 
     if (event.left_key_pressed) {
 
-        Warrior* derrived_warrior = dynamic_cast<Warrior*>(&_orderable_entity);
+        Unit* derrived_warrior = dynamic_cast<Unit*>(&_orderable_entity);
 
         derrived_warrior->shoot_at(mouse_ij, world_renderer);
 
