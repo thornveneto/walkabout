@@ -72,7 +72,7 @@ int main()
         */
 
         //GAME LOOP
-        game_world.toggle_pause(); //to make things running initially
+        game_world.toggle_pause(); //to make things not running initially
 
         while (window.isOpen())
         {

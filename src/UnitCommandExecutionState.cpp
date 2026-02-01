@@ -13,7 +13,7 @@ void UnitCommandExecutionState::process_event(const UI_InputEvent& event) noexce
 
     if (event.left_key_pressed) {
 
-        Unit* derrived_warrior = dynamic_cast<Unit*>(&_orderable_entity);
+        Unit* derrived_warrior = dynamic_cast<Unit*>(&_unit);
 
         derrived_warrior->shoot_at(mouse_ij, world_renderer);
 
