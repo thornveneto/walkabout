@@ -7,7 +7,7 @@ class UnitCommandExecutionState : public UIState {
     CellAttackCube ui_cell_attack;
 public:
     UnitCommandExecutionState(
-        StateMachine<UIState>* state_machine, 
+        StateMachine<UIState, UI_InputEvent>* state_machine,
         GameWorld& game_world, 
         WorldRenderer& world_renderer, 
         sf::RenderWindow& window, 
@@ -21,7 +21,7 @@ public:
 
     void on_enter() noexcept override;
 
-    void on_execute() noexcept override;
+    void on_execute(UI_InputEvent event) noexcept override;
 
     void on_exit() noexcept override;
 };

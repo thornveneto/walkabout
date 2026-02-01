@@ -2,9 +2,9 @@
 #include "State.h"
 #include <stdexcept>
 #include <memory>
-template <typename T>
+template <typename T, typename E>
 class StateMachine {
-	static_assert(std::is_base_of_v<State, T>,"StateMachine<T>: T must derive from State");
+	//?static_assert(std::is_base_of_v<State, T>,"StateMachine<T>: T must derive from State");
 
 	std::unique_ptr<T> current_state;//mandatory parameter, class invariant
 public:
@@ -21,8 +21,8 @@ public:
 	StateMachine(StateMachine&&) = delete;
 	StateMachine& operator=(StateMachine&&) = delete;
 
-	void execute() {
-		current_state->on_execute();
+	void execute(E event) {
+		current_state->on_execute(event);
 	}
 
 	T* get_current_state() const {

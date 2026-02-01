@@ -5,14 +5,14 @@
 
 void UnitCommandSelectionState::on_enter() noexcept {}
 
-void UnitCommandSelectionState::on_execute() noexcept {
-    auto mouse_ij = world_renderer.tile_ij_from_screen_xy(_ui_input_event.mouse_position.x, _ui_input_event.mouse_position.y);
+void UnitCommandSelectionState::on_execute(UI_InputEvent event) noexcept {
+    auto mouse_ij = world_renderer.tile_ij_from_screen_xy(event.mouse_position.x, event.mouse_position.y);
 
     const XY<float> tile_xy = world_renderer.tile_screen_xy(mouse_ij);
 
     ui_cell_selection.draw(window, sf::Vector2f{ tile_xy.x, tile_xy.y });
 
-    if (_ui_input_event.left_key_pressed) {
+    if (event.left_key_pressed) {
         MovingEntity* orderable_entity = game_world.terrain.get_orderable_entity_at(mouse_ij);
 
         if (orderable_entity) {
