@@ -6,7 +6,7 @@ void Explosion::draw(WorldRenderer& world_renderer) {
     if (_alive) {
         world_renderer.draw_circle(
             screen_point.x,
-            screen_point.y,
+            screen_point.y - world_renderer.cell_height/2,
             _r,
             sf::Color::Magenta, sf::Color::Black
         );

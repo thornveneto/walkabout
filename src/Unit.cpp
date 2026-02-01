@@ -5,8 +5,8 @@ void Unit::draw(WorldRenderer& world_renderer) {
 
     world_renderer.draw_circle(
         screen_point.x,
-        screen_point.y,
-        5.f,
+        screen_point.y - world_renderer.cell_height/2,
+        world_renderer.hh,
         sf::Color::Blue, sf::Color::Black
     );
 }
