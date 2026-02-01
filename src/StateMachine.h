@@ -21,8 +21,8 @@ public:
 	StateMachine(StateMachine&&) = delete;
 	StateMachine& operator=(StateMachine&&) = delete;
 
-	void execute(E event) {
-		current_state->on_execute(event);
+	void process_event(const E& event) {
+		current_state->process_event(event);
 	}
 
 	T* get_current_state() const {

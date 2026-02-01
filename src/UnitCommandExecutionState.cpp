@@ -3,7 +3,7 @@
 
 void UnitCommandExecutionState::on_enter() noexcept {}
 
-void UnitCommandExecutionState::on_execute(UI_InputEvent event) noexcept {
+void UnitCommandExecutionState::process_event(const UI_InputEvent& event) noexcept {
 
     auto mouse_ij = world_renderer.tile_ij_from_screen_xy(event.mouse_position.x, event.mouse_position.y);
 

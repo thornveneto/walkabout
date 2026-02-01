@@ -5,7 +5,7 @@
 
 void UnitCommandSelectionState::on_enter() noexcept {}
 
-void UnitCommandSelectionState::on_execute(UI_InputEvent event) noexcept {
+void UnitCommandSelectionState::process_event(const UI_InputEvent& event) noexcept {
     auto mouse_ij = world_renderer.tile_ij_from_screen_xy(event.mouse_position.x, event.mouse_position.y);
 
     const XY<float> tile_xy = world_renderer.tile_screen_xy(mouse_ij);

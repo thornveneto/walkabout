@@ -6,6 +6,6 @@ public:
         : UIState(state_machine, game_world, world_renderer, window) {
     }
     void on_enter() noexcept {};
-    void on_execute(UI_InputEvent event) noexcept {};
+    void process_event(const UI_InputEvent& event) noexcept override {};
     void on_exit() noexcept {};
 };

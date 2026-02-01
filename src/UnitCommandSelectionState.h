@@ -12,7 +12,7 @@ public:
 
     void on_enter() noexcept override;
 
-    void on_execute(UI_InputEvent event) noexcept override;
+    void process_event(const UI_InputEvent& event) noexcept override;
 
     void on_exit() noexcept override;
 };

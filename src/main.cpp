@@ -95,7 +95,7 @@ int main()
 
             //Draw here
             game_world.draw(world_renderer);
-            command_state_machine.execute(ui_input_event);
+            command_state_machine.process_event(ui_input_event);
 
             //Call after drawn stuff
             window.display();
