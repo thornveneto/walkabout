@@ -34,23 +34,23 @@ void GameWorld::init(WorldRenderer& world_renderer) {
     //spawn_projectile(4, 0, 4, 9, world_renderer);
 }
 
-int GameWorld::spawn_warrior(IJ at_tile, WorldRenderer& world_renderer) {
+int GameWorld::spawn_warrior(IJ at_cell, WorldRenderer& world_renderer) {
 
     int warrior_id = allocate_entity_id();
 
 
-    entity_map.emplace(warrior_id, std::make_unique<Unit>(at_tile, world_renderer, *this));
+    entity_map.emplace(warrior_id, std::make_unique<Unit>(at_cell, world_renderer, *this));
 
-    terrain.tile_at(at_tile).add_guest(entity_map[warrior_id].get());
+    terrain.cell_at(at_cell).add_guest(entity_map[warrior_id].get());
 
     return warrior_id;
 }
 
-int GameWorld::spawn_projectile(IJ at_tile, IJ target_tile, WorldRenderer& world_renderer) {
+int GameWorld::spawn_projectile(IJ at_cell, IJ target_cell, WorldRenderer& world_renderer) {
     int projectile_id = allocate_entity_id();
 
-    entity_map.emplace(projectile_id, std::make_unique<Projectile>(at_tile, world_renderer, *this));
-    entity_map.at(projectile_id)->set_target(target_tile, world_renderer);
+    entity_map.emplace(projectile_id, std::make_unique<Projectile>(at_cell, world_renderer, *this));
+    entity_map.at(projectile_id)->set_target(target_cell, world_renderer);
 
     //TODO: add guest??
 

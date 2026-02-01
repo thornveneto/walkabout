@@ -16,9 +16,9 @@ public:
     Vector2D centroid;
     Vector2D speed_vector{ 0, 0 };
 
-    IJ tile_ij;
+    IJ cell_ij;
 
-    int finish_tile_i{ 15 };
+    int finish_tile_i{ 15 };//TODO: merge into one
     int finish_tile_j{ 15 };
     int max_speed{ 20 };
 
@@ -26,8 +26,8 @@ public:
     std::vector<IJ> waypoints;
 
 
-    MovingEntity(IJ home_tile, WorldRenderer& world_renderer, GameWorld& game_world) :
-        _game_world{ game_world }, tile_ij{ home_tile }, centroid{ world_renderer.tile_centroid_from_ij(home_tile) } {
+    MovingEntity(IJ home_cell, WorldRenderer& world_renderer, GameWorld& game_world) :
+        _game_world{ game_world }, cell_ij{ home_cell }, centroid{ world_renderer.tile_centroid_from_ij(home_cell) } {
         //TODO: a bit ugly and only because we need to know the tile size
     }
     //

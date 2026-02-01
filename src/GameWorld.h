@@ -38,9 +38,9 @@ public:
 
     void spawn_explosion(Vector2D centroid);
 
-    int spawn_warrior(IJ at_tile, WorldRenderer& world_renderer);
+    int spawn_warrior(IJ at_cell, WorldRenderer& world_renderer);
 
-    int spawn_projectile(IJ at_tile, IJ target_tile, WorldRenderer& world_renderer);
+    int spawn_projectile(IJ at_cell, IJ target_cell, WorldRenderer& world_renderer);
 
     void update_entities(sf::Time& delta_time, WorldRenderer& world_renderer);
 

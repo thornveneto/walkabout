@@ -21,7 +21,7 @@ void MovingEntity::execute_waypoint_logic(WorldRenderer& world_renderer) {
 }
 
 Vector2D MovingEntity::home_centroid(WorldRenderer& world_renderer) {
-    return world_renderer.tile_centroid_from_ij(tile_ij);
+    return world_renderer.tile_centroid_from_ij(cell_ij);
 }
 Vector2D MovingEntity::target_centroid(WorldRenderer& world_renderer) {
     return world_renderer.tile_centroid_from_ij({ finish_tile_i, finish_tile_j });
@@ -41,12 +41,12 @@ LineSegment MovingEntity::move_delta_segment() {
 
 void MovingEntity::set_home(IJ home) {
     //TODO: post refactoring check equality works
-    if (!(tile_ij.i == home.i && tile_ij.j == home.j)) {
-        tile_ij = home;
+    if (!(cell_ij.i == home.i && cell_ij.j == home.j)) {
+        cell_ij = home;
     }
 }
 IJ MovingEntity::get_home_ij() const {
-    return tile_ij;
+    return cell_ij;
 }
 
 void MovingEntity::set_home_and_center(IJ home, WorldRenderer& world_renderer) {
@@ -54,7 +54,7 @@ void MovingEntity::set_home_and_center(IJ home, WorldRenderer& world_renderer) {
     set_home(home);
 
     //centroid = { 0,0 };
-    centroid = world_renderer.tile_centroid_from_ij(tile_ij);
+    centroid = world_renderer.tile_centroid_from_ij(cell_ij);
     prev_centroid = centroid;
 
     speed_vector = { 0, 0 };
@@ -64,7 +64,7 @@ void MovingEntity::set_target(IJ target, WorldRenderer& world_renderer) {
     finish_tile_i = target.i;
     finish_tile_j = target.j;
 
-    Vector2D desired_velocity = world_renderer.tile_centroid_from_ij({ finish_tile_i, finish_tile_j }) - world_renderer.tile_centroid_from_ij({ tile_ij.i, tile_ij.j });
+    Vector2D desired_velocity = world_renderer.tile_centroid_from_ij({ finish_tile_i, finish_tile_j }) - world_renderer.tile_centroid_from_ij(cell_ij);
 
     desired_velocity.normalize();
     desired_velocity *= max_speed;

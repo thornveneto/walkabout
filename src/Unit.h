@@ -5,11 +5,11 @@
 #include "IJ.h"
 class Unit : public MovingEntity {
 public:
-	Unit(IJ at_tile, WorldRenderer& world_renderer, GameWorld& game_world) : MovingEntity(at_tile, world_renderer, game_world) {
+	Unit(IJ at_cell, WorldRenderer& world_renderer, GameWorld& game_world) : MovingEntity(at_cell, world_renderer, game_world) {
 
 	}
 
 	void draw(WorldRenderer& world_renderer) override;
 
-	void shoot_at(IJ target_tile, WorldRenderer& world_renderer);
+	void shoot_at(IJ target_cell, WorldRenderer& world_renderer);
 };

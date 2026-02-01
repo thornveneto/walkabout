@@ -7,12 +7,12 @@
 //#include "MovingEntity.h"
 class MovingEntity;
 
-enum class TileCode {
+enum class CellCode {
     GRASS,
     WATER
 };
-class Tile {
-    TileCode _tile_code;
+class Cell {
+    CellCode _cell_code;
     //TODO: do we really need i and j?
     std::set<MovingEntity*> _guests_set;
     int _i;
@@ -24,11 +24,11 @@ class Tile {
 public:
 
     //TODO: there's a method for it, or we need a builder
-    Tile(TileCode tile_code, int i, int j) : _tile_code{ tile_code }, _i{ i }, _j{ j } {}
-    Tile(TileCode tile_code, int i, int j, 
+    Cell(CellCode cell_code, int i, int j) : _cell_code{ cell_code }, _i{ i }, _j{ j } {}
+    Cell(CellCode cell_code, int i, int j, 
         std::unique_ptr<Wall> north_slot, std::unique_ptr<Wall> east_slot, std::unique_ptr<Wall> south_slot, std::unique_ptr<Wall> west_slot
     ) :
-        _tile_code{ tile_code }, _i{ i }, _j{ j }, 
+        _cell_code{ cell_code }, _i{ i }, _j{ j }, 
         _north_slot{ std::move(north_slot) },
         _east_slot{ std::move(east_slot) },
         _south_slot{ std::move(south_slot) },
@@ -64,5 +64,5 @@ public:
 
     void draw_tile(WorldRenderer& world_renderer);
 
-    void draw_tile_walls(WorldRenderer& world_renderer);
+    void draw_cell_walls(WorldRenderer& world_renderer);
 };

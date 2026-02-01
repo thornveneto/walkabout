@@ -1,18 +1,18 @@
-#include "Tile.h"
-bool Tile::has_north_wall() const {
+#include "Cell.h"
+bool Cell::has_north_wall() const {
     return _north_slot != nullptr;
 }
-bool Tile::has_east_wall() const {
+bool Cell::has_east_wall() const {
     return _east_slot != nullptr;
 }
-bool Tile::has_south_wall() const {
+bool Cell::has_south_wall() const {
     return _south_slot != nullptr;
 }
-bool Tile::has_west_wall() const {
+bool Cell::has_west_wall() const {
     return _west_slot != nullptr;
 }
 
-LineSegment Tile::north_slot_segment(WorldRenderer& world_renderer) const {
+LineSegment Cell::north_slot_segment(WorldRenderer& world_renderer) const {
     Vector2D tile_centroid = world_renderer.tile_centroid_from_ij({ _i, _j });
 
     return LineSegment(
@@ -20,7 +20,7 @@ LineSegment Tile::north_slot_segment(WorldRenderer& world_renderer) const {
         tile_centroid.x + world_renderer.tile_side / 2, tile_centroid.y - world_renderer.tile_side / 2
     );
 }
-LineSegment Tile::east_slot_segment(WorldRenderer& world_renderer) const {
+LineSegment Cell::east_slot_segment(WorldRenderer& world_renderer) const {
     Vector2D tile_centroid = world_renderer.tile_centroid_from_ij({ _i, _j });
 
     return LineSegment(
@@ -28,7 +28,7 @@ LineSegment Tile::east_slot_segment(WorldRenderer& world_renderer) const {
         tile_centroid.x + world_renderer.tile_side / 2, tile_centroid.y + world_renderer.tile_side / 2
     );
 }
-LineSegment Tile::south_slot_segment(WorldRenderer& world_renderer) const {
+LineSegment Cell::south_slot_segment(WorldRenderer& world_renderer) const {
     Vector2D tile_centroid = world_renderer.tile_centroid_from_ij({ _i, _j });
 
     return LineSegment(
@@ -36,7 +36,7 @@ LineSegment Tile::south_slot_segment(WorldRenderer& world_renderer) const {
         tile_centroid.x + world_renderer.tile_side / 2, tile_centroid.y + world_renderer.tile_side / 2
     );
 }
-LineSegment Tile::west_slot_segment(WorldRenderer& world_renderer) const {
+LineSegment Cell::west_slot_segment(WorldRenderer& world_renderer) const {
     Vector2D tile_centroid = world_renderer.tile_centroid_from_ij({ _i, _j });
 
     return LineSegment(
@@ -45,7 +45,7 @@ LineSegment Tile::west_slot_segment(WorldRenderer& world_renderer) const {
     );
 }
 
-void Tile::draw_tile(WorldRenderer& world_renderer) {
+void Cell::draw_tile(WorldRenderer& world_renderer) {
     //Draw Stuff here
     const sf::Color grass_color{ 63, 155, 11 };
     const sf::Color grass_border_color{ 18, 57, 1 };
@@ -53,13 +53,13 @@ void Tile::draw_tile(WorldRenderer& world_renderer) {
     const sf::Color water_color{ 45, 137, 239 };
     const sf::Color water_border_color{ 11, 62, 117 };
 
-    if (_tile_code == TileCode::GRASS) {
+    if (_cell_code == CellCode::GRASS) {
         world_renderer.draw_tile(
             _i, _j,
             grass_color, grass_border_color
         );
     }
-    else if (_tile_code == TileCode::WATER) {
+    else if (_cell_code == CellCode::WATER) {
         world_renderer.draw_tile(
             _i, _j,
             water_color, water_border_color
@@ -67,7 +67,7 @@ void Tile::draw_tile(WorldRenderer& world_renderer) {
     }
 }
 
-void Tile::draw_tile_walls(WorldRenderer& world_renderer) {
+void Cell::draw_cell_walls(WorldRenderer& world_renderer) {
     if (_north_slot != nullptr) {
         _north_slot->draw(_i, _j, world_renderer);
     }
@@ -82,14 +82,14 @@ void Tile::draw_tile_walls(WorldRenderer& world_renderer) {
     }
 }
 
-void Tile::add_guest(MovingEntity* guest_entity) {
+void Cell::add_guest(MovingEntity* guest_entity) {
     _guests_set.insert(guest_entity);
 }
-void Tile::remove_guest(MovingEntity* guest_entity) {
+void Cell::remove_guest(MovingEntity* guest_entity) {
     _guests_set.erase(guest_entity);
 }
 
-MovingEntity* Tile::get_orderable_entity() {
+MovingEntity* Cell::get_orderable_entity() {
 
     MovingEntity* result{ nullptr };
 

@@ -11,6 +11,6 @@ void Unit::draw(WorldRenderer& world_renderer) {
     );
 }
 
-void Unit::shoot_at(IJ target_tile, WorldRenderer& world_renderer) {
-    _game_world.spawn_projectile(tile_ij, target_tile, world_renderer);
+void Unit::shoot_at(IJ target_cell, WorldRenderer& world_renderer) {
+    _game_world.spawn_projectile(cell_ij, target_cell, world_renderer);
 }
