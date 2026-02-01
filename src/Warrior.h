@@ -1,0 +1,15 @@
+#pragma once
+#include "MovingEntity.h"
+#include "GameWorld.h"
+#include "WorldRenderer.h"
+#include "IJ.h"
+class Warrior : public MovingEntity {
+public:
+	Warrior(IJ at_tile, WorldRenderer& world_renderer, GameWorld& game_world) : MovingEntity(at_tile, world_renderer, game_world) {
+
+	}
+
+	void draw(WorldRenderer& world_renderer) override;
+
+	void shoot_at(IJ target_tile, WorldRenderer& world_renderer);
+};
