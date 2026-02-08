@@ -1,9 +1,9 @@
-#include "UnitCommandExecutionState.h"
+#include "UnitSelectedState.h"
 #include "Unit.h"
 
-void UnitCommandExecutionState::on_enter() noexcept {}
+void UnitSelectedState::on_enter() noexcept {}
 
-void UnitCommandExecutionState::process_event(const UI_InputEvent& event) noexcept {
+void UnitSelectedState::process_event(const UI_InputEvent& event) noexcept {
 
     auto mouse_ij = world_renderer.tile_ij_from_screen_xy(event.mouse_position.x, event.mouse_position.y);
 
@@ -25,4 +25,4 @@ void UnitCommandExecutionState::process_event(const UI_InputEvent& event) noexce
 
 }
 
-void UnitCommandExecutionState::on_exit() noexcept {}
+void UnitSelectedState::on_exit() noexcept {}

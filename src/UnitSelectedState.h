@@ -2,11 +2,11 @@
 #include "UIState.h"
 #include "MovingEntity.h"
 #include "CellAttackCube.h"
-class UnitCommandExecutionState : public UIState {
+class UnitSelectedState : public UIState {
     MovingEntity& _unit;
     CellAttackCube ui_cell_attack;
 public:
-    UnitCommandExecutionState(
+    UnitSelectedState(
         StateMachine<UIState, UI_InputEvent>* state_machine,
         GameWorld& game_world, 
         WorldRenderer& world_renderer, 

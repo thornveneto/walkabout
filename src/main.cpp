@@ -15,7 +15,7 @@
 #include "StateMachine.h"
 #include "UIState.h"
 #include "DummyCommandState.h"
-#include "UnitCommandSelectionState.h"
+#include "UnitSelectionState.h"
 
 //main TODO: 
 // 1 - DONE: make agents move from tile to tile
@@ -64,7 +64,7 @@ int main()
         game_world.init(world_renderer);
 
         StateMachine<UIState, UI_InputEvent> command_state_machine(std::make_unique<DummyCommandState>(nullptr/*TODO: super bad*/, game_world, world_renderer, window));
-        command_state_machine.switch_state(std::make_unique<UnitCommandSelectionState>(&command_state_machine, game_world, world_renderer, window));
+        command_state_machine.switch_state(std::make_unique<UnitSelectionState>(&command_state_machine, game_world, world_renderer, window));
 
         /*
         game_world.entity_map.at(1)->set_waypoints({ {0,0},{0,9}, {9,9}, {9,0} });

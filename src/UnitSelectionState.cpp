@@ -1,11 +1,11 @@
 #pragma once
-#include "UnitCommandSelectionState.h"
+#include "UnitSelectionState.h"
 #include <memory>
-#include "UnitCommandExecutionState.h"
+#include "UnitSelectedState.h"
 
-void UnitCommandSelectionState::on_enter() noexcept {}
+void UnitSelectionState::on_enter() noexcept {}
 
-void UnitCommandSelectionState::process_event(const UI_InputEvent& event) noexcept {
+void UnitSelectionState::process_event(const UI_InputEvent& event) noexcept {
     auto mouse_ij = world_renderer.tile_ij_from_screen_xy(event.mouse_position.x, event.mouse_position.y);
 
     const XY<float> tile_xy = world_renderer.tile_screen_xy(mouse_ij);
@@ -17,10 +17,10 @@ void UnitCommandSelectionState::process_event(const UI_InputEvent& event) noexce
 
         if (orderable_entity) {
             state_machine->switch_state(
-                std::make_unique<UnitCommandExecutionState>(state_machine, game_world, world_renderer, window, orderable_entity)
+                std::make_unique<UnitSelectedState>(state_machine, game_world, world_renderer, window, orderable_entity)
             );
         }
     }
 }
 
-void UnitCommandSelectionState::on_exit() noexcept {}
+void UnitSelectionState::on_exit() noexcept {}
