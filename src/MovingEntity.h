@@ -4,11 +4,13 @@
 #include <SFML/Graphics.hpp>
 
 #include "Vector2D.h"
-#include "WorldRenderer.h"
 #include "Matrix2D.h"
 #include "LineSegment.h"
-#include "GameWorld.h"
 #include "IJ.h"
+
+class GameWorld;
+class WorldRenderer;
+
 class MovingEntity {
 public:
     GameWorld& _game_world;
@@ -26,10 +28,10 @@ public:
     std::vector<IJ> waypoints;
 
 
-    MovingEntity(IJ home_cell, WorldRenderer& world_renderer, GameWorld& game_world) :
-        _game_world{ game_world }, cell_ij{ home_cell }, centroid{ world_renderer.tile_centroid_from_ij(home_cell) } {
-        //TODO: a bit ugly and only because we need to know the tile size
-    }
+    MovingEntity(IJ home_cell, WorldRenderer& world_renderer, GameWorld& game_world);
+
+    virtual ~MovingEntity();
+
     //
     void set_waypoints(const std::vector<IJ>& new_path);
 

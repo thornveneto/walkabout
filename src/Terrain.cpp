@@ -1,4 +1,8 @@
 #include "Terrain.h"
+#include "Unit.h"
+#include "Wall.h"
+#include "LineSegment.h"
+#include "WorldRenderer.h"
 
 void Terrain::init() {
     terrain.resize(10);
@@ -59,28 +63,28 @@ std::vector<IJ> Terrain::terrain_collisions(const LineSegment& entity_move_line_
         for (int j = 0; j < terrain[i].size(); ++j) {
 
             if (terrain[i][j].has_north_wall()) {
-                LineSegment& checked_wall_segment = terrain[i][j].north_slot_segment(world_renderer);
+                LineSegment checked_wall_segment = terrain[i][j].north_slot_segment(world_renderer);
 
                 if (checked_wall_segment.intersects(entity_move_line_segment)) {
                     result.push_back({ i, j });
                 }
             }
             if (terrain[i][j].has_east_wall()) {
-                LineSegment& checked_wall_segment = terrain[i][j].east_slot_segment(world_renderer);
+                LineSegment checked_wall_segment = terrain[i][j].east_slot_segment(world_renderer);
 
                 if (checked_wall_segment.intersects(entity_move_line_segment)) {
                     result.push_back({ i, j });
                 }
             }
             if (terrain[i][j].has_south_wall()) {
-                LineSegment& checked_wall_segment = terrain[i][j].south_slot_segment(world_renderer);
+                LineSegment checked_wall_segment = terrain[i][j].south_slot_segment(world_renderer);
 
                 if (checked_wall_segment.intersects(entity_move_line_segment)) {
                     result.push_back({ i, j });
                 }
             }
             if (terrain[i][j].has_west_wall()) {
-                LineSegment& checked_wall_segment = terrain[i][j].west_slot_segment(world_renderer);
+                LineSegment checked_wall_segment = terrain[i][j].west_slot_segment(world_renderer);
 
                 if (checked_wall_segment.intersects(entity_move_line_segment)) {
                     result.push_back({ i, j });
@@ -101,7 +105,7 @@ bool Terrain::within_boundaries(IJ& cell_ij) {
     return (0 <= cell_ij.i && cell_ij.i < terrain.size()) && (0 <= cell_ij.j && cell_ij.j < terrain[0].size());
 }
 
-void Terrain::transfer_guest(IJ from, IJ to, MovingEntity* guest) {
+void Terrain::transfer_guest_unit(IJ from, IJ to, Unit* guest) {
     if (!(from.i == to.i && from.j == to.j)) {
 
         if (within_boundaries(from)) {
@@ -138,6 +142,6 @@ void Terrain::draw(WorldRenderer& world_renderer) {
     }
 }
 
-MovingEntity* Terrain::get_orderable_entity_at(IJ cell_ij) {
-    return cell_at(cell_ij).get_orderable_entity();
+Unit* Terrain::get_orderable_unit_at(IJ cell_ij) {
+    return cell_at(cell_ij).get_orderable_unit();
 }

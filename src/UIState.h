@@ -1,10 +1,15 @@
 #pragma once
 #include <SFML/Graphics.hpp>
 #include "State.h"
-#include "StateMachine.h"
-#include "WorldRenderer.h"
-#include "GameWorld.h"
 #include "UI_InputEvent.h"
+
+
+class WorldRenderer;
+class GameWorld;
+
+template <typename T, typename E>
+class StateMachine;
+
 class UIState : public State<UI_InputEvent> {
     //Super ugly, but i don't want to create a new state machine
     //Although it might work with templates

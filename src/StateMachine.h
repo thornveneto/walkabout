@@ -15,6 +15,8 @@ public:
 		current_state->on_enter();
 	}
 	
+	~StateMachine() = default;
+
 	StateMachine(const StateMachine&) = delete;
 	StateMachine& operator=(const StateMachine&) = delete;
 

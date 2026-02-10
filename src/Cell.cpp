@@ -1,4 +1,71 @@
 #include "Cell.h"
+#include <stdexcept>
+#include "Unit.h"
+#include "Wall.h"
+#include "WorldRenderer.h"
+#include "LineSegment.h"
+
+//TODO: there's a method for it, or we need a builder
+Cell::Cell(CellCode cell_code, int i, int j) : _cell_code{ cell_code }, _i{ i }, _j{ j } {}
+Cell::Cell(
+    CellCode cell_code,
+    int i, int j,
+    std::unique_ptr<Wall> north_slot,
+    std::unique_ptr<Wall> east_slot,
+    std::unique_ptr<Wall> south_slot,
+    std::unique_ptr<Wall> west_slot
+) :
+    _cell_code{ cell_code }, _i{ i }, _j{ j },
+    _north_slot{ std::move(north_slot) },
+    _east_slot{ std::move(east_slot) },
+    _south_slot{ std::move(south_slot) },
+    _west_slot{ std::move(west_slot) }
+{
+    if (_north_slot && _north_slot->wall_orientation != WallOrientation::NORTH) {
+        throw std::runtime_error("North slot tile is not NORTH oriented");
+    }
+    if (_east_slot && _east_slot->wall_orientation != WallOrientation::EAST) {
+        throw std::runtime_error("East slot tile is not EAST oriented");
+    }
+    if (_south_slot && _south_slot->wall_orientation != WallOrientation::SOUTH) {
+        throw std::runtime_error("South slot tile is not EAST oriented");
+    }
+    if (_west_slot && _west_slot->wall_orientation != WallOrientation::WEST) {
+        throw std::runtime_error("West slot tile is not WEST oriented");
+    }
+}
+
+// Move Constructor implementation
+Cell::Cell(Cell&& other) noexcept
+    : _cell_code(other._cell_code),
+    _guests_set(std::move(other._guests_set)),
+    _i(other._i),
+    _j(other._j),
+    _north_slot(std::move(other._north_slot)),
+    _east_slot(std::move(other._east_slot)),
+    _south_slot(std::move(other._south_slot)),
+    _west_slot(std::move(other._west_slot))
+{
+}
+
+// Move Assignment implementation
+Cell& Cell::operator=(Cell&& other) noexcept {
+    if (this != &other) {
+        _cell_code = other._cell_code;
+        _guests_set = std::move(other._guests_set);
+        _i = other._i;
+        _j = other._j;
+        _north_slot = std::move(other._north_slot);
+        _east_slot = std::move(other._east_slot);
+        _south_slot = std::move(other._south_slot);
+        _west_slot = std::move(other._west_slot);
+    }
+    return *this;
+}
+
+
+Cell::~Cell() = default;
+
 bool Cell::has_north_wall() const {
     return _north_slot != nullptr;
 }
@@ -45,7 +112,7 @@ LineSegment Cell::west_slot_segment(WorldRenderer& world_renderer) const {
     );
 }
 
-void Cell::draw_tile(WorldRenderer& world_renderer) {
+void Cell::draw_tile(WorldRenderer& world_renderer) const {
     //Draw Stuff here
     const sf::Color grass_color{ 63, 155, 11 };
     const sf::Color grass_border_color{ 18, 57, 1 };
@@ -67,7 +134,7 @@ void Cell::draw_tile(WorldRenderer& world_renderer) {
     }
 }
 
-void Cell::draw_cell_walls(WorldRenderer& world_renderer) {
+void Cell::draw_cell_walls(WorldRenderer& world_renderer) const {
     if (_north_slot != nullptr) {
         _north_slot->draw(_i, _j, world_renderer);
     }
@@ -82,19 +149,18 @@ void Cell::draw_cell_walls(WorldRenderer& world_renderer) {
     }
 }
 
-void Cell::add_guest(MovingEntity* guest_entity) {
+void Cell::add_guest(Unit* guest_entity) {
     _guests_set.insert(guest_entity);
 }
-void Cell::remove_guest(MovingEntity* guest_entity) {
+void Cell::remove_guest(Unit* guest_entity) {
     _guests_set.erase(guest_entity);
 }
 
-MovingEntity* Cell::get_orderable_entity() {
+Unit* Cell::get_orderable_unit() {
 
-    MovingEntity* result{ nullptr };
+    Unit* result{ nullptr };
 
     for (auto e : _guests_set) {
-        std::cout << "FOUND ONE" << std::endl;
         result = e;
         break;
     }

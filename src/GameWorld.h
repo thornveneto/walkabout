@@ -4,11 +4,15 @@
 #include "Terrain.h"
 #include <map>
 #include <memory>
-#include "Effect.h"
 #include "IJ.h"
+#include "Vector2D.h"
 
-//#include "MovingEntity.h"
-class MovingEntity;
+class WorldRenderer;
+class Unit;
+class Projectile;
+class Effect;
+
+struct GameWorldInternal;
 
 class GameWorld {
     int _new_entity_id{ 1 };
@@ -18,8 +22,14 @@ class GameWorld {
     sf::Time pause_start;//TODO: we don't seem to use it anymore anywhere
 
     sf::Time get_delta_time();//WARNING destructive. Call once only
+    std::vector<std::unique_ptr<Effect>> effects;
+    std::map<int, std::unique_ptr<Unit>> units_map;
+    //std::map<int, std::unique_ptr<Projectile>> projectiles_map;
+    std::unique_ptr<GameWorldInternal> _storage;
 
 public:
+    GameWorld();
+    ~GameWorld();
 
     void update(WorldRenderer& world_renderer);
 
@@ -28,9 +38,6 @@ public:
 
 
     Terrain terrain;
-    std::map<int, std::unique_ptr<MovingEntity>> entity_map;
-
-    std::vector<std::unique_ptr<Effect>> effects;
 
     int allocate_entity_id();
 
@@ -38,7 +45,7 @@ public:
 
     void spawn_explosion(Vector2D centroid);
 
-    int spawn_warrior(IJ at_cell, WorldRenderer& world_renderer);
+    int spawn_unit(IJ at_cell, WorldRenderer& world_renderer);
 
     int spawn_projectile(IJ at_cell, IJ target_cell, WorldRenderer& world_renderer);
 

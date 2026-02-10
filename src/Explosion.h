@@ -2,14 +2,18 @@
 #include "Vector2D.h"
 #include "WorldRenderer.h"
 #include "Effect.h"
+
+class WorldRender;
+
 class Explosion : public Effect {
     bool _alive{ true };
     float _r{ 0.f };
 public:
     Vector2D centroid;
 
+    Explosion(Vector2D centroid);
 
-    Explosion(Vector2D centroid) : centroid{ centroid } {}
+    virtual ~Explosion();
 
     void update(sf::Time& deltaTime) override;
 

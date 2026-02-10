@@ -1,7 +1,8 @@
 #pragma once
 #include "UIState.h"
-#include "UI_InputEvent.h"
 #include "CellAttackCube.h"
+#include <SFML/Graphics.hpp>
+#include "UI_InputEvent.h"
 
 template <typename T, typename E>
 class StateMachine;
@@ -10,11 +11,11 @@ class WorldRenderer;
 class GameWorld;
 class Unit;
 
-class UnitSelectedState : public UIState {
+class UnitCommandExecutionState : public UIState {
     Unit& _unit;
     CellAttackCube ui_cell_attack;
 public:
-    UnitSelectedState(
+    UnitCommandExecutionState(
         StateMachine<UIState, UI_InputEvent>* state_machine,
         GameWorld& game_world,
         WorldRenderer& world_renderer,

@@ -1,7 +1,8 @@
 #pragma once
 #include <cmath>
 #include <iostream>
-struct Vector2D {
+class Vector2D {
+public:
     double x, y;
 
     Vector2D() : x(0.0), y(0.0) {}

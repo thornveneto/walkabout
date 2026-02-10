@@ -1,4 +1,20 @@
 #include "Unit.h"
+#include "GameWorld.h"
+#include "WorldRenderer.h"
+
+Unit::~Unit() = default;
+
+Unit::Unit(IJ at_cell, WorldRenderer& world_renderer, GameWorld& game_world) : MovingEntity(at_cell, world_renderer, game_world) {
+
+}
+
+void Unit::select() {
+    _is_selected = true;
+}
+
+void Unit::deselect() {
+    _is_selected = false;
+}
 
 void Unit::draw(WorldRenderer& world_renderer) {
     Vector2D screen_point = world_renderer.tm * centroid;
@@ -7,7 +23,8 @@ void Unit::draw(WorldRenderer& world_renderer) {
         screen_point.x,
         screen_point.y - world_renderer.cell_height/2,
         world_renderer.hh,
-        sf::Color::Blue, sf::Color::Black
+        _is_selected ? sf::Color::Yellow : sf::Color::Blue, 
+        sf::Color::Black
     );
 }
 

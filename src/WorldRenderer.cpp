@@ -61,9 +61,9 @@ XY<float> WorldRenderer::tile_screen_xy(IJ ij) const {
         _start_y + ij.i * hh - hh * ij.j
     };
 }
-IJ WorldRenderer::tile_ij_from_screen_xy(float x, float y) const {
-    x -= _start_x;
-    y -= _start_y;
+IJ WorldRenderer::tile_ij_from_screen_xy(XY<int> xy) const {
+    float x = xy.x + _start_x;
+    float y = xy.y + _start_y;
 
     float j = (x / hw - y / hh) / 2;
 

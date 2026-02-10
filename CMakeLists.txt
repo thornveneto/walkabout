@@ -12,7 +12,17 @@ FetchContent_Declare(SFML
     SYSTEM)
 FetchContent_MakeAvailable(SFML)
 
-add_executable(main src/main.cpp "src/Matrix2D.h" "src/WorldRenderer.h" "src/MovingEntity.h" "src/Terrain.h" "src/Cell.h" "src/Wall.h" "src/GameWorld.h" "src/LineSegment.h" "src/Explosion.h" "src/Effect.h" "src/GameWorld.cpp" "src/MovingEntity.cpp" "src/Unit.h" "src/Unit.cpp" "src/Projectile.h" "src/Projectile.cpp" "src/State.h" "src/StateMachine.h" "src/CellCube.h" "src/Cell.cpp" "src/UIState.h" "src/DummyCommandState.h" "src/UnitSelectionState.h" "src/UnitSelectedState.h" "src/UIState.cpp" "src/UnitSelectedState.cpp" "src/UnitSelectionState.cpp" "src/Terrain.cpp" "src/WorldRenderer.cpp" "src/UI_InputEvent.h" "src/XY.h" "src/CellAttackCube.h" "src/Wall.cpp" "src/IJ.h"  "src/Explosion.cpp")
+add_executable(main src/main.cpp "src/Matrix2D.h" "src/WorldRenderer.h" "src/MovingEntity.h" "src/Terrain.h" "src/Cell.h" "src/Wall.h" "src/GameWorld.h" "src/LineSegment.h" "src/Explosion.h" "src/Effect.h" "src/GameWorld.cpp" "src/MovingEntity.cpp" "src/Unit.h" "src/Unit.cpp" "src/Projectile.h" "src/Projectile.cpp" "src/State.h" "src/StateMachine.h" "src/CellCube.h" "src/Cell.cpp" "src/UIState.h" "src/DummyCommandState.h" "src/UnitSelectionState.h" "src/UnitSelectedState.h" "src/UIState.cpp" "src/UnitSelectedState.cpp" "src/UnitSelectionState.cpp" "src/Terrain.cpp" "src/WorldRenderer.cpp" "src/UI_InputEvent.h" "src/XY.h" "src/CellAttackCube.h" "src/Wall.cpp" "src/IJ.h"  "src/Explosion.cpp" "src/UnitCommandExecutionState.h" "src/UnitCommandExecutionState.cpp" "src/CellAttackCube.cpp" "src/CellCube.cpp" "src/DummyCommandState.cpp" "src/Effect.cpp")
+
+#added here
+if(MSVC)
+    target_compile_options(main PRIVATE 
+        /W4           # Set Warning Level to 4
+        /permissive-  # Enable Standards Conformance (Strict Mode)
+        /EHsc         # Standard C++ Exception Handling
+    )
+endif()
+
 target_compile_features(main PRIVATE cxx_std_17)
 
 target_link_libraries(main PRIVATE SFML::Graphics)

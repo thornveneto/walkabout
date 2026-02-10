@@ -42,5 +42,5 @@ public:
 
     void draw(const sf::Drawable& drawable);
 
-    IJ tile_ij_from_screen_xy(float x, float y) const;
+    IJ tile_ij_from_screen_xy(XY<int> xy) const;
 };

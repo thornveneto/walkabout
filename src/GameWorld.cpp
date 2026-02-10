@@ -1,7 +1,18 @@
 #include "GameWorld.h"
 #include "Explosion.h"
+#include "WorldRenderer.h"
 #include "Unit.h"
 #include "Projectile.h"
+#include "Effect.h"
+
+struct GameWorldInternal {
+    std::map<int, std::unique_ptr<Projectile>> projectiles_map;
+};
+
+GameWorld::GameWorld() : _storage(std::make_unique<GameWorldInternal>()) {}
+
+GameWorld::~GameWorld() = default;
+
 
 void GameWorld::toggle_pause() {
     paused = !paused;
@@ -29,28 +40,30 @@ int GameWorld::allocate_entity_id() {
 void GameWorld::init(WorldRenderer& world_renderer) {
     terrain.init();
 
-    spawn_warrior({ 0, 0 }, world_renderer);
-    spawn_warrior({ 2, 0 }, world_renderer);
+    spawn_unit({ 0, 0 }, world_renderer);
+    spawn_unit({ 2, 0 }, world_renderer);
     //spawn_projectile(4, 0, 4, 9, world_renderer);
 }
 
-int GameWorld::spawn_warrior(IJ at_cell, WorldRenderer& world_renderer) {
+int GameWorld::spawn_unit(IJ at_cell, WorldRenderer& world_renderer) {
 
     int warrior_id = allocate_entity_id();
 
 
-    entity_map.emplace(warrior_id, std::make_unique<Unit>(at_cell, world_renderer, *this));
+    units_map.emplace(warrior_id, std::make_unique<Unit>(at_cell, world_renderer, *this));
 
-    terrain.cell_at(at_cell).add_guest(entity_map[warrior_id].get());
+    terrain.cell_at(at_cell).add_guest(units_map[warrior_id].get());
 
     return warrior_id;
 }
 
 int GameWorld::spawn_projectile(IJ at_cell, IJ target_cell, WorldRenderer& world_renderer) {
+    std::cout << "SPAWN PROJECTILE AT " << at_cell.i << "-" << at_cell.j << std::endl;
+
     int projectile_id = allocate_entity_id();
 
-    entity_map.emplace(projectile_id, std::make_unique<Projectile>(at_cell, world_renderer, *this));
-    entity_map.at(projectile_id)->set_target(target_cell, world_renderer);
+    _storage->projectiles_map.emplace(projectile_id, std::make_unique<Projectile>(at_cell, world_renderer, *this));
+    _storage->projectiles_map.at(projectile_id)->set_target(target_cell, world_renderer);
 
     //TODO: add guest??
 
@@ -64,15 +77,27 @@ void GameWorld::spawn_explosion(Vector2D centroid) {
 }
 
 void GameWorld::update_entities(sf::Time& delta_time, WorldRenderer& world_renderer) {
-    for (auto& entity : entity_map) {
-        entity.second->update(delta_time, world_renderer);
+    for (auto& unit : units_map) {
+        unit.second->update(delta_time, world_renderer);
 
-        IJ previous_home = entity.second->get_home_ij();
-        IJ new_home = world_renderer.tile_ij_from_centroid(entity.second->centroid);
+        IJ previous_home = unit.second->get_home_ij();
+        IJ new_home = world_renderer.tile_ij_from_centroid(unit.second->centroid);
 
-        entity.second->set_home(new_home);
+        unit.second->set_home(new_home);
 
-        terrain.transfer_guest(previous_home, new_home, entity.second.get());
+        terrain.transfer_guest_unit(previous_home, new_home, unit.second.get());
+    }
+
+    //CHECK
+    for (auto& projectile : _storage->projectiles_map) {
+        projectile.second->update(delta_time, world_renderer);
+
+        IJ previous_home = projectile.second->get_home_ij();
+        IJ new_home = world_renderer.tile_ij_from_centroid(projectile.second->centroid);
+
+        projectile.second->set_home(new_home);
+
+        //no guests for projectiles - terrain.transfer_guest(previous_home, new_home, projectile.second.get());
     }
 }
 
@@ -96,8 +121,13 @@ void GameWorld::draw(WorldRenderer& world_renderer) {
     //Draw here
     terrain.draw(world_renderer);
 
-    for (const auto& entity : entity_map) {
-        entity.second->draw(world_renderer);
+    for (const auto& unit : units_map) {
+        unit.second->draw(world_renderer);
+    }
+
+    //CHECK
+    for (const auto& projectile : _storage->projectiles_map) {
+        projectile.second->draw(world_renderer);
     }
 
     for (auto& effect : effects) {
@@ -109,13 +139,14 @@ void GameWorld::check_collisions(WorldRenderer& world_renderer) {
     //Tile& todo_smashed_tile = terrain.tile_at(4, 4);
     //LineSegment& west_wall = todo_smashed_tile.west_slot_segment(world_renderer);
 
-    for (auto& entity : entity_map) {
+    //CHECK
+    for (auto& projectile : _storage->projectiles_map) {
 
-        std::vector<IJ> terrain_collisions = terrain.terrain_collisions(entity.second->move_delta_segment(), world_renderer);
+        std::vector<IJ> terrain_collisions = terrain.terrain_collisions(projectile.second->move_delta_segment(), world_renderer);
 
         for (const auto& collided_element : terrain_collisions) {
             //TODO: shouldn't actually be at, but at intersection point
-            spawn_explosion(entity.second->centroid);
+            spawn_explosion(projectile.second->centroid);
         }
     }
 }

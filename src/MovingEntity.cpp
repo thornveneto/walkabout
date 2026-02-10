@@ -1,4 +1,14 @@
 #include "MovingEntity.h"
+#include "GameWorld.h"
+#include "WorldRenderer.h"
+
+MovingEntity::MovingEntity(IJ home_cell, WorldRenderer& world_renderer, GameWorld& game_world) :
+    _game_world{ game_world }, cell_ij{ home_cell }, centroid{ world_renderer.tile_centroid_from_ij(home_cell) } {
+    //TODO: a bit ugly and only because we need to know the tile size
+}
+
+MovingEntity::~MovingEntity() = default;
+
 void MovingEntity::set_waypoints(const std::vector<IJ>& new_path) {
     waypoints = new_path;
 }

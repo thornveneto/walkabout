@@ -1,8 +1,11 @@
 #pragma once
-#include "WorldRenderer.h"
 #include "Cell.h"
-#include "Wall.h"
+#include <vector>
 #include "IJ.h"
+
+class WorldRenderer;
+class Unit;
+
 class Terrain {
     std::vector<std::vector<Cell>> terrain;
 public:
@@ -15,9 +18,9 @@ public:
 
     bool within_boundaries(IJ& cell_ij);
 
-    void transfer_guest(IJ from, IJ to, MovingEntity* guest);
+    void transfer_guest_unit(IJ from, IJ to, Unit* guest);
 
     void draw(WorldRenderer& world_renderer);
 
-    MovingEntity* get_orderable_entity_at(IJ cell_ij);
+    Unit* get_orderable_unit_at(IJ cell_ij);
 };

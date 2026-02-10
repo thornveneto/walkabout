@@ -5,6 +5,6 @@
 	used to avoid confusion with XY (since order is different) and to avoid generic pair.
 */
 struct IJ {
-	int i;
-	int j;
+	int i{};
+	int j{};
 };
