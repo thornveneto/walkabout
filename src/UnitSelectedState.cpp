@@ -33,10 +33,9 @@ void UnitSelectedState::process_event(const UI_InputEvent& event) noexcept {
 
         _unit.shoot_at(mouse_ij, world_renderer);
 
-        //CHECK
-        //state_machine->switch_state(
-        //    std::make_unique<UnitCommandExecutionState>(state_machine, game_world, world_renderer, window, _unit)
-        //);
+        state_machine->switch_state(
+            std::make_unique<UnitCommandExecutionState>(state_machine, game_world, world_renderer, window, &_unit)
+        );
     }
     else if (event.right_key_pressed) {
 
