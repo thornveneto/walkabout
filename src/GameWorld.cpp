@@ -65,6 +65,8 @@ int GameWorld::spawn_projectile(IJ at_cell, IJ target_cell, WorldRenderer& world
     _storage->projectiles_map.emplace(projectile_id, std::make_unique<Projectile>(at_cell, world_renderer, *this));
     _storage->projectiles_map.at(projectile_id)->set_target(target_cell, world_renderer);
 
+    std::cout << "projectile centroid" << _storage->projectiles_map.at(projectile_id)->centroid.x << " " << _storage->projectiles_map.at(projectile_id)->centroid.y << std::endl;
+
     //TODO: add guest??
 
     return projectile_id;
@@ -90,7 +92,14 @@ void GameWorld::update_entities(sf::Time& delta_time, WorldRenderer& world_rende
 
     //CHECK
     for (auto& projectile : _storage->projectiles_map) {
+        std::cout << "DELTA  " << delta_time.asMilliseconds() << ": ";
+
+        std::cout << "BEFORE  " << projectile.second->centroid.x << " " << projectile.second->centroid.y;
+
+
         projectile.second->update(delta_time, world_renderer);
+
+        std::cout << "   AFTER   " << projectile.second->centroid.x << " " << projectile.second->centroid.y << std::endl;
 
         IJ previous_home = projectile.second->get_home_ij();
         IJ new_home = world_renderer.tile_ij_from_centroid(projectile.second->centroid);
