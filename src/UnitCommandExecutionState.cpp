@@ -17,7 +17,11 @@ UnitCommandExecutionState::UnitCommandExecutionState(
 {
 }
 
-void UnitCommandExecutionState::on_enter() noexcept {}
+void UnitCommandExecutionState::on_enter() noexcept {
+    if (game_world.is_paused()) {
+        game_world.unpause();
+    }
+}
 
 void UnitCommandExecutionState::process_event(const UI_InputEvent& event) noexcept {
 
@@ -30,4 +34,8 @@ void UnitCommandExecutionState::process_event(const UI_InputEvent& event) noexce
     game_world.update(world_renderer);
 }
 
-void UnitCommandExecutionState::on_exit() noexcept {}
+void UnitCommandExecutionState::on_exit() noexcept {
+    if (!game_world.is_paused()) {
+        game_world.pause();
+    }
+}

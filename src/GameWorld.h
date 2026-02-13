@@ -19,7 +19,6 @@ class GameWorld {
 
     sf::Clock clock; // starts the clock
     bool paused = true;
-    sf::Time pause_start;//TODO: we don't seem to use it anymore anywhere
 
     sf::Time get_delta_time();//WARNING destructive. Call once only
     std::vector<std::unique_ptr<Effect>> effects;
@@ -33,7 +32,8 @@ public:
 
     void update(WorldRenderer& world_renderer);
 
-    void toggle_pause();
+    void pause();
+    void unpause();
     bool is_paused() const;
 
 

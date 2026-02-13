@@ -1,5 +1,6 @@
 #pragma once
 #include "WorldRenderer.h"
+
 enum class WallOrientation {
 	NORTH,
 	EAST,
