@@ -1,5 +1,8 @@
 #pragma once
 #include <SFML/Graphics.hpp>
+
+class WorldRenderer;
+
 class CellCube {
 
     float cur_cell_hw;
@@ -16,5 +19,5 @@ class CellCube {
 public:
     CellCube(float cur_cell_hw, float cur_cell_hh, float cur_cell_height, sf::Color color);
 
-    void draw(sf::RenderWindow& window, sf::Vector2f cube_pos) const;
+    void draw(WorldRenderer& world_renderer, sf::Vector2f cube_pos) const;
 };

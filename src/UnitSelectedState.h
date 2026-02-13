@@ -18,7 +18,6 @@ public:
         StateMachine<UIState, UI_InputEvent>* state_machine,
         GameWorld& game_world,
         WorldRenderer& world_renderer,
-        sf::RenderWindow& window,
         Unit* unit
     );
 

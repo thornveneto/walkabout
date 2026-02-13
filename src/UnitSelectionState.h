@@ -12,7 +12,7 @@ class GameWorld;
 class UnitSelectionState : public UIState {
     CellCube ui_cell_selection;
 public:
-    UnitSelectionState(StateMachine<UIState, UI_InputEvent>* state_machine, GameWorld& game_world, WorldRenderer& world_renderer, sf::RenderWindow& window);
+    UnitSelectionState(StateMachine<UIState, UI_InputEvent>* state_machine, GameWorld& game_world, WorldRenderer& world_renderer);
 
     void on_enter() noexcept override;
 

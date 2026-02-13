@@ -1,4 +1,5 @@
 #include "CellCube.h"
+#include "WorldRenderer.h"
 
 CellCube::CellCube(float cur_cell_hw, float cur_cell_hh, float cur_cell_height, sf::Color color) :
     cur_cell_hw{ cur_cell_hw }, cur_cell_hh{ cur_cell_hh }, cur_cell_height{ cur_cell_height }, _color{ color } {
@@ -19,7 +20,7 @@ CellCube::CellCube(float cur_cell_hw, float cur_cell_hh, float cur_cell_height, 
     } };
 }
 
-void CellCube::draw(sf::RenderWindow& window, sf::Vector2f cube_pos) const {
+void CellCube::draw(WorldRenderer& world_renderer, sf::Vector2f cube_pos) const {
     // Create VertexArray for edges
     sf::VertexArray lines(sf::PrimitiveType::Lines, edges.size() * 2);
     int idx = 0;
@@ -39,5 +40,5 @@ void CellCube::draw(sf::RenderWindow& window, sf::Vector2f cube_pos) const {
         lines[idx++] = v2;
     }
 
-    window.draw(lines);
+    world_renderer.draw(lines);
 }
