@@ -4,6 +4,7 @@
 #include "Unit.h"
 #include "Projectile.h"
 #include "Effect.h"
+#include <deque>
 
 struct GameWorldInternal {
     std::map<int, std::unique_ptr<Projectile>> projectiles_map;
@@ -144,6 +145,17 @@ void GameWorld::check_collisions(WorldRenderer& world_renderer) {
         for (const auto& collided_element : terrain_collisions) {
             //TODO: shouldn't actually be at, but at intersection point
             spawn_explosion(projectile.second->centroid);
+
+            //projectile.second->on_collision();
+        }
+    }
+}
+
+void GameWorld::check_out_of_bounds(WorldRenderer& world_renderer) {
+    for (const auto& projectile_item : _storage->projectiles_map) {
+        
+        if (!terrain.within_boundaries(projectile_item.second->centroid, world_renderer)) {
+            projectile_item.second->mark_for_sweep();
         }
     }
 }
@@ -161,6 +173,24 @@ void GameWorld::update(WorldRenderer& world_renderer) {
 
         check_collisions(world_renderer);
 
+        check_out_of_bounds(world_renderer);
+
         update_effects(delta_time);
+    }
+}
+
+void GameWorld::sweep_pending_elements() {
+    //TODO: suboptimal loop and repeating the action
+    std::deque<int> sweep_projectile_id_queue;
+
+    for (const auto& projectile_item : _storage->projectiles_map) {
+
+        if (projectile_item.second->is_pending_sweep()) {
+            sweep_projectile_id_queue.push_back(projectile_item.first);
+        }
+    }
+
+    for (int projectile_id : sweep_projectile_id_queue) {
+        _storage->projectiles_map.erase(projectile_id);
     }
 }

@@ -31,7 +31,7 @@ void UnitCommandExecutionState::process_event(const UI_InputEvent& event) noexce
 
     ui_cell_attack.draw(world_renderer, sf::Vector2f{ tile_xy.x, tile_xy.y });
 
-    game_world.update(world_renderer);
+    game_world.update(world_renderer); //TODO: this should probably move up
 }
 
 void UnitCommandExecutionState::on_exit() noexcept {

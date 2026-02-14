@@ -32,7 +32,7 @@ public:
 
     Vector2D tile_centroid_from_ij(IJ tile_ij);
 
-    IJ tile_ij_from_centroid(Vector2D centroid);
+    IJ tile_ij_from_centroid(Vector2D centroid) const;
 
     void draw_tile(int i, int j, const sf::Color& fill_color, const sf::Color& outline_color);
 

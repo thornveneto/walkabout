@@ -7,7 +7,7 @@ Vector2D WorldRenderer::tile_centroid_from_ij(IJ tile_ij) {
     };
 }
 
-IJ WorldRenderer::tile_ij_from_centroid(Vector2D centroid) {
+IJ WorldRenderer::tile_ij_from_centroid(Vector2D centroid) const {
     //WATCH OUT: x,y order is reverse to i,j, since i is row not col
     return {
         static_cast<int>((centroid.y + tile_side / 2) / tile_side),

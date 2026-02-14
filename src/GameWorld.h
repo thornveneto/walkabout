@@ -26,6 +26,7 @@ class GameWorld {
     //std::map<int, std::unique_ptr<Projectile>> projectiles_map;
     std::unique_ptr<GameWorldInternal> _storage;
 
+    void check_out_of_bounds(WorldRenderer& world_renderer);
 public:
     GameWorld();
     ~GameWorld();
@@ -56,4 +57,6 @@ public:
     void check_collisions(WorldRenderer& world_renderer);
 
     void draw(WorldRenderer& world_renderer);
+
+    void sweep_pending_elements();
 };

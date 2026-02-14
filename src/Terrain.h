@@ -5,6 +5,7 @@
 
 class WorldRenderer;
 class Unit;
+class Vector2D;
 
 class Terrain {
     std::vector<std::vector<Cell>> terrain;
@@ -16,7 +17,9 @@ public:
 
     Cell& cell_at(IJ cell_ij);
 
-    bool within_boundaries(IJ& cell_ij);
+    bool within_boundaries(const IJ& cell_ij) const;
+
+    bool within_boundaries(const Vector2D& centroid, WorldRenderer& world_renderer) const;
 
     void transfer_guest_unit(IJ from, IJ to, Unit* guest);
 

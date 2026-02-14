@@ -3,6 +3,7 @@
 #include "Wall.h"
 #include "LineSegment.h"
 #include "WorldRenderer.h"
+#include "Vector2D.h"
 
 void Terrain::init() {
     terrain.resize(10);
@@ -101,8 +102,13 @@ Cell& Terrain::cell_at(IJ cell_ij) {
 
     return terrain[cell_ij.i][cell_ij.j];
 }
-bool Terrain::within_boundaries(IJ& cell_ij) {
+bool Terrain::within_boundaries(const IJ& cell_ij) const {
     return (0 <= cell_ij.i && cell_ij.i < terrain.size()) && (0 <= cell_ij.j && cell_ij.j < terrain[0].size());
+}
+
+bool Terrain::within_boundaries(const Vector2D& centroid, WorldRenderer& world_renderer) const {
+
+    return within_boundaries(world_renderer.tile_ij_from_centroid(centroid));
 }
 
 void Terrain::transfer_guest_unit(IJ from, IJ to, Unit* guest) {

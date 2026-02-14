@@ -84,7 +84,7 @@ int main()
                 window.close();
             }
 
-            //---STAGE: UPDATING
+            //---STAGE: UPDATING - temporarily within the state
 
             
             //2
@@ -98,6 +98,8 @@ int main()
 
             //Call after drawn stuff
             window.display();
+
+            game_world.sweep_pending_elements();
         }
     }
     catch (const std::exception& e) {
