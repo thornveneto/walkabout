@@ -84,6 +84,8 @@ void GameWorld::update_entities(sf::Time& delta_time, WorldRenderer& world_rende
 
         unit.second->set_home(new_home);
 
+        unit.second->execute_waypoint_logic(world_renderer);//TODO: CRASH BOOM BANG
+
         terrain.transfer_guest_unit(previous_home, new_home, unit.second.get());
     }
 
@@ -172,11 +174,6 @@ void GameWorld::check_out_of_bounds(WorldRenderer& world_renderer) {
 void GameWorld::update(WorldRenderer& world_renderer) {
     if (!is_paused()) {
         sf::Time delta_time = get_delta_time();
-
-        //Custom
-        /*
-        game_world.entity_map.at(1)->execute_waypoint_logic(world_renderer);
-        */
 
         update_entities(delta_time, world_renderer);
 

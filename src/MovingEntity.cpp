@@ -9,6 +9,10 @@ MovingEntity::MovingEntity(IJ home_cell, WorldRenderer& world_renderer, GameWorl
 
 MovingEntity::~MovingEntity() = default;
 
+void MovingEntity::stop() {
+    speed_vector = { 0,0 };
+}
+
 void MovingEntity::set_waypoints(const std::vector<IJ>& new_path) {
     waypoints = new_path;
 }
@@ -20,13 +24,19 @@ void MovingEntity::start_waypoints_following(WorldRenderer& world_renderer) {
     set_target(waypoints[waypoint_id % waypoints.size()], world_renderer);
 }
 void MovingEntity::execute_waypoint_logic(WorldRenderer& world_renderer) {
-    //Updating stuff
-    if (reached_target(world_renderer)) {
-        set_home_and_center(waypoints[waypoint_id % waypoints.size()], world_renderer);
+    //TODO: ho-ho-ho flesh out the logic
+    if (waypoints.size() > 0 && reached_target(world_renderer)) {
 
         ++waypoint_id;
 
-        set_target(waypoints[waypoint_id % waypoints.size()], world_renderer);
+        if (waypoint_id == waypoints.size()) {
+            set_home_and_center(waypoints[waypoint_id-1], world_renderer);
+            waypoints.resize(0);
+            stop();
+        }
+        else {
+            set_target(waypoints[waypoint_id], world_renderer);
+        }
     }
 }
 
@@ -87,7 +97,7 @@ bool MovingEntity::reached_target(WorldRenderer& world_renderer) {
 
     double distance = target_vector.distance(centroid);
 
-    return distance < 2; //TODO: this really depends on FPS
+    return distance < 0.5; //TODO: this really depends on FPS
 }
 
 void MovingEntity::update(sf::Time& deltaTime, WorldRenderer& world_renderer) {

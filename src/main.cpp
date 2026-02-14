@@ -20,8 +20,8 @@
 //main TODO: 
 // 1 - DONE: make agents move from tile to tile
 // 1.5 DONE: make movement and placement using pre projections
-// 2 - add creating and flying projectile
-// 3 - add projectile hitting an object 
+// 2 - DONE: add creating and flying projectile
+// 3 - DONE: add projectile hitting an object 
 // 3 - add a few obstacles and basic path-finding. BFS is good
 // 4 - add giving objects a command
 

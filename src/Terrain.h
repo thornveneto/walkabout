@@ -9,6 +9,8 @@ class Vector2D;
 
 class Terrain {
     std::vector<std::vector<Cell>> terrain;
+
+    bool wall_between(IJ first_cell, IJ second_cell);
 public:
 
     void init();
@@ -28,4 +30,6 @@ public:
     void draw(WorldRenderer& world_renderer);
 
     Unit* get_orderable_unit_at(IJ cell_ij);
+
+    std::vector<IJ> find_path(IJ start_cell, IJ end_cell);
 };

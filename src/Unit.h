@@ -5,7 +5,7 @@
 
 class GameWorld;
 class WorldRenderer;
-class CollisionData;
+struct CollisionData;
 
 class Unit : public MovingEntity, public ICollideable {
 	bool _is_selected{ false };

@@ -4,6 +4,8 @@
 #include "LineSegment.h"
 #include "WorldRenderer.h"
 #include "Vector2D.h"
+#include <deque>
+#include <map>
 
 void Terrain::init() {
     terrain.resize(10);
@@ -153,8 +155,6 @@ void Terrain::draw(WorldRenderer& world_renderer) {
     for (int i = 0; i < terrain.size(); ++i) {
         for (int j = 0; j < terrain[0].size(); ++j) {
             terrain[i][j].draw_tile(world_renderer);
-
-
         }
     }
 
@@ -167,4 +167,91 @@ void Terrain::draw(WorldRenderer& world_renderer) {
 
 Unit* Terrain::get_orderable_unit_at(IJ cell_ij) {
     return cell_at(cell_ij).get_unit();
+}
+
+bool Terrain::wall_between(IJ first_cell_ij, IJ second_cell_ij) {
+    //TODO: add validation that cells are adjacent in a line
+    Cell& first_cell = cell_at(first_cell_ij);
+    Cell& second_cell = cell_at(first_cell_ij);
+
+    if (first_cell_ij.i + 1 == second_cell_ij.i) {
+        return first_cell.has_south_wall() || second_cell.has_north_wall();
+    }
+
+    if (first_cell_ij.i - 1 == second_cell_ij.i) {
+        return first_cell.has_north_wall() || second_cell.has_south_wall();
+    }
+
+    if (first_cell_ij.j+1 == second_cell_ij.j) {
+        return first_cell.has_east_wall() || second_cell.has_west_wall();
+    }
+
+    if (first_cell_ij.j-1 == second_cell_ij.j) {
+        return first_cell.has_west_wall() || second_cell.has_east_wall();
+    }
+
+    return false;
+}
+
+std::vector<IJ> Terrain::find_path(IJ start_cell, IJ end_cell) {
+    std::deque<IJ> Q{ start_cell};
+    std::set<std::pair<int,int>> V; //TODO: using pair to avoid creating comparison for the time being
+    std::map<std::pair<int, int>, std::pair<int, int>> path;  //TODO: using pair to avoid creating comparison for the time being
+
+    while (Q.size() > 0) {
+        IJ q = Q.front();
+        Q.pop_front();
+
+        if (q.i == end_cell.i && q.j == end_cell.j) {//TODO: add comparison operator
+            break;
+        }
+
+        //TODO: add function wall between
+
+        IJ south = { q.i + 1, q.j };
+        if (within_boundaries(south) && V.count({ south.i, south.j }) == 0 && !wall_between(q, south)) {
+            Q.push_back(south);
+            path[{ south.i, south.j }] = { q.i, q.j };
+            V.insert({ south.i, south.j });
+        }
+
+        IJ north = { q.i - 1, q.j };
+        if (within_boundaries(north) && V.count({ north.i, north.j }) == 0 && !wall_between(q, north)) {
+            Q.push_back(north);
+            path[{ north.i, north.j }] = { q.i, q.j };
+            V.insert({ north.i, north.j });
+        }
+
+        IJ east = { q.i, q.j + 1 };
+        if (within_boundaries(east) && V.count({ east.i, east.j }) == 0 && !wall_between(q, east)) {
+            Q.push_back(east);
+            path[{ east.i, east.j }] = { q.i, q.j };
+            V.insert({ east.i, east.j });
+        }
+
+        IJ west = { q.i, q.j - 1 };
+        if (within_boundaries(west) && V.count({ west.i, west.j }) == 0 && !wall_between(q, west)) {
+            Q.push_back(west);
+            path[{ west.i, west.j }] = { q.i, q.j };
+            V.insert({ west.i, west.j });
+        }
+
+
+        V.insert({ q.i, q.j });
+    }
+
+    std::vector<IJ> result;
+    std::pair<int, int> runner = { end_cell.i, end_cell.j };
+
+    while(!(runner.first == start_cell.i && runner.second == start_cell.j)) {
+        result.push_back({ runner.first, runner.second });
+
+        runner = path.at(runner);
+    }
+
+    result.push_back({ runner.first, runner.second });
+
+    std::reverse(result.begin(), result.end());
+
+    return result;
 }
