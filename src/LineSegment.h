@@ -2,26 +2,26 @@
 #include <algorithm>
 class LineSegment {
 public:
-    float x1;
-    float y1;
-    float x2;
-    float y2;
-    LineSegment(float x1, float y1, float x2, float y2) : x1{ x1 }, y1{ y1 }, x2{ x2 }, y2{ y2 } {}
+    double x1;
+    double y1;
+    double x2;
+    double y2;
+    LineSegment(double x1, double y1, double x2, double y2) : x1{ x1 }, y1{ y1 }, x2{ x2 }, y2{ y2 } {}
 
     bool intersects(const LineSegment& line_segment)
     {
-        constexpr float EPS = 1e-6f;
+        constexpr double EPS = 1e-6f;
 
         auto direction = [](
-            float ax, float ay,
-            float bx, float by,
-            float cx, float cy
+            double ax, double ay,
+            double bx, double by,
+            double cx, double cy
             ) {
                 return (bx - ax) * (cy - ay) - (by - ay) * (cx - ax);
             };
 
 
-        auto sign = [&](float v) {
+        auto sign = [&](double v) {
             //for tricky edge cases when multiplication is close 2 zero
             if (v > EPS) return  1;
             if (v < -EPS) return -1;
@@ -29,18 +29,18 @@ public:
             };
 
         // Collinear / touching cases
-        auto on_segment = [](float ax, float ay,
-            float bx, float by,
-            float cx, float cy
+        auto on_segment = [](double ax, double ay,
+            double bx, double by,
+            double cx, double cy
             ) {
                 return cx >= std::min(ax, bx) && cx <= std::max(ax, bx) &&
                     cy >= std::min(ay, by) && cy <= std::max(ay, by);
             };
 
-        float d1 = direction(x1, y1, x2, y2, line_segment.x1, line_segment.y1);
-        float d2 = direction(x1, y1, x2, y2, line_segment.x2, line_segment.y2);
-        float d3 = direction(line_segment.x1, line_segment.y1, line_segment.x2, line_segment.y2, x1, y1);
-        float d4 = direction(line_segment.x1, line_segment.y1, line_segment.x2, line_segment.y2, x2, y2);
+        double d1 = direction(x1, y1, x2, y2, line_segment.x1, line_segment.y1);
+        double d2 = direction(x1, y1, x2, y2, line_segment.x2, line_segment.y2);
+        double d3 = direction(line_segment.x1, line_segment.y1, line_segment.x2, line_segment.y2, x1, y1);
+        double d4 = direction(line_segment.x1, line_segment.y1, line_segment.x2, line_segment.y2, x2, y2);
 
         int s1 = sign(d1);
         int s2 = sign(d2);

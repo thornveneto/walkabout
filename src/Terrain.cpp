@@ -55,6 +55,23 @@ void Terrain::init() {
     };
 }
 
+Unit* Terrain::unit_collision(const LineSegment& entity_move_line_segment, WorldRenderer& world_renderer) {
+    //TODO: ugly prototype way
+
+    Vector2D trajectory_centroid(entity_move_line_segment.x2, entity_move_line_segment.y2);
+
+    IJ cell_ij_to_inspect = world_renderer.tile_ij_from_centroid(trajectory_centroid);
+
+    if (within_boundaries(cell_ij_to_inspect)) {
+        //Safety measure to deal with unchecked out of bounds projectiles
+        Cell& cell_to_inspect = cell_at(cell_ij_to_inspect);
+
+        return cell_to_inspect.get_unit();
+    }
+
+    return nullptr;
+}
+
 std::vector<IJ> Terrain::terrain_collisions(const LineSegment& entity_move_line_segment, WorldRenderer& world_renderer) {
     //TODO: check and optimize colliding tiles
 
@@ -149,5 +166,5 @@ void Terrain::draw(WorldRenderer& world_renderer) {
 }
 
 Unit* Terrain::get_orderable_unit_at(IJ cell_ij) {
-    return cell_at(cell_ij).get_orderable_unit();
+    return cell_at(cell_ij).get_unit();
 }

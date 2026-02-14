@@ -156,7 +156,8 @@ void Cell::remove_guest(Unit* guest_entity) {
     _guests_set.erase(guest_entity);
 }
 
-Unit* Cell::get_orderable_unit() {
+Unit* Cell::get_unit() {
+    //TODO: actually, there can only be one unit guest
 
     Unit* result{ nullptr };
 

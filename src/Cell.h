@@ -44,7 +44,7 @@ public:
 
     void add_guest(Unit* guest_entity);
     void remove_guest(Unit* guest_entity);
-    Unit* get_orderable_unit();
+    Unit* get_unit();
 
     bool has_north_wall() const;
     bool has_east_wall() const;

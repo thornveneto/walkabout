@@ -5,6 +5,7 @@
 #include "Projectile.h"
 #include "Effect.h"
 #include <deque>
+#include "CollisionData.h"
 
 struct GameWorldInternal {
     std::map<int, std::unique_ptr<Projectile>> projectiles_map;
@@ -47,20 +48,20 @@ void GameWorld::init(WorldRenderer& world_renderer) {
 
 int GameWorld::spawn_unit(IJ at_cell, WorldRenderer& world_renderer) {
 
-    int warrior_id = allocate_entity_id();
+    int unit_id = allocate_entity_id();
 
 
-    units_map.emplace(warrior_id, std::make_unique<Unit>(at_cell, world_renderer, *this));
+    units_map.emplace(unit_id, std::make_unique<Unit>(at_cell, world_renderer, *this, unit_id));
 
-    terrain.cell_at(at_cell).add_guest(units_map[warrior_id].get());
+    terrain.cell_at(at_cell).add_guest(units_map[unit_id].get());
 
-    return warrior_id;
+    return unit_id;
 }
 
-int GameWorld::spawn_projectile(IJ at_cell, IJ target_cell, WorldRenderer& world_renderer) {
+int GameWorld::spawn_projectile(IJ at_cell, IJ target_cell, WorldRenderer& world_renderer, int owner_id) {
     int projectile_id = allocate_entity_id();
 
-    _storage->projectiles_map.emplace(projectile_id, std::make_unique<Projectile>(at_cell, world_renderer, *this));
+    _storage->projectiles_map.emplace(projectile_id, std::make_unique<Projectile>(at_cell, world_renderer, *this, owner_id));
     _storage->projectiles_map.at(projectile_id)->set_target(target_cell, world_renderer);
 
     //TODO: add guest??
@@ -134,19 +135,27 @@ void GameWorld::draw(WorldRenderer& world_renderer) {
 }
 
 void GameWorld::check_collisions(WorldRenderer& world_renderer) {
-    //Tile& todo_smashed_tile = terrain.tile_at(4, 4);
-    //LineSegment& west_wall = todo_smashed_tile.west_slot_segment(world_renderer);
-
-    //CHECK
+    //Checking projectile collisions
     for (auto& projectile : _storage->projectiles_map) {
 
+        //First terrain collisions
         std::vector<IJ> terrain_collisions = terrain.terrain_collisions(projectile.second->move_delta_segment(), world_renderer);
 
         for (const auto& collided_element : terrain_collisions) {
             //TODO: shouldn't actually be at, but at intersection point
             spawn_explosion(projectile.second->centroid);
 
-            //projectile.second->on_collision();
+            projectile.second->on_collision({-1});
+        }
+
+        //Second - projectiles hitting units
+        Unit* unit_hit = terrain.unit_collision(projectile.second->move_delta_segment(), world_renderer);
+
+        if (unit_hit && projectile.second->owner_id() != unit_hit->id()) {
+            spawn_explosion(projectile.second->centroid);
+
+            projectile.second->on_collision({ -1 });
+            unit_hit->on_collision({ -1 });
         }
     }
 }

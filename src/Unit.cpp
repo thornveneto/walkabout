@@ -1,11 +1,16 @@
 #include "Unit.h"
 #include "GameWorld.h"
 #include "WorldRenderer.h"
+#include "CollisionData.h"
 
 Unit::~Unit() = default;
 
-Unit::Unit(IJ at_cell, WorldRenderer& world_renderer, GameWorld& game_world) : MovingEntity(at_cell, world_renderer, game_world) {
+Unit::Unit(IJ at_cell, WorldRenderer& world_renderer, GameWorld& game_world, int id) : MovingEntity(at_cell, world_renderer, game_world), _id{ id } {
 
+}
+
+int Unit::id() const {
+    return _id;
 }
 
 void Unit::select() {
@@ -29,5 +34,9 @@ void Unit::draw(WorldRenderer& world_renderer) {
 }
 
 void Unit::shoot_at(IJ target_cell, WorldRenderer& world_renderer) {
-    _game_world.spawn_projectile(cell_ij, target_cell, world_renderer);
+    _game_world.spawn_projectile(cell_ij, target_cell, world_renderer, id());
+}
+
+void Unit::on_collision(const CollisionData& collision_data) {
+    
 }

@@ -48,7 +48,7 @@ public:
 
     int spawn_unit(IJ at_cell, WorldRenderer& world_renderer);
 
-    int spawn_projectile(IJ at_cell, IJ target_cell, WorldRenderer& world_renderer);
+    int spawn_projectile(IJ at_cell, IJ target_cell, WorldRenderer& world_renderer, int owner_id);
 
     void update_entities(sf::Time& delta_time, WorldRenderer& world_renderer);
 

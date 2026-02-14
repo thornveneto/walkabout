@@ -1,5 +1,7 @@
 # Comments
 
+Hobby project. Learning game dev and re-learning C++ after X years.
+
 Closed for contributions.
 Work and RE-work in progress. 
 Major bugs, poor or temporary design decisions are plenty.

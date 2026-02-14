@@ -58,5 +58,4 @@ public:
     void update(sf::Time& deltaTime, WorldRenderer& world_renderer);
 
     virtual void draw(WorldRenderer& world_renderer);
-
 };

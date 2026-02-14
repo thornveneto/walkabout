@@ -1,14 +1,17 @@
 #pragma once
 #include "MovingEntity.h"
 #include "IJ.h"
+#include "ICollideable.h"
 
 class GameWorld;
 class WorldRenderer;
+class CollisionData;
 
-class Unit : public MovingEntity {
+class Unit : public MovingEntity, public ICollideable {
 	bool _is_selected{ false };
+	int _id{ -1 };
 public:
-	Unit(IJ at_cell, WorldRenderer& world_renderer, GameWorld& game_world);
+	Unit(IJ at_cell, WorldRenderer& world_renderer, GameWorld& game_world, int id);
 
 	virtual ~Unit();
 
@@ -19,4 +22,8 @@ public:
 	void draw(WorldRenderer& world_renderer) override;
 
 	void shoot_at(IJ target_cell, WorldRenderer& world_renderer);
+
+	int id() const;
+
+	void on_collision(const CollisionData& collision_data);
 };

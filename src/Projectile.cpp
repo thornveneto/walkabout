@@ -5,8 +5,14 @@
 
 Projectile::~Projectile() = default;
 
-Projectile::Projectile(IJ at_cell, WorldRenderer& world_renderer, GameWorld& game_world) : MovingEntity(at_cell, world_renderer, game_world) {
+Projectile::Projectile(IJ at_cell, WorldRenderer& world_renderer, GameWorld& game_world, int owner_id) :
+    MovingEntity(at_cell, world_renderer, game_world), _owner_id{owner_id}
+{
 
+}
+
+int Projectile::owner_id() const {
+    return _owner_id;
 }
 
 void Projectile::draw(WorldRenderer& world_renderer) {
@@ -28,4 +34,8 @@ void Projectile::mark_for_sweep() {
 
 bool Projectile::is_pending_sweep() const {
     return _is_pending_sweep;
+}
+
+void Projectile::on_collision(const CollisionData& collision_data) {
+    mark_for_sweep();
 }

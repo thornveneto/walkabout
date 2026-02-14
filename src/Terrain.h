@@ -15,6 +15,8 @@ public:
 
     std::vector<IJ> terrain_collisions(const LineSegment& entity_move_line_segment, WorldRenderer& world_renderer);
 
+    Unit* unit_collision(const LineSegment& entity_move_line_segment, WorldRenderer& world_renderer);
+
     Cell& cell_at(IJ cell_ij);
 
     bool within_boundaries(const IJ& cell_ij) const;
