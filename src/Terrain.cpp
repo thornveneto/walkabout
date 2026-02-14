@@ -209,28 +209,28 @@ std::vector<IJ> Terrain::find_path(IJ start_cell, IJ end_cell) {
         //TODO: add function wall between
 
         IJ south = { q.i + 1, q.j };
-        if (within_boundaries(south) && V.count({ south.i, south.j }) == 0 && !wall_between(q, south)) {
+        if (within_boundaries(south) && V.count({ south.i, south.j }) == 0 && !wall_between(q, south) && !cell_at(south).get_unit()) {
             Q.push_back(south);
             path[{ south.i, south.j }] = { q.i, q.j };
             V.insert({ south.i, south.j });
         }
 
         IJ north = { q.i - 1, q.j };
-        if (within_boundaries(north) && V.count({ north.i, north.j }) == 0 && !wall_between(q, north)) {
+        if (within_boundaries(north) && V.count({ north.i, north.j }) == 0 && !wall_between(q, north) && !cell_at(north).get_unit()) {
             Q.push_back(north);
             path[{ north.i, north.j }] = { q.i, q.j };
             V.insert({ north.i, north.j });
         }
 
         IJ east = { q.i, q.j + 1 };
-        if (within_boundaries(east) && V.count({ east.i, east.j }) == 0 && !wall_between(q, east)) {
+        if (within_boundaries(east) && V.count({ east.i, east.j }) == 0 && !wall_between(q, east) && !cell_at(east).get_unit()) {
             Q.push_back(east);
             path[{ east.i, east.j }] = { q.i, q.j };
             V.insert({ east.i, east.j });
         }
 
         IJ west = { q.i, q.j - 1 };
-        if (within_boundaries(west) && V.count({ west.i, west.j }) == 0 && !wall_between(q, west)) {
+        if (within_boundaries(west) && V.count({ west.i, west.j }) == 0 && !wall_between(q, west) && !cell_at(west).get_unit()) {
             Q.push_back(west);
             path[{ west.i, west.j }] = { q.i, q.j };
             V.insert({ west.i, west.j });
