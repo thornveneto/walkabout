@@ -60,7 +60,7 @@ void Terrain::init() {
 Unit* Terrain::unit_collision(const LineSegment& entity_move_line_segment, WorldRenderer& world_renderer) {
     //TODO: ugly prototype way
 
-    Vector2D trajectory_centroid(entity_move_line_segment.x2, entity_move_line_segment.y2);
+    Vector2D trajectory_centroid = entity_move_line_segment.end_vector();
 
     IJ cell_ij_to_inspect = world_renderer.tile_ij_from_centroid(trajectory_centroid);
 

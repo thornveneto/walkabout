@@ -27,38 +27,46 @@ class GameWorld {
     std::unique_ptr<GameWorldInternal> _storage;
 
     void check_out_of_bounds(WorldRenderer& world_renderer);
+
+    void update_entities(sf::Time& delta_time, WorldRenderer& world_renderer);
+
+    void update_effects(sf::Time& delta_time);
+
+    int allocate_entity_id();
 public:
+    Terrain terrain;
+
     GameWorld();
     ~GameWorld();
 
+    void init(WorldRenderer& world_renderer);
+
     void update(WorldRenderer& world_renderer);
 
+    bool any_more_updates() const;
+
+    void draw(WorldRenderer& world_renderer);
+
+    /*
+        Game clock management
+    */
     void pause();
     void unpause();
     bool is_paused() const;
 
-
-    Terrain terrain;
-
-    int allocate_entity_id();
-
-    void init(WorldRenderer& world_renderer);
-
+    /*
+        Entity factory methods
+    */
     void spawn_explosion(Vector2D centroid);
 
     int spawn_unit(IJ at_cell, WorldRenderer& world_renderer);
 
     int spawn_projectile(IJ at_cell, IJ target_cell, WorldRenderer& world_renderer, int owner_id);
 
-    void update_entities(sf::Time& delta_time, WorldRenderer& world_renderer);
-
-    void update_effects(sf::Time& delta_time);
-
-    void check_collisions(WorldRenderer& world_renderer);
-
-    void draw(WorldRenderer& world_renderer);
-
     void sweep_pending_elements();
 
-    bool any_more_updates() const;
+    /*
+        Physics
+    */
+    void check_collisions(WorldRenderer& world_renderer);
 };
