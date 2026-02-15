@@ -8,7 +8,7 @@
 #include "CollisionData.h"
 
 struct GameWorldInternal {
-    std::map<int, std::unique_ptr<Projectile>> projectiles_map;
+    std::map<IdType, std::unique_ptr<Projectile>> projectiles_map;
 };
 
 GameWorld::GameWorld() : _storage(std::make_unique<GameWorldInternal>()) {}
@@ -46,9 +46,9 @@ void GameWorld::init(WorldRenderer& world_renderer) {
     //spawn_projectile(4, 0, 4, 9, world_renderer);
 }
 
-int GameWorld::spawn_unit(IJ at_cell, WorldRenderer& world_renderer) {
+IdType GameWorld::spawn_unit(IJ at_cell, WorldRenderer& world_renderer) {
 
-    int unit_id = allocate_entity_id();
+    IdType unit_id = allocate_entity_id();
 
 
     units_map.emplace(unit_id, std::make_unique<Unit>(at_cell, world_renderer, *this, unit_id));
@@ -58,8 +58,8 @@ int GameWorld::spawn_unit(IJ at_cell, WorldRenderer& world_renderer) {
     return unit_id;
 }
 
-int GameWorld::spawn_projectile(IJ at_cell, IJ target_cell, WorldRenderer& world_renderer, int owner_id) {
-    int projectile_id = allocate_entity_id();
+IdType GameWorld::spawn_projectile(IJ at_cell, IJ target_cell, WorldRenderer& world_renderer, int owner_id) {
+    IdType projectile_id = allocate_entity_id();
 
     _storage->projectiles_map.emplace(projectile_id, std::make_unique<Projectile>(at_cell, world_renderer, *this, owner_id));
     _storage->projectiles_map.at(projectile_id)->set_target(target_cell, world_renderer);

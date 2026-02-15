@@ -2,6 +2,7 @@
 #include "MovingEntity.h"
 #include "IJ.h"
 #include "ICollideable.h"
+#include "_types.h"
 
 class WorldRenderer;
 class GameWorld;
@@ -11,9 +12,9 @@ class Projectile : public MovingEntity, public ICollideable {
 
 	const double _projectile_radius = 5.f;
 
-	int _owner_id{ -1 }; //This is to enable render projectile over shooter, without colliding with the shooter.
+	IdType _owner_id{ -1 }; //This is to enable render projectile over shooter, without colliding with the shooter.
 public:
-	Projectile(IJ at_cell, WorldRenderer& world_renderer, GameWorld& game_world, int owner_id);
+	Projectile(IJ at_cell, WorldRenderer& world_renderer, GameWorld& game_world, IdType owner_id);
 
 	virtual ~Projectile();
 
@@ -25,5 +26,5 @@ public:
 
 	void on_collision(const CollisionData& collision_data) override;
 
-	int owner_id() const;
+	IdType owner_id() const;
 };

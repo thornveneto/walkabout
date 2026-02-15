@@ -2,6 +2,7 @@
 #include "MovingEntity.h"
 #include "IJ.h"
 #include "ICollideable.h"
+#include "_types.h"
 
 class GameWorld;
 class WorldRenderer;
@@ -9,9 +10,9 @@ struct CollisionData;
 
 class Unit : public MovingEntity, public ICollideable {
 	bool _is_selected{ false };
-	int _id{ -1 };
+	IdType _id{ -1 };
 public:
-	Unit(IJ at_cell, WorldRenderer& world_renderer, GameWorld& game_world, int id);
+	Unit(IJ at_cell, WorldRenderer& world_renderer, GameWorld& game_world, IdType id);
 
 	virtual ~Unit();
 
@@ -23,7 +24,7 @@ public:
 
 	void shoot_at(IJ target_cell, WorldRenderer& world_renderer);
 
-	int id() const;
+	IdType id() const;
 
 	void on_collision(const CollisionData& collision_data);
 };

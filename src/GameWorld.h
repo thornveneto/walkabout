@@ -6,6 +6,7 @@
 #include <memory>
 #include "IJ.h"
 #include "Vector2D.h"
+#include "_types.h"
 
 class WorldRenderer;
 class Unit;
@@ -15,14 +16,14 @@ class Effect;
 struct GameWorldInternal;
 
 class GameWorld {
-    int _new_entity_id{ 1 };
+    IdType _new_entity_id{ 1 };
 
     sf::Clock clock; // starts the clock
     bool paused = true;
 
     sf::Time get_delta_time();//WARNING destructive. Call once only
     std::vector<std::unique_ptr<Effect>> effects;
-    std::map<int, std::unique_ptr<Unit>> units_map;
+    std::map<IdType, std::unique_ptr<Unit>> units_map;
     //std::map<int, std::unique_ptr<Projectile>> projectiles_map;
     std::unique_ptr<GameWorldInternal> _storage;
 
@@ -59,9 +60,9 @@ public:
     */
     void spawn_explosion(Vector2D centroid);
 
-    int spawn_unit(IJ at_cell, WorldRenderer& world_renderer);
+    IdType spawn_unit(IJ at_cell, WorldRenderer& world_renderer);
 
-    int spawn_projectile(IJ at_cell, IJ target_cell, WorldRenderer& world_renderer, int owner_id);
+    IdType spawn_projectile(IJ at_cell, IJ target_cell, WorldRenderer& world_renderer, int owner_id);
 
     void sweep_pending_elements();
 

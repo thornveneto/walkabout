@@ -5,11 +5,11 @@
 
 Unit::~Unit() = default;
 
-Unit::Unit(IJ at_cell, WorldRenderer& world_renderer, GameWorld& game_world, int id) : MovingEntity(at_cell, world_renderer, game_world), _id{ id } {
+Unit::Unit(IJ at_cell, WorldRenderer& world_renderer, GameWorld& game_world, IdType id) : MovingEntity(at_cell, world_renderer, game_world), _id{ id } {
 
 }
 
-int Unit::id() const {
+IdType Unit::id() const {
     return _id;
 }
 

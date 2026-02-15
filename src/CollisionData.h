@@ -1,5 +1,6 @@
 #pragma once
+#include "_types.h"
 struct CollisionData {
 	//TODO: enrich with more meaningfull information
-	int collided_entity_id{};
+	IdType collided_entity_id{};
 };

@@ -5,13 +5,13 @@
 
 Projectile::~Projectile() = default;
 
-Projectile::Projectile(IJ at_cell, WorldRenderer& world_renderer, GameWorld& game_world, int owner_id) :
+Projectile::Projectile(IJ at_cell, WorldRenderer& world_renderer, GameWorld& game_world, IdType owner_id) :
     MovingEntity(at_cell, world_renderer, game_world), _owner_id{owner_id}
 {
 
 }
 
-int Projectile::owner_id() const {
+IdType Projectile::owner_id() const {
     return _owner_id;
 }
 
