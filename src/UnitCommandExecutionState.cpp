@@ -4,6 +4,7 @@
 #include "GameWorld.h"
 #include "Unit.h"
 #include <SFML/Graphics.hpp>
+#include "UnitSelectionState.h"
 
 UnitCommandExecutionState::UnitCommandExecutionState(
     StateMachine<UIState, UI_InputEvent>* state_machine,
@@ -32,9 +33,18 @@ void UnitCommandExecutionState::process_event(const UI_InputEvent& event) noexce
     ui_cell_attack.draw(world_renderer, sf::Vector2f{ tile_xy.x, tile_xy.y });
 
     game_world.update(world_renderer); //TODO: this should probably move up
+
+    if (!game_world.any_more_updates()) {
+        state_machine->switch_state(
+            std::make_unique<UnitSelectionState>(state_machine, game_world, world_renderer)
+        );
+    }
 }
 
 void UnitCommandExecutionState::on_exit() noexcept {
+
+    _unit.deselect();
+
     if (!game_world.is_paused()) {
         game_world.pause();
     }

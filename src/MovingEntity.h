@@ -60,4 +60,5 @@ public:
     virtual void draw(WorldRenderer& world_renderer);
 
     void stop();
+    bool is_stopped() const;
 };

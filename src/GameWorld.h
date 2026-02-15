@@ -59,4 +59,6 @@ public:
     void draw(WorldRenderer& world_renderer);
 
     void sweep_pending_elements();
+
+    bool any_more_updates() const;
 };

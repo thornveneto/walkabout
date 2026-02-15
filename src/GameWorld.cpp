@@ -200,3 +200,22 @@ void GameWorld::sweep_pending_elements() {
         _storage->projectiles_map.erase(projectile_id);
     }
 }
+
+bool GameWorld::any_more_updates() const {
+    if (!effects.empty()) {
+        return true;
+    }
+
+    for (auto& unit : units_map) {
+        if (!unit.second->is_stopped()) {
+            return true;
+        }
+    }
+
+    //BR - projectiles must disappear
+    if (!_storage->projectiles_map.empty()) {
+        return true;
+    }
+
+    return false;
+}

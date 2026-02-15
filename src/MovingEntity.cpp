@@ -13,6 +13,11 @@ void MovingEntity::stop() {
     speed_vector = { 0,0 };
 }
 
+bool MovingEntity::is_stopped() const {
+    //avoiding unnecessary class instantiation
+    return speed_vector.x == 0 && speed_vector.y == 0;
+}
+
 void MovingEntity::set_waypoints(const std::vector<IJ>& new_path) {
     waypoints = new_path;
 }
