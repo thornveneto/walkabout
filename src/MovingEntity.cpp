@@ -17,10 +17,6 @@ Vector2D MovingEntity::centroid() const {
     return _centroid;
 }
 
-Vector2D MovingEntity::calculate_screen_point(WorldRenderer& world_renderer) const {
-   return world_renderer.tm * _centroid;
-}
-
 bool MovingEntity::is_stopped() const {
     //avoiding unnecessary class instantiation
     return speed_vector.x == 0 && speed_vector.y == 0;
@@ -120,7 +116,7 @@ void MovingEntity::update(sf::Time& deltaTime, WorldRenderer& world_renderer) {
 }
 
 void MovingEntity::draw(WorldRenderer& world_renderer) {
-    Vector2D screen_point = calculate_screen_point(world_renderer);
+    Vector2D screen_point = world_renderer.calculate_screen_point(centroid());
 
     world_renderer.draw_circle(
         screen_point.x,

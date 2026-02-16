@@ -16,7 +16,7 @@ IdType Projectile::owner_id() const {
 }
 
 void Projectile::draw(WorldRenderer& world_renderer) {
-    Vector2D screen_point = calculate_screen_point(world_renderer);
+    Vector2D screen_point = world_renderer.calculate_screen_point(centroid());
 
     //std::cout << "Projectile centroid: " << centroid.x << "," << centroid.y << std::endl;
 

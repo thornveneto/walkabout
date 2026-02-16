@@ -64,6 +64,4 @@ public:
 
     void stop();
     bool is_stopped() const;
-
-    Vector2D calculate_screen_point(WorldRenderer& world_renderer) const;
 };

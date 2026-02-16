@@ -16,6 +16,11 @@ IJ WorldRenderer::tile_ij_from_centroid(Vector2D centroid) const {
     };
 }
 
+Vector2D WorldRenderer::calculate_screen_point(Vector2D centroid) {
+
+    return _tm * centroid;
+}
+
 void WorldRenderer::draw_tile(int i, int j, const sf::Color& fill_color, const sf::Color& outline_color) {
 
     const XY<float> tile_xy = tile_screen_xy({ i,j });

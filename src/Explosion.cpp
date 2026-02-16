@@ -1,12 +1,12 @@
 #include "Explosion.h"
 #include "WorldRenderer.h"
 
-Explosion::Explosion(Vector2D centroid) : centroid{ centroid } {}
+Explosion::Explosion(Vector2D centroid) : _centroid{ centroid } {}
 
 Explosion::~Explosion() = default;
 
 void Explosion::draw(WorldRenderer& world_renderer) {
-    Vector2D screen_point = world_renderer.tm * centroid;
+    Vector2D screen_point = world_renderer.calculate_screen_point(_centroid);
 
     //std::cout << centroid.x << "," << centroid.y << std::endl;
     if (_alive) {

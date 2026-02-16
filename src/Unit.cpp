@@ -23,7 +23,7 @@ void Unit::deselect() {
 }
 
 void Unit::draw(WorldRenderer& world_renderer) {
-    Vector2D screen_point = calculate_screen_point(world_renderer);
+    Vector2D screen_point = world_renderer.calculate_screen_point(centroid());
 
     if (is_alive()) {
         world_renderer.draw_circle(

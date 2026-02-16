@@ -14,6 +14,7 @@ class WorldRenderer {
     sf::RenderWindow& _window;
     const float _start_x{ 200.f };
     const float _start_y{ 400.f };
+
 public:
     //game world sizes
     const float tile_side{ 10.f };
@@ -23,11 +24,13 @@ public:
     const float hw{ 20.f };
     const float hh{ 10.f };
 
-    Matrix2D tm{
+private:
+    Matrix2D _tm{
         hw / (tile_side), hw / (tile_side),
         -hh / (tile_side), hh / (tile_side)
     };
 
+public:
     WorldRenderer(sf::RenderWindow& window) : _window{ window } {}
 
     Vector2D tile_centroid_from_ij(IJ tile_ij);
@@ -45,4 +48,6 @@ public:
     void draw(const sf::Drawable& drawable);
 
     IJ tile_ij_from_screen_xy(XY<int> xy) const;
+
+    Vector2D calculate_screen_point(Vector2D centroid);
 };

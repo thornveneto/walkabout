@@ -8,9 +8,8 @@ class WorldRender;
 class Explosion : public Effect {
     bool _alive{ true };
     float _r{ 0.f };
+    Vector2D _centroid;
 public:
-    Vector2D centroid;
-
     Explosion(Vector2D centroid);
 
     virtual ~Explosion();
