@@ -29,7 +29,9 @@ void Explosion::update(sf::Time& deltaTime) {
 
     _r += 0.1f;
 
-    if (_r > 30.f) {
+    constexpr float EXPLOSION_SIZE{ 15.f };
+
+    if (_r > EXPLOSION_SIZE) {
         _alive = false;
     }
 }

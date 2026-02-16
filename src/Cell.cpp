@@ -157,13 +157,15 @@ void Cell::remove_guest(Unit* guest_entity) {
 }
 
 Unit* Cell::get_unit() {
-    //TODO: actually, there can only be one unit guest
+    //TODO: actually, there can only be one unit guest. But for now, dead units aren't counted as units
 
     Unit* result{ nullptr };
 
-    for (auto e : _guests_set) {
-        result = e;
-        break;
+    for (auto guest_unit : _guests_set) {
+        if (guest_unit->is_alive()) {
+            result = guest_unit;
+            break;
+        }
     }
 
     return result;

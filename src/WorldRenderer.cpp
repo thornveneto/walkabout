@@ -1,4 +1,5 @@
 #include "WorldRenderer.h"
+#include "EllipseShape.h"
 
 Vector2D WorldRenderer::tile_centroid_from_ij(IJ tile_ij) {
     return {
@@ -53,6 +54,19 @@ void WorldRenderer::draw_circle(float x, float y, float r, const sf::Color& fill
     circle.setPosition({ _start_x + x, _start_y + y });
 
     _window.draw(circle);
+}
+
+void WorldRenderer::draw_ellipse(float x, float y, float ra, float rb, const sf::Color& fill_color, const sf::Color& outline_color) {
+
+    EllipseShape ellipse({ ra,rb });
+
+    ellipse.setFillColor(fill_color);
+    ellipse.setOutlineThickness(-1.f);
+    ellipse.setOutlineColor(outline_color);
+    ellipse.setOrigin({ ra,rb });
+    ellipse.setPosition({ _start_x + x, _start_y + y });
+
+    _window.draw(ellipse);
 }
 
 XY<float> WorldRenderer::tile_screen_xy(IJ ij) const {

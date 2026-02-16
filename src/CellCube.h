@@ -2,7 +2,7 @@
 #include <SFML/Graphics.hpp>
 
 class WorldRenderer;
-
+//TODO: convert to drawable shape
 class CellCube {
 
     float cur_cell_hw;

@@ -3,7 +3,7 @@
 #include "WorldRenderer.h"
 
 MovingEntity::MovingEntity(IJ home_cell, WorldRenderer& world_renderer, GameWorld& game_world) :
-    _game_world{ game_world }, cell_ij{ home_cell }, centroid{ world_renderer.tile_centroid_from_ij(home_cell) } {
+    _game_world{ game_world }, _cell_ij{ home_cell }, _centroid{ world_renderer.tile_centroid_from_ij(home_cell) } {
     //TODO: a bit ugly and only because we need to know the tile size
 }
 
@@ -13,40 +13,48 @@ void MovingEntity::stop() {
     speed_vector = { 0,0 };
 }
 
+Vector2D MovingEntity::centroid() const {
+    return _centroid;
+}
+
+Vector2D MovingEntity::calculate_screen_point(WorldRenderer& world_renderer) const {
+   return world_renderer.tm * _centroid;
+}
+
 bool MovingEntity::is_stopped() const {
     //avoiding unnecessary class instantiation
     return speed_vector.x == 0 && speed_vector.y == 0;
 }
 
 void MovingEntity::set_waypoints(const std::vector<IJ>& new_path) {
-    waypoints = new_path;
+    _waypoints = new_path;
 }
 void MovingEntity::start_waypoints_following(WorldRenderer& world_renderer) {
-    waypoint_id = 0;
-    set_home_and_center(waypoints[waypoint_id % waypoints.size()], world_renderer);
+    _waypoint_id = 0;
+    set_home_and_center(_waypoints[_waypoint_id % _waypoints.size()], world_renderer);
 
-    ++waypoint_id;
-    set_target(waypoints[waypoint_id % waypoints.size()], world_renderer);
+    ++_waypoint_id;
+    set_target(_waypoints[_waypoint_id % _waypoints.size()], world_renderer);
 }
 void MovingEntity::execute_waypoint_logic(WorldRenderer& world_renderer) {
     //TODO: ho-ho-ho flesh out the logic
-    if (waypoints.size() > 0 && reached_target(world_renderer)) {
+    if (_waypoints.size() > 0 && reached_target(world_renderer)) {
 
-        ++waypoint_id;
+        ++_waypoint_id;
 
-        if (waypoint_id == waypoints.size()) {
-            set_home_and_center(waypoints[waypoint_id-1], world_renderer);
-            waypoints.resize(0);
+        if (_waypoint_id == _waypoints.size()) {
+            set_home_and_center(_waypoints[_waypoint_id-1], world_renderer);
+            _waypoints.resize(0);
             stop();
         }
         else {
-            set_target(waypoints[waypoint_id], world_renderer);
+            set_target(_waypoints[_waypoint_id], world_renderer);
         }
     }
 }
 
 Vector2D MovingEntity::home_centroid(WorldRenderer& world_renderer) {
-    return world_renderer.tile_centroid_from_ij(cell_ij);
+    return world_renderer.tile_centroid_from_ij(_cell_ij);
 }
 Vector2D MovingEntity::target_centroid(WorldRenderer& world_renderer) {
     return world_renderer.tile_centroid_from_ij({ finish_tile_i, finish_tile_j });
@@ -61,17 +69,17 @@ LineSegment MovingEntity::home_target_segment(WorldRenderer& world_renderer) {
 
 LineSegment MovingEntity::move_delta_segment() {
 
-    return LineSegment(prev_centroid.x, prev_centroid.y, centroid.x, centroid.y);
+    return LineSegment(_prev_centroid.x, _prev_centroid.y, _centroid.x, _centroid.y);
 }
 
 void MovingEntity::set_home(IJ home) {
     //TODO: post refactoring check equality works
-    if (!(cell_ij.i == home.i && cell_ij.j == home.j)) {
-        cell_ij = home;
+    if (!(_cell_ij.i == home.i && _cell_ij.j == home.j)) {
+        _cell_ij = home;
     }
 }
 IJ MovingEntity::get_home_ij() const {
-    return cell_ij;
+    return _cell_ij;
 }
 
 void MovingEntity::set_home_and_center(IJ home, WorldRenderer& world_renderer) {
@@ -79,8 +87,8 @@ void MovingEntity::set_home_and_center(IJ home, WorldRenderer& world_renderer) {
     set_home(home);
 
     //centroid = { 0,0 };
-    centroid = world_renderer.tile_centroid_from_ij(cell_ij);
-    prev_centroid = centroid;
+    _centroid = world_renderer.tile_centroid_from_ij(_cell_ij);
+    _prev_centroid = _centroid;
 
     speed_vector = { 0, 0 };
 }
@@ -89,7 +97,7 @@ void MovingEntity::set_target(IJ target, WorldRenderer& world_renderer) {
     finish_tile_i = target.i;
     finish_tile_j = target.j;
 
-    Vector2D desired_velocity = world_renderer.tile_centroid_from_ij({ finish_tile_i, finish_tile_j }) - world_renderer.tile_centroid_from_ij(cell_ij);
+    Vector2D desired_velocity = world_renderer.tile_centroid_from_ij({ finish_tile_i, finish_tile_j }) - world_renderer.tile_centroid_from_ij(_cell_ij);
 
     desired_velocity.normalize();
     desired_velocity *= max_speed;
@@ -100,19 +108,19 @@ void MovingEntity::set_target(IJ target, WorldRenderer& world_renderer) {
 bool MovingEntity::reached_target(WorldRenderer& world_renderer) {
     Vector2D target_vector = world_renderer.tile_centroid_from_ij({ finish_tile_i, finish_tile_j });
 
-    double distance = target_vector.distance(centroid);
+    double distance = target_vector.distance(_centroid);
 
     return distance < 0.5; //TODO: this really depends on FPS
 }
 
 void MovingEntity::update(sf::Time& deltaTime, WorldRenderer& world_renderer) {
-    prev_centroid = centroid;
+    _prev_centroid = _centroid;
 
-    centroid += speed_vector * deltaTime.asSeconds();
+    _centroid += speed_vector * deltaTime.asSeconds();
 }
 
 void MovingEntity::draw(WorldRenderer& world_renderer) {
-    Vector2D screen_point = world_renderer.tm * centroid;
+    Vector2D screen_point = calculate_screen_point(world_renderer);
 
     world_renderer.draw_circle(
         screen_point.x,

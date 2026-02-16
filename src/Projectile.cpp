@@ -16,7 +16,7 @@ IdType Projectile::owner_id() const {
 }
 
 void Projectile::draw(WorldRenderer& world_renderer) {
-    Vector2D screen_point = world_renderer.tm * centroid;
+    Vector2D screen_point = calculate_screen_point(world_renderer);
 
     //std::cout << "Projectile centroid: " << centroid.x << "," << centroid.y << std::endl;
 
@@ -38,4 +38,8 @@ bool Projectile::is_pending_sweep() const {
 
 void Projectile::on_collision(const CollisionData& collision_data) {
     mark_for_sweep();
+}
+
+int Projectile::damage_power() const {
+    return _damage_power;
 }

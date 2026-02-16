@@ -22,8 +22,10 @@
 // 1.5 DONE: make movement and placement using pre projections
 // 2 - DONE: add creating and flying projectile
 // 3 - DONE: add projectile hitting an object 
-// 3 - add a few obstacles and basic path-finding. BFS is good
-// 4 - add giving objects a command
+// 3 - DONE: add a few obstacles and basic path-finding. BFS is good
+// 4 - DONE: add giving objects a command
+// 5 - add image of a person when select it
+// 6 - add capability to kill creatures
 
 UI_InputEvent create_ui_event_from_input(sf::RenderWindow& window) {
     //---STAGE: READING INPUT

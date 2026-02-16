@@ -80,7 +80,7 @@ void GameWorld::update_entities(sf::Time& delta_time, WorldRenderer& world_rende
         unit.second->update(delta_time, world_renderer);
 
         IJ previous_home = unit.second->get_home_ij();
-        IJ new_home = world_renderer.tile_ij_from_centroid(unit.second->centroid);
+        IJ new_home = world_renderer.tile_ij_from_centroid(unit.second->centroid());
 
         unit.second->set_home(new_home);
 
@@ -94,7 +94,7 @@ void GameWorld::update_entities(sf::Time& delta_time, WorldRenderer& world_rende
         projectile.second->update(delta_time, world_renderer);
 
         IJ previous_home = projectile.second->get_home_ij();
-        IJ new_home = world_renderer.tile_ij_from_centroid(projectile.second->centroid);
+        IJ new_home = world_renderer.tile_ij_from_centroid(projectile.second->centroid());
 
         projectile.second->set_home(new_home);
 
@@ -145,7 +145,7 @@ void GameWorld::check_collisions(WorldRenderer& world_renderer) {
 
         for (const auto& collided_element : terrain_collisions) {
             //TODO: shouldn't actually be at, but at intersection point
-            spawn_explosion(projectile.second->centroid);
+            spawn_explosion(projectile.second->centroid());
 
             projectile.second->on_collision({-1});
         }
@@ -154,10 +154,10 @@ void GameWorld::check_collisions(WorldRenderer& world_renderer) {
         Unit* unit_hit = terrain.unit_collision(projectile.second->move_delta_segment(), world_renderer);
 
         if (unit_hit && projectile.second->owner_id() != unit_hit->id()) {
-            spawn_explosion(projectile.second->centroid);
+            spawn_explosion(projectile.second->centroid());
 
             projectile.second->on_collision({ -1 });
-            unit_hit->on_collision({ -1 });
+            unit_hit->on_collision({ -1, projectile.second->damage_power()});
         }
     }
 }
@@ -165,7 +165,7 @@ void GameWorld::check_collisions(WorldRenderer& world_renderer) {
 void GameWorld::check_out_of_bounds(WorldRenderer& world_renderer) {
     for (const auto& projectile_item : _storage->projectiles_map) {
         
-        if (!terrain.within_boundaries(projectile_item.second->centroid, world_renderer)) {
+        if (!terrain.within_boundaries(projectile_item.second->centroid(), world_renderer)) {
             projectile_item.second->mark_for_sweep();
         }
     }

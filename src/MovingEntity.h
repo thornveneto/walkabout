@@ -12,21 +12,22 @@ class GameWorld;
 class WorldRenderer;
 
 class MovingEntity {
-public:
+    Vector2D _prev_centroid;
+    int _waypoint_id{ -1 };
+    std::vector<IJ> _waypoints;
+    IJ _cell_ij;
+    Vector2D _centroid;
+protected:
     GameWorld& _game_world;
-    Vector2D prev_centroid;
-    Vector2D centroid;
+public:
+
     Vector2D speed_vector{ 0, 0 };
 
-    IJ cell_ij;
+
 
     int finish_tile_i{ 15 };//TODO: merge into one
     int finish_tile_j{ 15 };
     int max_speed{ 20 };
-
-    int waypoint_id{ -1 };
-    std::vector<IJ> waypoints;
-
 
     MovingEntity(IJ home_cell, WorldRenderer& world_renderer, GameWorld& game_world);
 
@@ -39,9 +40,11 @@ public:
 
     void execute_waypoint_logic(WorldRenderer& world_renderer);
 
-    Vector2D home_centroid(WorldRenderer& world_renderer);
+    Vector2D centroid() const;
 
-    Vector2D target_centroid(WorldRenderer& world_renderer);
+    Vector2D home_centroid(WorldRenderer& world_renderer); //centroid of the home tile
+
+    Vector2D target_centroid(WorldRenderer& world_renderer); //centroid of the target tile
 
     LineSegment home_target_segment(WorldRenderer& world_renderer);
 
@@ -61,4 +64,6 @@ public:
 
     void stop();
     bool is_stopped() const;
+
+    Vector2D calculate_screen_point(WorldRenderer& world_renderer) const;
 };

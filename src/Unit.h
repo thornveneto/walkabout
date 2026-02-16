@@ -11,6 +11,9 @@ struct CollisionData;
 class Unit : public MovingEntity, public ICollideable {
 	bool _is_selected{ false };
 	IdType _id{ -1 };
+
+	const int _MAX_HEALTH{ 100 };
+	int _health{ _MAX_HEALTH };
 public:
 	Unit(IJ at_cell, WorldRenderer& world_renderer, GameWorld& game_world, IdType id);
 
@@ -27,4 +30,8 @@ public:
 	IdType id() const;
 
 	void on_collision(const CollisionData& collision_data);
+
+	void apply_damage(int damage_level);
+
+	bool is_alive() const;
 };

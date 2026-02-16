@@ -170,27 +170,29 @@ Unit* Terrain::get_orderable_unit_at(IJ cell_ij) {
 }
 
 bool Terrain::wall_between(IJ first_cell_ij, IJ second_cell_ij) {
+
     //TODO: add validation that cells are adjacent in a line
     Cell& first_cell = cell_at(first_cell_ij);
-    Cell& second_cell = cell_at(first_cell_ij);
+    Cell& second_cell = cell_at(second_cell_ij);
 
-    if (first_cell_ij.i + 1 == second_cell_ij.i) {
-        return first_cell.has_south_wall() || second_cell.has_north_wall();
+    bool result{ false };
+    if (!result && first_cell_ij.i + 1 == second_cell_ij.i) {
+        result = first_cell.has_south_wall() || second_cell.has_north_wall();
     }
 
-    if (first_cell_ij.i - 1 == second_cell_ij.i) {
-        return first_cell.has_north_wall() || second_cell.has_south_wall();
+    if (!result && first_cell_ij.i - 1 == second_cell_ij.i) {
+        result = first_cell.has_north_wall() || second_cell.has_south_wall();
     }
 
-    if (first_cell_ij.j+1 == second_cell_ij.j) {
-        return first_cell.has_east_wall() || second_cell.has_west_wall();
+    if (!result && first_cell_ij.j+1 == second_cell_ij.j) {
+        result = first_cell.has_east_wall() || second_cell.has_west_wall();
     }
 
-    if (first_cell_ij.j-1 == second_cell_ij.j) {
-        return first_cell.has_west_wall() || second_cell.has_east_wall();
+    if (!result && first_cell_ij.j-1 == second_cell_ij.j) {
+        result = first_cell.has_west_wall() || second_cell.has_east_wall();
     }
 
-    return false;
+    return result;
 }
 
 std::vector<IJ> Terrain::find_path(IJ start_cell, IJ end_cell) {

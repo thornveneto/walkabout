@@ -37,6 +37,8 @@ public:
     void draw_tile(int i, int j, const sf::Color& fill_color, const sf::Color& outline_color);
 
     void draw_circle(float x, float y, float r, const sf::Color& fill_color, const sf::Color& outline_color);
+
+    void draw_ellipse(float x, float y, float ra, float rb, const sf::Color& fill_color, const sf::Color& outline_color);
     
     XY<float> tile_screen_xy(IJ ij) const;
 

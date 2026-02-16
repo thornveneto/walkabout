@@ -26,11 +26,14 @@ void UnitCommandExecutionState::on_enter() noexcept {
 
 void UnitCommandExecutionState::process_event(const UI_InputEvent& event) noexcept {
 
-    auto mouse_ij = world_renderer.tile_ij_from_screen_xy(event.mouse_position);
+    auto mouse_cell_ij = world_renderer.tile_ij_from_screen_xy(event.mouse_position);
 
-    const XY<float> tile_xy = world_renderer.tile_screen_xy(mouse_ij);
+    if (game_world.terrain.within_boundaries(mouse_cell_ij)) {
 
-    ui_cell_attack.draw(world_renderer, sf::Vector2f{ tile_xy.x, tile_xy.y });
+        const XY<float> tile_xy = world_renderer.tile_screen_xy(mouse_cell_ij);
+
+        ui_cell_attack.draw(world_renderer, sf::Vector2f{ tile_xy.x, tile_xy.y }); 
+    }
 
     game_world.update(world_renderer); //TODO: this should probably move up
 
