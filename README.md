@@ -7,7 +7,6 @@ Work and RE-work in progress.
 Major bugs, poor or temporary design decisions are plenty.
 No strict commit policy.
 
-
 # For History CMake SFML Project Template
 
 This repository template should allow for a fast and hassle-free kick start of your next SFML project using CMake.

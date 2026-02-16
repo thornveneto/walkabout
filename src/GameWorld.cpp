@@ -16,20 +16,20 @@ GameWorld::GameWorld() : _storage(std::make_unique<GameWorldInternal>()) {}
 GameWorld::~GameWorld() = default;
 
 void GameWorld::pause() {
-    paused = true;
+    _paused = true;
 }
 
 void GameWorld::unpause() {
-    paused = false;
-    clock.restart();
+    _paused = false;
+    _clock.restart();
 }
 
 bool GameWorld::is_paused() const {
-    return paused;
+    return _paused;
 }
 
 sf::Time GameWorld::get_delta_time() {
-    sf::Time delta_time = clock.restart();
+    sf::Time delta_time = _clock.restart();
 
     return delta_time;
 }
@@ -51,9 +51,9 @@ IdType GameWorld::spawn_unit(IJ at_cell, WorldRenderer& world_renderer) {
     IdType unit_id = allocate_entity_id();
 
 
-    units_map.emplace(unit_id, std::make_unique<Unit>(at_cell, world_renderer, *this, unit_id));
+    _units_map.emplace(unit_id, std::make_unique<Unit>(at_cell, world_renderer, *this, unit_id));
 
-    terrain.cell_at(at_cell).add_guest(units_map[unit_id].get());
+    terrain.cell_at(at_cell).add_guest(_units_map[unit_id].get());
 
     return unit_id;
 }
@@ -70,13 +70,13 @@ IdType GameWorld::spawn_projectile(IJ at_cell, IJ target_cell, WorldRenderer& wo
 }
 
 void GameWorld::spawn_explosion(Vector2D centroid) {
-    effects.push_back(
+    _effects.push_back(
         std::make_unique<Explosion>(centroid)
     );
 }
 
 void GameWorld::update_entities(sf::Time& delta_time, WorldRenderer& world_renderer) {
-    for (auto& unit : units_map) {
+    for (auto& unit : _units_map) {
         unit.second->update(delta_time, world_renderer);
 
         IJ previous_home = unit.second->get_home_ij();
@@ -105,16 +105,16 @@ void GameWorld::update_entities(sf::Time& delta_time, WorldRenderer& world_rende
 void GameWorld::update_effects(sf::Time& delta_time) {
 
     //Updating effects
-    for (auto& effect : effects) {
+    for (auto& effect : _effects) {
         effect->update(delta_time);
     }
 
-    effects.erase(
+    _effects.erase(
         std::remove_if(
-            effects.begin(), effects.end(),
+            _effects.begin(), _effects.end(),
             [](const auto& e) { return !e->is_alive(); }
         ),
-        effects.end()
+        _effects.end()
     );
 }
 
@@ -122,7 +122,7 @@ void GameWorld::draw(WorldRenderer& world_renderer) {
     //Draw here
     terrain.draw(world_renderer);
 
-    for (const auto& unit : units_map) {
+    for (const auto& unit : _units_map) {
         unit.second->draw(world_renderer);
     }
 
@@ -131,7 +131,7 @@ void GameWorld::draw(WorldRenderer& world_renderer) {
         projectile.second->draw(world_renderer);
     }
 
-    for (auto& effect : effects) {
+    for (auto& effect : _effects) {
         effect->draw(world_renderer);
     }
 }
@@ -202,11 +202,11 @@ void GameWorld::sweep_pending_elements() {
 }
 
 bool GameWorld::any_more_updates() const {
-    if (!effects.empty()) {
+    if (!_effects.empty()) {
         return true;
     }
 
-    for (auto& unit : units_map) {
+    for (auto& unit : _units_map) {
         if (!unit.second->is_stopped()) {
             return true;
         }

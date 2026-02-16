@@ -18,12 +18,12 @@ struct GameWorldInternal;
 class GameWorld {
     IdType _new_entity_id{ 1 };
 
-    sf::Clock clock; // starts the clock
-    bool paused = true;
+    sf::Clock _clock; // starts the clock
+    bool _paused = true;
 
     sf::Time get_delta_time();//WARNING destructive. Call once only
-    std::vector<std::unique_ptr<Effect>> effects;
-    std::map<IdType, std::unique_ptr<Unit>> units_map;
+    std::vector<std::unique_ptr<Effect>> _effects;
+    std::map<IdType, std::unique_ptr<Unit>> _units_map;
     //std::map<int, std::unique_ptr<Projectile>> projectiles_map;
     std::unique_ptr<GameWorldInternal> _storage;
 

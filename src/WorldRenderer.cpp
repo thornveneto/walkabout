@@ -16,7 +16,7 @@ IJ WorldRenderer::tile_ij_from_centroid(Vector2D centroid) const {
     };
 }
 
-Vector2D WorldRenderer::calculate_screen_point(Vector2D centroid) {
+Vector2D WorldRenderer::calculate_screen_point(Vector2D centroid) const {
 
     return _tm * centroid;
 }

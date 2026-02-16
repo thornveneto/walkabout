@@ -197,61 +197,61 @@ bool Terrain::wall_between(IJ first_cell_ij, IJ second_cell_ij) {
 
 std::vector<IJ> Terrain::find_path(IJ start_cell, IJ end_cell) {
     std::deque<IJ> Q{ start_cell};
-    std::set<std::pair<int,int>> V; //TODO: using pair to avoid creating comparison for the time being
-    std::map<std::pair<int, int>, std::pair<int, int>> path;  //TODO: using pair to avoid creating comparison for the time being
+    std::set<IJ> V;
+    std::map<IJ, IJ> path;
 
     while (Q.size() > 0) {
         IJ q = Q.front();
         Q.pop_front();
 
-        if (q.i == end_cell.i && q.j == end_cell.j) {//TODO: add comparison operator
+        if (q == end_cell) {
             break;
         }
 
-        //TODO: add function wall between
+        //TODO: can we make it cleaner?
 
         IJ south = { q.i + 1, q.j };
-        if (within_boundaries(south) && V.count({ south.i, south.j }) == 0 && !wall_between(q, south) && !cell_at(south).get_unit()) {
+        if (within_boundaries(south) && V.count(south) == 0 && !wall_between(q, south) && !cell_at(south).get_unit()) {
             Q.push_back(south);
-            path[{ south.i, south.j }] = { q.i, q.j };
-            V.insert({ south.i, south.j });
+            path[south] = { q };
+            V.insert(south);
         }
 
         IJ north = { q.i - 1, q.j };
-        if (within_boundaries(north) && V.count({ north.i, north.j }) == 0 && !wall_between(q, north) && !cell_at(north).get_unit()) {
+        if (within_boundaries(north) && V.count(north) == 0 && !wall_between(q, north) && !cell_at(north).get_unit()) {
             Q.push_back(north);
-            path[{ north.i, north.j }] = { q.i, q.j };
-            V.insert({ north.i, north.j });
+            path[north] = { q };
+            V.insert(north);
         }
 
         IJ east = { q.i, q.j + 1 };
-        if (within_boundaries(east) && V.count({ east.i, east.j }) == 0 && !wall_between(q, east) && !cell_at(east).get_unit()) {
+        if (within_boundaries(east) && V.count(east) == 0 && !wall_between(q, east) && !cell_at(east).get_unit()) {
             Q.push_back(east);
-            path[{ east.i, east.j }] = { q.i, q.j };
-            V.insert({ east.i, east.j });
+            path[east] = { q };
+            V.insert(east);
         }
 
         IJ west = { q.i, q.j - 1 };
-        if (within_boundaries(west) && V.count({ west.i, west.j }) == 0 && !wall_between(q, west) && !cell_at(west).get_unit()) {
+        if (within_boundaries(west) && V.count(west) == 0 && !wall_between(q, west) && !cell_at(west).get_unit()) {
             Q.push_back(west);
-            path[{ west.i, west.j }] = { q.i, q.j };
-            V.insert({ west.i, west.j });
+            path[west] = { q };
+            V.insert(west);
         }
 
 
-        V.insert({ q.i, q.j });
+        V.insert(q);
     }
 
     std::vector<IJ> result;
-    std::pair<int, int> runner = { end_cell.i, end_cell.j };
+    IJ runner = end_cell;
 
-    while(!(runner.first == start_cell.i && runner.second == start_cell.j)) {
-        result.push_back({ runner.first, runner.second });
+    while(!(runner == start_cell)) {
+        result.push_back(runner);
 
         runner = path.at(runner);
     }
 
-    result.push_back({ runner.first, runner.second });
+    result.push_back(runner);
 
     std::reverse(result.begin(), result.end());
 
