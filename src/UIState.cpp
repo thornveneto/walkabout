@@ -1,5 +1,13 @@
 #include "UIState.h"
-//TODO REM
-//void UIState::set_ui_params(const UI_InputEvent ui_input_event) {
-//    _ui_input_event = ui_input_event;
-//}
+UIState::UIState(StateMachine<UIState, UI_InputEvent>* state_machine, GameWorld& game_world, WorldRenderer& world_renderer, Unit* unit) :
+    state_machine{ state_machine },
+    game_world{ game_world },
+    world_renderer{ world_renderer },
+    _unit{ unit }
+{
+}
+
+
+const Unit* UIState::active_unit() const {
+    return _unit;
+}

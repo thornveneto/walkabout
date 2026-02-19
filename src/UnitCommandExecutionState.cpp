@@ -12,8 +12,7 @@ UnitCommandExecutionState::UnitCommandExecutionState(
     WorldRenderer& world_renderer,
     Unit* unit
 )
-    : UIState(state_machine, game_world, world_renderer),
-    _unit{ *unit },
+    : UIState(state_machine, game_world, world_renderer, unit),
     ui_cell_attack{ world_renderer.hw, world_renderer.hh, world_renderer.cell_height, sf::Color::Red }
 {
 }
@@ -39,14 +38,14 @@ void UnitCommandExecutionState::process_event(const UI_InputEvent& event) noexce
 
     if (!game_world.any_more_updates()) {
         state_machine->switch_state(
-            std::make_unique<UnitSelectionState>(state_machine, game_world, world_renderer)
+            std::make_unique<UnitSelectionState>(state_machine, game_world, world_renderer, nullptr)
         );
     }
 }
 
 void UnitCommandExecutionState::on_exit() noexcept {
 
-    _unit.deselect();
+    _unit->deselect();
 
     if (!game_world.is_paused()) {
         game_world.pause();

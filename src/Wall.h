@@ -21,7 +21,9 @@ class Wall {
 	void draw_west_wall(int i, int j, const sf::Color& fill_color, const sf::Color& outline_color, WorldRenderer& world_renderer);
 
 public:
-	WallOrientation wall_orientation;
+
+	WallOrientation wall_orientation; //TODO: make private
+
 	Wall(WallOrientation wall_orientation) : wall_orientation{ wall_orientation } {
 
 	}

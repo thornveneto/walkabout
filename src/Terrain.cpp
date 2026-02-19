@@ -196,6 +196,7 @@ bool Terrain::wall_between(IJ first_cell_ij, IJ second_cell_ij) {
 }
 
 std::vector<IJ> Terrain::find_path(IJ start_cell, IJ end_cell) {
+    //TODO: move algorithm in a dedicated class
     std::deque<IJ> Q{ start_cell};
     std::set<IJ> V;
     std::map<IJ, IJ> path;

@@ -13,8 +13,7 @@ UnitSelectedState::UnitSelectedState(
     WorldRenderer& world_renderer,
     Unit* unit
 )
-    : UIState(state_machine, game_world, world_renderer),
-    _unit{ *unit },
+    : UIState(state_machine, game_world, world_renderer, unit),
     ui_cell_attack{ world_renderer.hw, world_renderer.hh, world_renderer.cell_height, sf::Color::Red }
 {
 }
@@ -36,25 +35,25 @@ void UnitSelectedState::process_event(const UI_InputEvent& event) noexcept {
             Unit* unit = game_world.terrain.get_orderable_unit_at(mouse_cell_ij);
 
             if (unit) {
-                _unit.shoot_at(mouse_cell_ij, world_renderer);
+                _unit->shoot_at(mouse_cell_ij, world_renderer);
             }
             else {
-                std::vector<IJ> path = game_world.terrain.find_path(_unit.get_home_ij(), mouse_cell_ij);
+                std::vector<IJ> path = game_world.terrain.find_path(_unit->get_home_ij(), mouse_cell_ij);
 
-                _unit.set_waypoints(path);
-                _unit.start_waypoints_following(world_renderer);
+                _unit->set_waypoints(path);
+                _unit->start_waypoints_following(world_renderer);
             }
 
             state_machine->switch_state(
-                std::make_unique<UnitCommandExecutionState>(state_machine, game_world, world_renderer, &_unit)
+                std::make_unique<UnitCommandExecutionState>(state_machine, game_world, world_renderer, _unit)
             );
         }
         else if (event.right_key_pressed) {
 
-            _unit.deselect();
+            _unit->deselect();
 
             state_machine->switch_state(
-                std::make_unique<UnitSelectionState>(state_machine, game_world, world_renderer)
+                std::make_unique<UnitSelectionState>(state_machine, game_world, world_renderer, nullptr)
             );
         }
     }

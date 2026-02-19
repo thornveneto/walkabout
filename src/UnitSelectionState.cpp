@@ -6,8 +6,8 @@
 #include "WorldRenderer.h"
 #include <SFML/Graphics.hpp>
 
-UnitSelectionState::UnitSelectionState(StateMachine<UIState, UI_InputEvent>* state_machine, GameWorld& game_world, WorldRenderer& world_renderer) :
-UIState(state_machine, game_world, world_renderer),
+UnitSelectionState::UnitSelectionState(StateMachine<UIState, UI_InputEvent>* state_machine, GameWorld& game_world, WorldRenderer& world_renderer, Unit* unit) :
+UIState(state_machine, game_world, world_renderer, unit),
 ui_cell_selection{ world_renderer.hw, world_renderer.hh, world_renderer.cell_height, sf::Color::Cyan }
 {
 }

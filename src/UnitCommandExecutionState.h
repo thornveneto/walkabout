@@ -11,7 +11,6 @@ class GameWorld;
 class Unit;
 
 class UnitCommandExecutionState : public UIState {
-    Unit& _unit;
     CellAttackCube ui_cell_attack;
 public:
     UnitCommandExecutionState(

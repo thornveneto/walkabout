@@ -34,4 +34,8 @@ public:
 	void apply_damage(int damage_level);
 
 	bool is_alive() const;
+
+	int health() const;
+
+	int max_health() const;
 };

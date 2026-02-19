@@ -63,3 +63,11 @@ void Unit::apply_damage(int damage_level) {
 bool Unit::is_alive() const {
     return _health > 0;
 }
+
+int Unit::health() const {
+    return _health;
+}
+
+int Unit::max_health() const {
+    return _MAX_HEALTH;
+}

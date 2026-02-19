@@ -11,7 +11,6 @@ class GameWorld;
 class Unit;
 
 class UnitSelectedState : public UIState {
-    Unit& _unit;
     CellAttackCube ui_cell_attack;
 public:
     UnitSelectedState(

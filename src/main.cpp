@@ -16,6 +16,7 @@
 #include "UIState.h"
 #include "DummyCommandState.h"
 #include "UnitSelectionState.h"
+#include "HUD.h"
 
 //main TODO: 
 // 1 - DONE: make agents move from tile to tile
@@ -57,6 +58,8 @@ UI_InputEvent create_ui_event_from_input(sf::RenderWindow& window) {
 int main()
 {
     try {
+        HUD hud{};
+
         auto window = sf::RenderWindow(sf::VideoMode({ 1920u, 1080u }), "Walkabout");
         window.setFramerateLimit(100);//TODO: this is very basic option - original value 144
 
@@ -66,7 +69,7 @@ int main()
         game_world.init(world_renderer);
 
         StateMachine<UIState, UI_InputEvent> command_state_machine(std::make_unique<DummyCommandState>(nullptr/*TODO: super bad*/, game_world, world_renderer));
-        command_state_machine.switch_state(std::make_unique<UnitSelectionState>(&command_state_machine, game_world, world_renderer));
+        command_state_machine.switch_state(std::make_unique<UnitSelectionState>(&command_state_machine, game_world, world_renderer, nullptr));
 
         /*
         game_world.entity_map.at(1)->set_waypoints({ {0,0},{0,9}, {9,9}, {9,0} });
@@ -97,6 +100,12 @@ int main()
             //Draw here
             game_world.draw(world_renderer);
             command_state_machine.process_event(ui_input_event);
+
+            //TODO: Here's where the tricky bad game bit lies
+
+            // HUD
+            hud.set_data(command_state_machine.get_current_state()->active_unit());
+            hud.draw(window);
 
             //Call after drawn stuff
             window.display();
