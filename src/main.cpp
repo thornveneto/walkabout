@@ -55,11 +55,6 @@ int main()
         StateMachine<UIState, UI_InputEvent> command_state_machine(std::make_unique<DummyCommandState>(nullptr/*TODO: super bad*/, game_world, world_renderer));
         command_state_machine.switch_state(std::make_unique<UnitSelectionState>(&command_state_machine, game_world, world_renderer, nullptr));
 
-        /*
-        game_world.entity_map.at(1)->set_waypoints({ {0,0},{0,9}, {9,9}, {9,0} });
-        game_world.entity_map.at(1)->start_waypoints_following(world_renderer);
-        */
-
         //GAME LOOP
 
         while (window.isOpen())
@@ -72,7 +67,7 @@ int main()
             if (ui_input_event.close_window_request) {
                 window.close();
             }
-
+            hud.handle_event(ui_input_event);
             //---STAGE: UPDATING - temporarily within the state
 
             

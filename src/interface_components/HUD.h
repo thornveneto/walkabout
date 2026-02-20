@@ -1,6 +1,8 @@
 #pragma once
 #include <SFML/Graphics.hpp>
 #include "../entities//Unit.h"
+#include "Button.h"
+#include "../UI_InputEvent.h"
 
 class HUD {
 	sf::Font _font;
@@ -12,8 +14,12 @@ class HUD {
 
 	void draw_health_bar(sf::RenderWindow& window);
 	void draw_character_face(sf::RenderWindow& window);
+
+	Button just_button;
 public:
 	HUD();
+
+	void handle_event(UI_InputEvent& event);
 
 	void draw(sf::RenderWindow& window);
 

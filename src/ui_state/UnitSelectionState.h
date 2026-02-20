@@ -1,7 +1,7 @@
 #pragma once
 #include "UIState.h"
 #include "../interface_components/CellCube.h"
-#include "UI_InputEvent.h"
+#include "../UI_InputEvent.h"
 
 template <typename T, typename E>
 class StateMachine;

@@ -1,17 +1,21 @@
 #include "HUD.h"
 #include <iostream>
 
-HUD::HUD() {
+HUD::HUD() : just_button({100, 100, 100, 50}) {
+	std::cout << "Loading HUD resources:" << std::endl;
+
+	std::cout << "Loading arial.ttf.....";
 	if (_font.openFromFile("arial.ttf")) {
-		std::cout << "Loaded font" << std::endl;
+		std::cout << "SUCCESS" << std::endl;
 	} else {
-		std::cout << "ERROR WHILE LOADING FONT" << std::endl;
+		std::cout << "FAILURE" << std::endl;
 	}
 
+	std::cout << "Loading soldier_red.png.....";
 	if (_soldier_texture.loadFromFile("soldier_red.png")) {
-		std::cout << "Loaded soldier picture" << std::endl;
+		std::cout << "SUCCESS" << std::endl;
 	} else {
-		std::cout << "ERROR WHILE LOADING soldier_red.png" << std::endl;
+		std::cout << "FAILURE" << std::endl;
 	}
 }
 
@@ -70,7 +74,13 @@ void HUD::draw_character_face(sf::RenderWindow& window) {
 
 void HUD::draw(sf::RenderWindow& window) {
 
+
+	just_button.draw(window);
+
 	draw_health_bar(window);
 	draw_character_face(window);
 }
 
+void HUD::handle_event(UI_InputEvent& event) {
+	just_button.handle_event(event);
+}
