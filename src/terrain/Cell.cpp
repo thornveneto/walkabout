@@ -1,9 +1,9 @@
 #include "Cell.h"
 #include <stdexcept>
-#include "Unit.h"
+#include "../entities/Unit.h"
 #include "Wall.h"
-#include "WorldRenderer.h"
-#include "LineSegment.h"
+#include "../WorldRenderer.h"
+#include "../math/LineSegment.h"
 
 //TODO: there's a method for it, or we need a builder
 Cell::Cell(CellCode cell_code, int i, int j) : _cell_code{ cell_code }, _i{ i }, _j{ j } {}

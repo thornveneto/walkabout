@@ -1,6 +1,6 @@
 #pragma once
 #include "UIState.h"
-#include "CellAttackCube.h"
+#include "../interface_components/CellAttackCube.h"
 #include "UI_InputEvent.h"
 
 template <typename T, typename E>

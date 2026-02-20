@@ -1,9 +1,9 @@
 #include "Terrain.h"
-#include "Unit.h"
+#include "../entities/Unit.h"
 #include "Wall.h"
-#include "LineSegment.h"
-#include "WorldRenderer.h"
-#include "Vector2D.h"
+#include "../math/LineSegment.h"
+#include "../WorldRenderer.h"
+#include "../math/Vector2D.h"
 #include <deque>
 #include <map>
 

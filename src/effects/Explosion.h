@@ -1,6 +1,6 @@
 #pragma once
-#include "Vector2D.h"
-#include "WorldRenderer.h"
+#include "../math/Vector2D.h"
+#include "../WorldRenderer.h"
 #include "Effect.h"
 
 class WorldRender;

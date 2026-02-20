@@ -1,9 +1,9 @@
 #include "UnitSelectionState.h"
 #include "UnitSelectedState.h"
-#include "Unit.h"
-#include "StateMachine.h"
-#include "GameWorld.h"
-#include "WorldRenderer.h"
+#include "../entities//Unit.h"
+#include "../StateMachine.h"
+#include "../GameWorld.h"
+#include "../WorldRenderer.h"
 #include <SFML/Graphics.hpp>
 
 UnitSelectionState::UnitSelectionState(StateMachine<UIState, UI_InputEvent>* state_machine, GameWorld& game_world, WorldRenderer& world_renderer, Unit* unit) :

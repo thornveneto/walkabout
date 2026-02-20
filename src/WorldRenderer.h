@@ -4,11 +4,11 @@
 #include <cmath>   // for std::round
 
 #include <SFML/Graphics.hpp>
-#include "Vector2D.h"
-#include "Matrix2D.h"
-#include "CellCube.h"
-#include "XY.h"
-#include "IJ.h"
+#include "math/Vector2D.h"
+#include "math/Matrix2D.h"
+#include "interface_components/CellCube.h"
+#include "math/XY.h"
+#include "math/IJ.h"
 //TODO: it's growing two responsibilities, rendering and parameters
 class WorldRenderer {
     sf::RenderWindow& _window;

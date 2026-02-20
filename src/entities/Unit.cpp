@@ -1,7 +1,7 @@
 #include "Unit.h"
-#include "GameWorld.h"
-#include "WorldRenderer.h"
-#include "CollisionData.h"
+#include "../GameWorld.h"
+#include "../WorldRenderer.h"
+#include "../physics/CollisionData.h"
 #include <SFML/Graphics.hpp>
 
 Unit::~Unit() = default;

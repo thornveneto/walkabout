@@ -1,8 +1,8 @@
 #include "UnitSelectedState.h"
-#include "StateMachine.h"
-#include "WorldRenderer.h"
-#include "GameWorld.h"
-#include "Unit.h"
+#include "../StateMachine.h"
+#include "../WorldRenderer.h"
+#include "../GameWorld.h"
+#include "../entities/Unit.h"
 #include "UnitSelectionState.h"
 #include "UnitCommandExecutionState.h"
 #include <SFML/Graphics.hpp>

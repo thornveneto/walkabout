@@ -1,8 +1,8 @@
 #pragma once
 #include "MovingEntity.h"
-#include "IJ.h"
-#include "ICollideable.h"
-#include "_types.h"
+#include "../math/IJ.h"
+#include "../physics/ICollideable.h"
+#include "../_types.h"
 
 class WorldRenderer;
 class GameWorld;

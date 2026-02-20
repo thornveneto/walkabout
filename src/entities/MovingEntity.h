@@ -3,10 +3,10 @@
 #include <utility>
 #include <SFML/Graphics.hpp>
 
-#include "Vector2D.h"
-#include "Matrix2D.h"
-#include "LineSegment.h"
-#include "IJ.h"
+#include "../math/Vector2D.h"
+#include "../math/Matrix2D.h"
+#include "../math/LineSegment.h"
+#include "../math/IJ.h"
 
 class GameWorld;
 class WorldRenderer;

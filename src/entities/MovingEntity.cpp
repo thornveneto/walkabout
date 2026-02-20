@@ -1,6 +1,6 @@
 #include "MovingEntity.h"
-#include "GameWorld.h"
-#include "WorldRenderer.h"
+#include "../GameWorld.h"
+#include "../WorldRenderer.h"
 
 MovingEntity::MovingEntity(IJ home_cell, WorldRenderer& world_renderer, GameWorld& game_world) :
     _game_world{ game_world }, _cell_ij{ home_cell }, _centroid{ world_renderer.tile_centroid_from_ij(home_cell) } {

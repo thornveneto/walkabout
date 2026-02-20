@@ -2,31 +2,15 @@
 #include <vector>
 #include <cmath>
 #include <iostream>
-#include "Vector2D.h"
 #include "WorldRenderer.h"
-#include "MovingEntity.h"
 #include <map>
 #include "GameWorld.h"
-#include "Explosion.h"
-#include "Unit.h"
-#include "CellCube.h"
-
 #include "State.h"
 #include "StateMachine.h"
-#include "UIState.h"
-#include "DummyCommandState.h"
-#include "UnitSelectionState.h"
-#include "HUD.h"
-
-//main TODO: 
-// 1 - DONE: make agents move from tile to tile
-// 1.5 DONE: make movement and placement using pre projections
-// 2 - DONE: add creating and flying projectile
-// 3 - DONE: add projectile hitting an object 
-// 3 - DONE: add a few obstacles and basic path-finding. BFS is good
-// 4 - DONE: add giving objects a command
-// 5 - add image of a person when select it
-// 6 - DONE: add capability to kill creatures
+#include "ui_state/UIState.h"
+#include "ui_state/DummyCommandState.h"
+#include "ui_state/UnitSelectionState.h"
+#include "interface_components/HUD.h"
 
 UI_InputEvent create_ui_event_from_input(sf::RenderWindow& window) {
     //---STAGE: READING INPUT

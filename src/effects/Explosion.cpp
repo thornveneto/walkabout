@@ -1,5 +1,5 @@
 #include "Explosion.h"
-#include "WorldRenderer.h"
+#include "../WorldRenderer.h"
 
 Explosion::Explosion(Vector2D centroid) : _centroid{ centroid } {}
 

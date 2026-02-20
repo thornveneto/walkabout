@@ -1,11 +1,11 @@
 #pragma once
 #include <SFML/System.hpp>   // REQUIRED
 
-#include "Terrain.h"
+#include "terrain/Terrain.h"
 #include <map>
 #include <memory>
-#include "IJ.h"
-#include "Vector2D.h"
+#include "math/IJ.h"
+#include "math/Vector2D.h"
 #include "_types.h"
 
 class WorldRenderer;

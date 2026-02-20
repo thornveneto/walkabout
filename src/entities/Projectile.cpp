@@ -1,7 +1,7 @@
 #include "Projectile.h"
-#include "WorldRenderer.h"
-#include "GameWorld.h"
-#include "Vector2D.h"
+#include "../WorldRenderer.h"
+#include "../GameWorld.h"
+#include "../math/Vector2D.h"
 
 Projectile::~Projectile() = default;
 

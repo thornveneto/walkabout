@@ -1,11 +1,11 @@
 #include "GameWorld.h"
-#include "Explosion.h"
+#include "effects/Explosion.h"
 #include "WorldRenderer.h"
-#include "Unit.h"
-#include "Projectile.h"
-#include "Effect.h"
+#include "entities/Unit.h"
+#include "entities/Projectile.h"
+#include "effects/Effect.h"
 #include <deque>
-#include "CollisionData.h"
+#include "physics/CollisionData.h"
 
 struct GameWorldInternal {
     std::map<IdType, std::unique_ptr<Projectile>> projectiles_map;

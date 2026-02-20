@@ -1,7 +1,7 @@
 #pragma once
 #include "Cell.h"
 #include <vector>
-#include "IJ.h"
+#include "../math/IJ.h"
 
 class WorldRenderer;
 class Unit;
