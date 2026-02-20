@@ -2,6 +2,7 @@
 #include <SFML/Graphics.hpp>
 #include "../UI_InputEvent.h"
 #include "../math/Rectangle.h"
+#include <functional>
 
 class Button {
 public:
@@ -12,8 +13,9 @@ public:
 	}
 
 	void handle_event(UI_InputEvent& event) {
-		if (event.left_key_pressed && button_area.within(event.mouse_position)) {
+		if (event.left_key_pressed && button_area.within(event.mouse_position) && _callback) {
 			std::cout << "SORT OF CLICKED" << std::endl;
+			_callback(event);
 		}
 		
 	}
@@ -21,7 +23,13 @@ public:
 	void draw(sf::RenderWindow& window) {
 		window.draw(button_shape);
 	}
+
+	void on_click(std::function<void(const UI_InputEvent&)> callback) {
+		_callback = callback;
+	}
 private:
 	Rectangle button_area; //used to store geometry
 	sf::RectangleShape button_shape;
+
+	std::function<void(const UI_InputEvent&)> _callback;
 };

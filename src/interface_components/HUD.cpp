@@ -1,7 +1,7 @@
 #include "HUD.h"
 #include <iostream>
 
-HUD::HUD() : just_button({100, 100, 100, 50}) {
+HUD::HUD(std::deque<GameCommand>& command_queue) : just_button({ 100, 100, 100, 50 }), _command_queue{ command_queue } {
 	std::cout << "Loading HUD resources:" << std::endl;
 
 	std::cout << "Loading arial.ttf.....";
@@ -17,27 +17,30 @@ HUD::HUD() : just_button({100, 100, 100, 50}) {
 	} else {
 		std::cout << "FAILURE" << std::endl;
 	}
+
+	just_button.on_click([&](const UI_InputEvent& event) {
+		if (active_unit) {
+			_command_queue.push_back(GameCommand(CommandType::MOVE, { 0,0 }, active_unit));
+		}
+
+	});
 }
 
-void HUD::set_data(const Unit* unit) {
+void HUD::set_data(Unit* unit) {
 	if (unit) {
-		_active_unit_health = unit->health();
-		_active_unit_max_health = unit->max_health();
-		_unit_selected = true;
+		active_unit = unit;
 	} else {
-		_active_unit_health = 0;
-		_active_unit_max_health = 0;
-		_unit_selected = false;
+		active_unit = nullptr;
 	}
 }
 
 void HUD::draw_health_bar(sf::RenderWindow& window) {
 	sf::Text health(_font);
 
-	if (_unit_selected) {
-		health.setString(std::to_string(_active_unit_health) + "/" + std::to_string(_active_unit_max_health));
+	if (active_unit) {
+		health.setString(std::to_string(active_unit->health()) + "/" + std::to_string(active_unit->max_health()));
 
-		double health_ratio = static_cast<double>(_active_unit_health) / static_cast<double>(_active_unit_max_health);
+		double health_ratio = static_cast<double>(active_unit->health()) / static_cast<double>(active_unit->max_health());
 
 		if (health_ratio < 0.25) {
 			health.setFillColor(sf::Color::Red);
@@ -64,7 +67,7 @@ void HUD::draw_health_bar(sf::RenderWindow& window) {
 }
 
 void HUD::draw_character_face(sf::RenderWindow& window) {
-	if (_unit_selected) {
+	if (active_unit) {
 		sf::Sprite sprite(_soldier_texture);
 		sprite.setPosition({ 400.f, 600.f });
 

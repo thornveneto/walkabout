@@ -17,7 +17,8 @@ public:
         StateMachine<UIState, UI_InputEvent>* state_machine,
         GameWorld& game_world,
         WorldRenderer& world_renderer,
-        Unit* unit
+        Unit* unit,
+        std::deque<GameCommand>& command_queue
     );
 
     void on_enter() noexcept override;
@@ -25,4 +26,6 @@ public:
     void process_event(const UI_InputEvent& event) noexcept override;
 
     void on_exit() noexcept override;
+
+    void draw(sf::RenderWindow& window) override {};
 };

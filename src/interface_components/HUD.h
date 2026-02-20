@@ -3,25 +3,26 @@
 #include "../entities//Unit.h"
 #include "Button.h"
 #include "../UI_InputEvent.h"
+#include "../GameCommand.h"
+#include <deque>
 
 class HUD {
 	sf::Font _font;
 	sf::Texture _soldier_texture;
+	std::deque<GameCommand>& _command_queue;
 
-	int _active_unit_health{ 0 };
-	int _active_unit_max_health{ 0 };
-	bool _unit_selected{ false };
+	Unit* active_unit;
 
 	void draw_health_bar(sf::RenderWindow& window);
 	void draw_character_face(sf::RenderWindow& window);
 
 	Button just_button;
 public:
-	HUD();
+	HUD(std::deque<GameCommand>& _command_queue);
 
 	void handle_event(UI_InputEvent& event);
 
 	void draw(sf::RenderWindow& window);
 
-	void set_data(const Unit* unit);
+	void set_data(Unit* unit);
 };

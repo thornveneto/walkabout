@@ -1,6 +1,8 @@
 #pragma once
 #include "../State.h"
 #include "../UI_InputEvent.h"
+#include <deque>
+#include "../GameCommand.h"
 
 
 class WorldRenderer;
@@ -18,8 +20,11 @@ protected://TODO: protected or accessors?
     WorldRenderer& world_renderer;
     GameWorld& game_world;
     Unit* _unit{ nullptr };
+    std::deque<GameCommand>& command_queue;
 public:
-    UIState(StateMachine<UIState, UI_InputEvent>* state_machine, GameWorld& game_world, WorldRenderer& world_renderer, Unit* unit);
+    UIState(StateMachine<UIState, UI_InputEvent>* state_machine, GameWorld& game_world, WorldRenderer& world_renderer, Unit* unit, std::deque<GameCommand>& command_queue);
 
-    const Unit* active_unit() const;
+    Unit* active_unit() const;
+
+    virtual void draw(sf::RenderWindow& window)=0; //TODO: not sure how it is out of sync with when it was clicked
 };
