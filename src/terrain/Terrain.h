@@ -19,7 +19,7 @@ public:
 
     Unit* unit_collision(const LineSegment& entity_move_line_segment, WorldRenderer& world_renderer);
 
-    Cell& cell_at(IJ cell_ij);
+    Cell& cell_at(const IJ& cell_ij);
 
     bool within_boundaries(const IJ& cell_ij) const;
 
@@ -29,7 +29,7 @@ public:
 
     void draw(WorldRenderer& world_renderer);
 
-    Unit* get_orderable_unit_at(IJ cell_ij);
+    Unit* get_orderable_unit_at(const IJ& cell_ij);
 
-    std::vector<IJ> find_path(IJ start_cell, IJ end_cell);
+    std::vector<IJ> find_path(const IJ& start_cell, const IJ& end_cell);
 };

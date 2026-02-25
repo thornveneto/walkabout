@@ -1,7 +1,9 @@
 #include "HUD.h"
 #include <iostream>
+#include "../entities/Weapon.h"
 
-HUD::HUD(std::deque<GameCommand>& command_queue) : just_button({ 100, 100, 100, 50 }), _command_queue{ command_queue } {
+HUD::HUD(std::deque<GameCommand>& command_queue) : 
+	_btn_activate_main_weapon({ 100, 100, 100, 50 }), _btn_activate_aux_weapon({ 300, 100, 100, 50 }), _command_queue{ command_queue } {
 	std::cout << "Loading HUD resources:" << std::endl;
 
 	std::cout << "Loading arial.ttf.....";
@@ -18,20 +20,67 @@ HUD::HUD(std::deque<GameCommand>& command_queue) : just_button({ 100, 100, 100, 
 		std::cout << "FAILURE" << std::endl;
 	}
 
-	just_button.on_click([&](const UI_InputEvent& event) {
+	_btn_activate_main_weapon.set_on_click_callback([&](const UI_InputEvent& event) {
 		if (active_unit) {
-			_command_queue.push_back(GameCommand(CommandType::MOVE, { 0,0 }, active_unit));
+			std::cout << "clicked activate main weapon" << std::endl;
+
+			//_command_queue.push_back(GameCommand(CommandType::MOVE, { 5,5 }, active_unit));
+			_command_queue.push_back(GameCommand(CommandType::ACTIVATE_MAIN_WEAPON, { 0,0 }, active_unit));
 		}
 
 	});
+
+	_btn_activate_aux_weapon.set_on_click_callback([&](const UI_InputEvent& event) {
+		if (active_unit) {
+			std::cout << "clicked activate aux weapon" << std::endl;
+
+			_command_queue.push_back(GameCommand(CommandType::ACTIVATE_AUX_WEAPON, { 0,0 }, active_unit));
+		}
+
+		});
 }
 
-void HUD::set_data(Unit* unit) {
+void HUD::set_active_unit(Unit* unit) {
 	if (unit) {
 		active_unit = unit;
 	} else {
 		active_unit = nullptr;
 	}
+}
+
+void HUD::draw_weapon_status(sf::RenderWindow& window) {
+	sf::Text weapon_status(_font);
+
+
+	if (active_unit) {
+		Weapon* active_weapon = active_unit->active_weapon();
+
+		if (active_weapon && active_weapon->is_melee()) {
+			weapon_status.setString("melee");
+			weapon_status.setFillColor(sf::Color::Red);
+		}
+		else if (active_weapon && !active_weapon->is_melee()) {
+			weapon_status.setString("ranged");
+			weapon_status.setFillColor(sf::Color::Green);
+		}
+		else {
+			weapon_status.setString("n/a");
+			weapon_status.setFillColor(sf::Color::Blue);
+		}
+		
+	}
+	else {
+		weapon_status.setString("n/a");
+		weapon_status.setFillColor(sf::Color::Blue);
+	}
+
+	weapon_status.setCharacterSize(24); // in pixels, not points!
+
+
+
+	weapon_status.setPosition({ 300.f, 700.f });
+
+	window.draw(weapon_status);
 }
 
 void HUD::draw_health_bar(sf::RenderWindow& window) {
@@ -78,12 +127,16 @@ void HUD::draw_character_face(sf::RenderWindow& window) {
 void HUD::draw(sf::RenderWindow& window) {
 
 
-	just_button.draw(window);
+	_btn_activate_main_weapon.draw(window);
+	_btn_activate_aux_weapon.draw(window);
 
 	draw_health_bar(window);
 	draw_character_face(window);
+	draw_weapon_status(window);
 }
 
 void HUD::handle_event(UI_InputEvent& event) {
-	just_button.handle_event(event);
+	//TODO: not good that we need to copy this
+	_btn_activate_main_weapon.handle_event(event);
+	_btn_activate_aux_weapon.handle_event(event);
 }

@@ -26,6 +26,7 @@ void UnitCommandExecutionState::on_enter() noexcept {
 
 void UnitCommandExecutionState::process_event(const UI_InputEvent& event) noexcept {
 
+    //TODO: this is sooo not cool, but not sure how to make it better
     if (!game_world.any_more_updates()) {
         state_machine->switch_state(
             std::make_unique<UnitSelectionState>(state_machine, game_world, world_renderer, nullptr, command_queue)

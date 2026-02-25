@@ -18,7 +18,7 @@ class MovingEntity {
     IJ _cell_ij;
     Vector2D _centroid;
 protected:
-    GameWorld& _game_world;
+    GameWorld& _game_world; //TODO: protected must be method, not data
 public:
 
     Vector2D speed_vector{ 0, 0 };

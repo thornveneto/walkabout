@@ -117,7 +117,7 @@ std::vector<IJ> Terrain::terrain_collisions(const LineSegment& entity_move_line_
     return result;
 }
 
-Cell& Terrain::cell_at(IJ cell_ij) {
+Cell& Terrain::cell_at(const IJ& cell_ij) {
 
     return terrain[cell_ij.i][cell_ij.j];
 }
@@ -165,7 +165,7 @@ void Terrain::draw(WorldRenderer& world_renderer) {
     }
 }
 
-Unit* Terrain::get_orderable_unit_at(IJ cell_ij) {
+Unit* Terrain::get_orderable_unit_at(const IJ& cell_ij) {
     return cell_at(cell_ij).get_unit();
 }
 
@@ -195,7 +195,15 @@ bool Terrain::wall_between(IJ first_cell_ij, IJ second_cell_ij) {
     return result;
 }
 
-std::vector<IJ> Terrain::find_path(IJ start_cell, IJ end_cell) {
+std::vector<IJ> Terrain::find_path(const IJ& start_cell, const IJ& end_cell) {
+    if (!within_boundaries(start_cell)) {
+        throw std::invalid_argument("find_path.start cell must be within boundaries");
+    }
+
+    if(!within_boundaries(end_cell)) {
+        throw std::invalid_argument("find_path.end cell must be within boundaries");
+    }
+
     //TODO: move algorithm in a dedicated class
     std::deque<IJ> Q{ start_cell};
     std::set<IJ> V;

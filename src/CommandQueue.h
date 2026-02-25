@@ -1,0 +1,87 @@
+#pragma once
+#include <deque>
+#include "GameCommand.h"
+#include "ui_state/UIState.h"
+#include "StateMachine.h"
+#include "UI_InputEvent.h"
+#include "ui_state/UnitSelectedState.h"
+#include "ui_state/UnitSelectionState.h"
+#include "ui_state/UnitCommandExecutionState.h"
+#include "GameWorld.h"
+
+class CommandQueue {
+public:
+    std::deque<GameCommand> command_queue;
+
+    void push_back(GameCommand game_command) {
+        command_queue.push_back(game_command);
+    }
+
+	void process_commands(StateMachine<UIState, UI_InputEvent>& command_state_machine, GameWorld& game_world, WorldRenderer& world_renderer) {
+        while (!command_queue.empty()) {
+            GameCommand current_command = command_queue.front();
+
+            std::cout << "CommandQueue::process_commands - check command" << std::endl;
+
+            if (current_command.command_type == CommandType::SELECT_UNIT) {
+                std::cout << "CommandQueue::process_commands - CommandType::SELECT_UNIT" << std::endl;
+                current_command.target_unit->select();
+                command_state_machine.switch_state(
+                    std::make_unique<UnitSelectedState>(&command_state_machine, game_world, world_renderer, current_command.target_unit, command_queue/*TODO: not cool*/)
+                );
+            }
+
+            if (current_command.command_type == CommandType::DESELECT_UNIT) {
+                std::cout << "CommandQueue::process_commands - CommandType::DESELECT_UNIT" << std::endl;
+                current_command.target_unit->deselect();
+
+                command_state_machine.switch_state(
+                    std::make_unique<UnitSelectionState>(&command_state_machine, game_world, world_renderer, nullptr, command_queue/*TODO: not cool*/)
+                );
+            }
+
+            if (current_command.command_type == CommandType::ATTACK) {
+                std::cout << "CommandQueue::process_commands - CommandType::ATTACK" << std::endl;
+                current_command.target_unit->attack_at(current_command.target_cell_ij, world_renderer);
+
+                command_state_machine.switch_state(
+                    std::make_unique<UnitCommandExecutionState>(&command_state_machine, game_world, world_renderer, current_command.target_unit, command_queue/*TODO: not cool*/)
+                );
+            }
+
+            if (current_command.command_type == CommandType::ACTIVATE_MAIN_WEAPON) {
+                std::cout << "CommandQueue::process_commands - CommandType::ACTIVATE_WEAPON" << std::endl;
+                current_command.target_unit->activate_main_weapon();
+
+                //command_state_machine.switch_state(
+                //    std::make_unique<UnitCommandExecutionState>(&command_state_machine, game_world, world_renderer, current_command.target_unit, command_queue/*TODO: not cool*/)
+                //);
+            }
+
+            if (current_command.command_type == CommandType::ACTIVATE_AUX_WEAPON) {
+                std::cout << "CommandQueue::process_commands - CommandType::ACTIVATE_AUX_WEAPON" << std::endl;
+                current_command.target_unit->activate_aux_weapon();
+
+                //command_state_machine.switch_state(
+                //    std::make_unique<UnitCommandExecutionState>(&command_state_machine, game_world, world_renderer, current_command.target_unit, command_queue/*TODO: not cool*/)
+                //);
+            }
+
+            if (current_command.command_type == CommandType::MOVE) {
+                std::cout << "CommandQueue::process_commands - CommandType::MOVE" << std::endl;
+
+                std::vector<IJ> path = game_world.terrain.find_path(current_command.target_unit->get_home_ij(), current_command.target_cell_ij);
+
+                current_command.target_unit->set_waypoints(path);
+                current_command.target_unit->start_waypoints_following(world_renderer);
+
+                command_state_machine.switch_state(
+                    std::make_unique<UnitCommandExecutionState>(&command_state_machine, game_world, world_renderer, current_command.target_unit, command_queue/*TODO: not cool*/)
+                );
+            }
+
+            command_queue.pop_front();
+        }
+	}
+private:
+};

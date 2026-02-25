@@ -53,6 +53,10 @@ IdType GameWorld::spawn_unit(IJ at_cell, WorldRenderer& world_renderer) {
 
     _units_map.emplace(unit_id, std::make_unique<Unit>(at_cell, world_renderer, *this, unit_id));
 
+    _units_map.at(unit_id)->equip_main_weapon(false); //TODO: find a better place
+    _units_map.at(unit_id)->equip_aux_weapon(true); //TODO: find a better place
+    //_units_map.at(unit_id)->activate_main_weapon();
+
     terrain.cell_at(at_cell).add_guest(_units_map[unit_id].get());
 
     return unit_id;

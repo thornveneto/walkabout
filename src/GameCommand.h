@@ -5,7 +5,10 @@ enum class CommandType {
 	SELECT_UNIT,
 	DESELECT_UNIT,
 	MOVE,
-	ATTACK
+	ATTACK,
+	ACTIVATE_MAIN_WEAPON,
+	ACTIVATE_AUX_WEAPON,
+	NEXT_TURN
 };
 
 struct GameCommand {

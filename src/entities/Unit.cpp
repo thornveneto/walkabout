@@ -3,11 +3,31 @@
 #include "../WorldRenderer.h"
 #include "../physics/CollisionData.h"
 #include <SFML/Graphics.hpp>
+#include "Weapon.h"
 
 Unit::~Unit() = default;
 
-Unit::Unit(IJ at_cell, WorldRenderer& world_renderer, GameWorld& game_world, IdType id) : MovingEntity(at_cell, world_renderer, game_world), _id{ id } {
+Unit::Unit(IJ at_cell, WorldRenderer& world_renderer, GameWorld& game_world, IdType id) : MovingEntity(at_cell, world_renderer, game_world), _id{ id }, _active_weapon{ nullptr } {
 
+}
+
+void Unit::equip_main_weapon(bool is_melee) {
+    _main_weapon = std::make_unique<Weapon>(_game_world, _id, is_melee);
+}
+
+void Unit::equip_aux_weapon(bool is_melee) {
+    _aux_weapon = std::make_unique<Weapon>(_game_world, _id, is_melee);
+}
+
+void Unit::activate_main_weapon() {
+    _active_weapon = _main_weapon.get();
+}
+void Unit::activate_aux_weapon() {
+    _active_weapon = _aux_weapon.get();
+}
+
+Weapon* Unit::active_weapon() {
+    return _active_weapon;
 }
 
 IdType Unit::id() const {
@@ -47,8 +67,10 @@ void Unit::draw(WorldRenderer& world_renderer) {
 
 }
 
-void Unit::shoot_at(IJ target_cell, WorldRenderer& world_renderer) {
-    _game_world.spawn_projectile(get_home_ij(), target_cell, world_renderer, id());
+void Unit::attack_at(IJ target_cell, WorldRenderer& world_renderer) {
+    if (_active_weapon) {
+        _active_weapon->attack(get_home_ij(), target_cell, world_renderer);
+    }
 }
 
 void Unit::on_collision(const CollisionData& collision_data) {
