@@ -43,6 +43,9 @@ public:
 
 	int max_health() const;
 
+	virtual void update(sf::Time& deltaTime, WorldRenderer& world_renderer) override;
+
+	bool any_more_updates();
 private:
 	bool _is_selected{ false };
 	IdType _id{ -1 };

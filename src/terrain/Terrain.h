@@ -29,7 +29,7 @@ public:
 
     void draw(WorldRenderer& world_renderer);
 
-    Unit* get_orderable_unit_at(const IJ& cell_ij);
+    Unit* unit_at(const IJ& cell_ij);
 
     std::vector<IJ> find_path(const IJ& start_cell, const IJ& end_cell);
 };

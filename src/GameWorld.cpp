@@ -211,7 +211,7 @@ bool GameWorld::any_more_updates() const {
     }
 
     for (auto& unit : _units_map) {
-        if (!unit.second->is_stopped()) {
+        if (unit.second->any_more_updates()) {
             return true;
         }
     }

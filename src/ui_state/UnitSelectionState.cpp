@@ -22,7 +22,7 @@ void UnitSelectionState::process_event(const UI_InputEvent& event) noexcept {
         const XY<float> tile_xy = world_renderer.tile_screen_xy(mouse_cell_ij);
 
         if (event.left_key_pressed) {
-            Unit* unit = game_world.terrain.get_orderable_unit_at(mouse_cell_ij);
+            Unit* unit = game_world.terrain.unit_at(mouse_cell_ij);
 
             if (unit) {
                 command_queue.push_back(GameCommand(CommandType::SELECT_UNIT, mouse_cell_ij, unit));

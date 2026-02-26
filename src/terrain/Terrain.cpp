@@ -165,7 +165,7 @@ void Terrain::draw(WorldRenderer& world_renderer) {
     }
 }
 
-Unit* Terrain::get_orderable_unit_at(const IJ& cell_ij) {
+Unit* Terrain::unit_at(const IJ& cell_ij) {
     return cell_at(cell_ij).get_unit();
 }
 

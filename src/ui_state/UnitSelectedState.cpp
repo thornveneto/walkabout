@@ -31,7 +31,7 @@ void UnitSelectedState::process_event(const UI_InputEvent& event) noexcept {
 
         if (event.left_key_pressed) {
 
-            Unit* unit = game_world.terrain.get_orderable_unit_at(mouse_cell_ij);
+            Unit* unit = game_world.terrain.unit_at(mouse_cell_ij);
 
             if (unit) {
                 command_queue.push_back(GameCommand(CommandType::ATTACK, mouse_cell_ij, _unit));

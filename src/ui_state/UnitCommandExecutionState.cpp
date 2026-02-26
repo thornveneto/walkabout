@@ -19,6 +19,7 @@ UnitCommandExecutionState::UnitCommandExecutionState(
 }
 
 void UnitCommandExecutionState::on_enter() noexcept {
+
     if (game_world.is_paused()) {
         game_world.unpause();
     }

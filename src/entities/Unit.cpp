@@ -42,6 +42,26 @@ void Unit::deselect() {
     _is_selected = false;
 }
 
+void Unit::update(sf::Time& deltaTime, WorldRenderer& world_renderer) {
+    MovingEntity::update(deltaTime, world_renderer);
+
+    if (_active_weapon) {
+        _active_weapon->update();
+    }    
+}
+
+bool Unit::any_more_updates() {
+    if (!is_stopped()) {
+        return true;
+    }
+
+    if (_active_weapon && _active_weapon->more_updates()) {
+        return true;
+    }
+
+    return false;
+}
+
 void Unit::draw(WorldRenderer& world_renderer) {
     Vector2D screen_point = world_renderer.calculate_screen_point(centroid());
 
@@ -53,6 +73,12 @@ void Unit::draw(WorldRenderer& world_renderer) {
             _is_selected ? sf::Color::Yellow : sf::Color::Blue,
             sf::Color::Black
         );
+
+        Weapon* unit_active_weapon = active_weapon();
+
+        if (unit_active_weapon) {
+            unit_active_weapon->draw(world_renderer, screen_point);
+        }
     }
     else {
         world_renderer.draw_ellipse(
