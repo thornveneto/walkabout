@@ -16,37 +16,19 @@ class Effect;
 struct GameWorldInternal;
 
 class GameWorld {
-    IdType _new_entity_id{ 1 };
-
-    sf::Clock _clock; // starts the clock
-    bool _paused = true;
-
-    sf::Time get_delta_time();//WARNING destructive. Call once only
-    std::vector<std::unique_ptr<Effect>> _effects;
-    std::map<IdType, std::unique_ptr<Unit>> _units_map;
-    //std::map<int, std::unique_ptr<Projectile>> projectiles_map;
-    std::unique_ptr<GameWorldInternal> _storage;
-
-    void check_out_of_bounds(WorldRenderer& world_renderer);
-
-    void update_entities(sf::Time& delta_time, WorldRenderer& world_renderer);
-
-    void update_effects(sf::Time& delta_time);
-
-    int allocate_entity_id();
 public:
     Terrain terrain;
 
-    GameWorld();
+    GameWorld(WorldRenderer& world_renderer);
     ~GameWorld();
 
-    void init(WorldRenderer& world_renderer);
+    void init();
 
-    void update(WorldRenderer& world_renderer);
+    void update();
 
     bool any_more_updates() const;
 
-    void draw(WorldRenderer& world_renderer);
+    void draw();
 
     /*
         Game clock management
@@ -60,14 +42,36 @@ public:
     */
     void spawn_explosion(Vector2D centroid);
 
-    IdType spawn_unit(IJ at_cell, WorldRenderer& world_renderer);
+    IdType spawn_unit(IJ at_cell);
 
-    IdType spawn_projectile(IJ at_cell, IJ target_cell, WorldRenderer& world_renderer, int owner_id);
+    IdType spawn_projectile(IJ at_cell, IJ target_cell, int owner_id);
 
     void sweep_pending_elements();
 
     /*
         Physics
     */
-    void check_collisions(WorldRenderer& world_renderer);
+    void check_collisions();
+
+private:
+    IdType _new_entity_id{ 1 };
+
+    sf::Clock _clock; // starts the clock
+    bool _paused = true;
+
+    sf::Time get_delta_time();//WARNING destructive. Call once only
+    std::vector<std::unique_ptr<Effect>> _effects;
+    std::map<IdType, std::unique_ptr<Unit>> _units_map;
+    //std::map<int, std::unique_ptr<Projectile>> projectiles_map;
+    std::unique_ptr<GameWorldInternal> _storage;
+
+    WorldRenderer& world_renderer;
+
+    void check_out_of_bounds();
+
+    void update_entities(sf::Time& delta_time);
+
+    void update_effects(sf::Time& delta_time);
+
+    int allocate_entity_id();
 };

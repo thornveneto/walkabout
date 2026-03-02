@@ -11,7 +11,7 @@ struct GameWorldInternal {
     std::map<IdType, std::unique_ptr<Projectile>> projectiles_map;
 };
 
-GameWorld::GameWorld() : _storage(std::make_unique<GameWorldInternal>()) {}
+GameWorld::GameWorld(WorldRenderer& world_renderer) : _storage(std::make_unique<GameWorldInternal>()), world_renderer{ world_renderer }, terrain(world_renderer) {}
 
 GameWorld::~GameWorld() = default;
 
@@ -38,15 +38,15 @@ int GameWorld::allocate_entity_id() {
     return _new_entity_id++;
 }
 
-void GameWorld::init(WorldRenderer& world_renderer) {
+void GameWorld::init() {
     terrain.init();
 
-    spawn_unit({ 0, 0 }, world_renderer);
-    spawn_unit({ 2, 0 }, world_renderer);
+    spawn_unit({ 0, 0 });
+    spawn_unit({ 2, 0 });
     //spawn_projectile(4, 0, 4, 9, world_renderer);
 }
 
-IdType GameWorld::spawn_unit(IJ at_cell, WorldRenderer& world_renderer) {
+IdType GameWorld::spawn_unit(IJ at_cell) {
 
     IdType unit_id = allocate_entity_id();
 
@@ -62,7 +62,7 @@ IdType GameWorld::spawn_unit(IJ at_cell, WorldRenderer& world_renderer) {
     return unit_id;
 }
 
-IdType GameWorld::spawn_projectile(IJ at_cell, IJ target_cell, WorldRenderer& world_renderer, int owner_id) {
+IdType GameWorld::spawn_projectile(IJ at_cell, IJ target_cell, int owner_id) {
     IdType projectile_id = allocate_entity_id();
 
     _storage->projectiles_map.emplace(projectile_id, std::make_unique<Projectile>(at_cell, world_renderer, *this, owner_id));
@@ -79,7 +79,7 @@ void GameWorld::spawn_explosion(Vector2D centroid) {
     );
 }
 
-void GameWorld::update_entities(sf::Time& delta_time, WorldRenderer& world_renderer) {
+void GameWorld::update_entities(sf::Time& delta_time) {
     for (auto& unit : _units_map) {
         unit.second->update(delta_time, world_renderer);
 
@@ -122,9 +122,9 @@ void GameWorld::update_effects(sf::Time& delta_time) {
     );
 }
 
-void GameWorld::draw(WorldRenderer& world_renderer) {
+void GameWorld::draw() {
     //Draw here
-    terrain.draw(world_renderer);
+    terrain.draw();
 
     for (const auto& unit : _units_map) {
         unit.second->draw(world_renderer);
@@ -140,12 +140,12 @@ void GameWorld::draw(WorldRenderer& world_renderer) {
     }
 }
 
-void GameWorld::check_collisions(WorldRenderer& world_renderer) {
+void GameWorld::check_collisions() {
     //Checking projectile collisions
     for (auto& projectile : _storage->projectiles_map) {
 
         //First terrain collisions
-        std::vector<IJ> terrain_collisions = terrain.terrain_collisions(projectile.second->move_delta_segment(), world_renderer);
+        std::vector<IJ> terrain_collisions = terrain.terrain_collisions(projectile.second->move_delta_segment());
 
         for (const auto& collided_element : terrain_collisions) {
             //TODO: shouldn't actually be at, but at intersection point
@@ -155,7 +155,7 @@ void GameWorld::check_collisions(WorldRenderer& world_renderer) {
         }
 
         //Second - projectiles hitting units
-        Unit* unit_hit = terrain.unit_collision(projectile.second->move_delta_segment(), world_renderer);
+        Unit* unit_hit = terrain.unit_collision(projectile.second->move_delta_segment());
 
         if (unit_hit && projectile.second->owner_id() != unit_hit->id()) {
             spawn_explosion(projectile.second->centroid());
@@ -166,24 +166,24 @@ void GameWorld::check_collisions(WorldRenderer& world_renderer) {
     }
 }
 
-void GameWorld::check_out_of_bounds(WorldRenderer& world_renderer) {
+void GameWorld::check_out_of_bounds() {
     for (const auto& projectile_item : _storage->projectiles_map) {
         
-        if (!terrain.within_boundaries(projectile_item.second->centroid(), world_renderer)) {
+        if (!terrain.within_boundaries(projectile_item.second->centroid())) {
             projectile_item.second->mark_for_sweep();
         }
     }
 }
 
-void GameWorld::update(WorldRenderer& world_renderer) {
+void GameWorld::update() {
     if (!is_paused()) {
         sf::Time delta_time = get_delta_time();
 
-        update_entities(delta_time, world_renderer);
+        update_entities(delta_time);
 
-        check_collisions(world_renderer);
+        check_collisions();
 
-        check_out_of_bounds(world_renderer);
+        check_out_of_bounds();
 
         update_effects(delta_time);
     }

@@ -57,8 +57,8 @@ int main()
 
         WorldRenderer world_renderer{ window };
 
-        GameWorld game_world;
-        game_world.init(world_renderer);
+        GameWorld game_world{ world_renderer };
+        game_world.init();
 
         //StateMachine<UIState, UI_InputEvent> command_state_machine(std::make_unique<DummyCommandState>(nullptr/*TODO: super bad*/, game_world, world_renderer, command_queue.command_queue));
 
@@ -87,14 +87,14 @@ int main()
 
             //---STAGE: UPDATING - temporarily within the state
             hud.set_active_unit(command_state_machine.get_current_state()->active_unit());
-            game_world.update(world_renderer);
+            game_world.update();
 
             //---STAGE: DRAWING
             // Pre drawing
             window.clear();
 
             //Draw here
-            game_world.draw(world_renderer);
+            game_world.draw();
             command_state_machine.get_current_state()->draw(window);
             hud.draw(window);
 

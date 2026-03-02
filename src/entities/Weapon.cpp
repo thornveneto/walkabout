@@ -26,7 +26,7 @@ void Weapon::attack(IJ source_cell, IJ target_cell, WorldRenderer& world_rendere
 		}
 	}
 	else {
-		_game_world.spawn_projectile(source_cell, target_cell, world_renderer, _owner_id);
+		_game_world.spawn_projectile(source_cell, target_cell, _owner_id);
 	}
 }
 

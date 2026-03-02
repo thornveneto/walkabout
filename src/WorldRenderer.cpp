@@ -21,32 +21,6 @@ Vector2D WorldRenderer::calculate_screen_point(Vector2D centroid) const {
     return _tm * centroid;
 }
 
-void WorldRenderer::draw_tile(int i, int j, const sf::Color& fill_color, const sf::Color& outline_color) {
-
-    const XY<float> tile_xy = tile_screen_xy({ i,j });
-
-    const float horizontal_size{ 20.f };
-    const float vertical_size{ 10.f };
-
-    sf::ConvexShape tile;
-
-    tile.setPointCount(4);
-
-    // define the points
-    tile.setPoint(0, { tile_xy.x, tile_xy.y - vertical_size });
-    tile.setPoint(1, { tile_xy.x + horizontal_size, tile_xy.y });
-    tile.setPoint(2, { tile_xy.x, tile_xy.y + vertical_size });
-    tile.setPoint(3, { tile_xy.x - horizontal_size, tile_xy.y });
-
-    tile.setFillColor(fill_color);
-
-    //outline - negative thickness to extrude inside
-    tile.setOutlineThickness(-1.f);
-    tile.setOutlineColor(outline_color);
-
-    _window.draw(tile);
-}
-
 void WorldRenderer::draw_circle(float x, float y, float r, const sf::Color& fill_color, const sf::Color& outline_color) {
     sf::CircleShape circle(r); // Radius of 50 pixels
 

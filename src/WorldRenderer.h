@@ -37,8 +37,6 @@ public:
 
     IJ tile_ij_from_centroid(Vector2D centroid) const;
 
-    void draw_tile(int i, int j, const sf::Color& fill_color, const sf::Color& outline_color);
-
     void draw_circle(float x, float y, float r, const sf::Color& fill_color, const sf::Color& outline_color);
 
     void draw_ellipse(float x, float y, float ra, float rb, const sf::Color& fill_color, const sf::Color& outline_color);

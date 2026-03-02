@@ -7,6 +7,8 @@
 #include <deque>
 #include <map>
 
+Terrain::Terrain(WorldRenderer& world_renderer) : world_renderer{ world_renderer } {}
+
 void Terrain::init() {
     terrain.resize(10);
 
@@ -14,10 +16,10 @@ void Terrain::init() {
         terrain[i].reserve(10);
         for (int j = 0; j < 10; ++j) {
             if (j == 7) {
-                terrain[i].emplace_back(CellCode::WATER, i, j);
+                terrain[i].emplace_back(CellCode::WATER, i, j, nullptr, nullptr, nullptr, nullptr, &world_renderer);
             }
             else {
-                terrain[i].emplace_back(CellCode::GRASS, i, j);
+                terrain[i].emplace_back(CellCode::GRASS, i, j, nullptr, nullptr, nullptr, nullptr, &world_renderer);
             }
 
         }
@@ -27,37 +29,43 @@ void Terrain::init() {
         CellCode::GRASS,
         1,1,
         std::make_unique<Wall>(WallOrientation::NORTH),
-        nullptr, nullptr, nullptr
+        nullptr, nullptr, nullptr,
+        &world_renderer
     };
     terrain[1][2] = Cell{
         CellCode::GRASS,
         1,2,
-        nullptr, std::make_unique<Wall>(WallOrientation::EAST),nullptr, nullptr
+        nullptr, std::make_unique<Wall>(WallOrientation::EAST),nullptr, nullptr,
+        &world_renderer
     };
     terrain[2][2] = Cell{
         CellCode::GRASS,
         2,2,
-        nullptr, std::make_unique<Wall>(WallOrientation::EAST),nullptr, nullptr
+        nullptr, std::make_unique<Wall>(WallOrientation::EAST),nullptr, nullptr,
+        &world_renderer
     };
     terrain[3][3] = Cell{
         CellCode::GRASS,
         3,3,
-        nullptr, nullptr, std::make_unique<Wall>(WallOrientation::SOUTH), nullptr
+        nullptr, nullptr, std::make_unique<Wall>(WallOrientation::SOUTH), nullptr,
+        &world_renderer
     };
     terrain[4][4] = Cell{
         CellCode::GRASS,
         4,4,
-        nullptr, nullptr, nullptr, std::make_unique<Wall>(WallOrientation::WEST)
+        nullptr, nullptr, nullptr, std::make_unique<Wall>(WallOrientation::WEST),
+        &world_renderer
     };
     terrain[7][2] = Cell{
         CellCode::GRASS,
         7,2,
         std::make_unique<Wall>(WallOrientation::NORTH), std::make_unique<Wall>(WallOrientation::EAST),
-        std::make_unique<Wall>(WallOrientation::SOUTH), std::make_unique<Wall>(WallOrientation::WEST)
+        std::make_unique<Wall>(WallOrientation::SOUTH), std::make_unique<Wall>(WallOrientation::WEST),
+        &world_renderer
     };
 }
 
-Unit* Terrain::unit_collision(const LineSegment& entity_move_line_segment, WorldRenderer& world_renderer) {
+Unit* Terrain::unit_collision(const LineSegment& entity_move_line_segment) {
     //TODO: ugly prototype way
 
     Vector2D trajectory_centroid = entity_move_line_segment.end_vector();
@@ -74,7 +82,7 @@ Unit* Terrain::unit_collision(const LineSegment& entity_move_line_segment, World
     return nullptr;
 }
 
-std::vector<IJ> Terrain::terrain_collisions(const LineSegment& entity_move_line_segment, WorldRenderer& world_renderer) {
+std::vector<IJ> Terrain::terrain_collisions(const LineSegment& entity_move_line_segment) {
     //TODO: check and optimize colliding tiles
 
     std::vector<IJ> result;
@@ -83,28 +91,28 @@ std::vector<IJ> Terrain::terrain_collisions(const LineSegment& entity_move_line_
         for (int j = 0; j < terrain[i].size(); ++j) {
 
             if (terrain[i][j].has_north_wall()) {
-                LineSegment checked_wall_segment = terrain[i][j].north_slot_segment(world_renderer);
+                LineSegment checked_wall_segment = terrain[i][j].north_slot_segment();
 
                 if (checked_wall_segment.intersects(entity_move_line_segment)) {
                     result.push_back({ i, j });
                 }
             }
             if (terrain[i][j].has_east_wall()) {
-                LineSegment checked_wall_segment = terrain[i][j].east_slot_segment(world_renderer);
+                LineSegment checked_wall_segment = terrain[i][j].east_slot_segment();
 
                 if (checked_wall_segment.intersects(entity_move_line_segment)) {
                     result.push_back({ i, j });
                 }
             }
             if (terrain[i][j].has_south_wall()) {
-                LineSegment checked_wall_segment = terrain[i][j].south_slot_segment(world_renderer);
+                LineSegment checked_wall_segment = terrain[i][j].south_slot_segment();
 
                 if (checked_wall_segment.intersects(entity_move_line_segment)) {
                     result.push_back({ i, j });
                 }
             }
             if (terrain[i][j].has_west_wall()) {
-                LineSegment checked_wall_segment = terrain[i][j].west_slot_segment(world_renderer);
+                LineSegment checked_wall_segment = terrain[i][j].west_slot_segment();
 
                 if (checked_wall_segment.intersects(entity_move_line_segment)) {
                     result.push_back({ i, j });
@@ -125,7 +133,7 @@ bool Terrain::within_boundaries(const IJ& cell_ij) const {
     return (0 <= cell_ij.i && cell_ij.i < terrain.size()) && (0 <= cell_ij.j && cell_ij.j < terrain[0].size());
 }
 
-bool Terrain::within_boundaries(const Vector2D& centroid, WorldRenderer& world_renderer) const {
+bool Terrain::within_boundaries(const Vector2D& centroid) const {
 
     return within_boundaries(world_renderer.tile_ij_from_centroid(centroid));
 }
@@ -143,7 +151,7 @@ void Terrain::transfer_guest_unit(IJ from, IJ to, Unit* guest) {
     }
 }
 
-void Terrain::draw(WorldRenderer& world_renderer) {
+void Terrain::draw() {
     //Draw Stuff here
     const sf::Color grass_color{ 63, 155, 11 };
     const sf::Color grass_border_color{ 18, 57, 1 };
@@ -154,13 +162,13 @@ void Terrain::draw(WorldRenderer& world_renderer) {
 
     for (int i = 0; i < terrain.size(); ++i) {
         for (int j = 0; j < terrain[0].size(); ++j) {
-            terrain[i][j].draw_tile(world_renderer);
+            terrain[i][j].draw_tile();
         }
     }
 
     for (int i = 0; i < terrain.size(); ++i) {
         for (int j = 0; j < terrain[0].size(); ++j) {
-            terrain[i][j].draw_cell_walls(world_renderer);
+            terrain[i][j].draw_cell_walls();
         }
     }
 }
