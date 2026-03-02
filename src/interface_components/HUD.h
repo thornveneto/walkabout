@@ -8,7 +8,7 @@
 
 class HUD {
 public:
-	HUD(std::deque<GameCommand>& _command_queue);
+	HUD(sf::Font& _font, std::deque<GameCommand>& _command_queue);
 
 	void handle_event(UI_InputEvent& event);
 
@@ -17,7 +17,7 @@ public:
 	void set_active_unit(Unit* unit);
 
 private:
-	sf::Font _font;
+	sf::Font& _font;
 	sf::Texture _soldier_texture;
 	std::deque<GameCommand>& _command_queue;
 

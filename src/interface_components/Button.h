@@ -7,7 +7,7 @@ struct UI_InputEvent;
 
 class Button {
 public:
-	Button(Rectangle button_area);
+	Button(std::string text_string, sf::Font& _font, Rectangle button_area);
 
 	void handle_event(UI_InputEvent& event);
 
@@ -16,6 +16,11 @@ public:
 	void set_on_click_callback(std::function<void(const UI_InputEvent&)> callback);
 
 private:
+	bool _is_pressed{ false };
+
+	sf::Text _text;
+	std::string _text_string;
+
 	Rectangle _button_area; //used to store geometry
 	sf::RectangleShape _button_shape;
 

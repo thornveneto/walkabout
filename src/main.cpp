@@ -16,6 +16,7 @@
 #include "ui_state/UnitSelectedState.h"
 #include "ui_state/UnitCommandExecutionState.h"
 #include "CommandQueue.h"
+#include "ResourceManager.h"
 
 UI_InputEvent create_ui_event_from_input(sf::RenderWindow& window) {
     //---STAGE: READING INPUT
@@ -35,6 +36,14 @@ UI_InputEvent create_ui_event_from_input(sf::RenderWindow& window) {
                 ui_input_event.right_key_pressed = true;
             }
         }
+        if (const auto* mouseButtonReleased = event->getIf<sf::Event::MouseButtonReleased>()) {
+            if (mouseButtonReleased->button == sf::Mouse::Button::Left) {
+                ui_input_event.left_key_released = true;
+            }
+            if (mouseButtonReleased->button == sf::Mouse::Button::Right) {
+                ui_input_event.right_key_released = true;
+            }
+        }
     }
 
     // MOUSE
@@ -50,7 +59,9 @@ int main()
         //std::deque<GameCommand> command_queue;
         CommandQueue command_queue;
 
-        HUD hud{ command_queue.command_queue };
+        ResourceManager resource_manager;
+
+        HUD hud{ resource_manager.main_font(), command_queue.command_queue };
 
         auto window = sf::RenderWindow(sf::VideoMode({ 1920u, 1080u }), "Walkabout");
         window.setFramerateLimit(100);//TODO: this is very basic option - original value 144

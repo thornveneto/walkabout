@@ -2,16 +2,11 @@
 #include <iostream>
 #include "../entities/Weapon.h"
 
-HUD::HUD(std::deque<GameCommand>& command_queue) : 
-	_btn_activate_main_weapon({ 100, 100, 100, 50 }), _btn_activate_aux_weapon({ 300, 100, 100, 50 }), _command_queue{ command_queue } {
+HUD::HUD(sf::Font& _font, std::deque<GameCommand>& command_queue) :
+	_btn_activate_main_weapon("main", _font, {100, 100, 100, 50}), _btn_activate_aux_weapon("aux",_font, {300, 100, 100, 50}), _command_queue{command_queue},
+	_font{_font}
+{
 	std::cout << "Loading HUD resources:" << std::endl;
-
-	std::cout << "Loading arial.ttf.....";
-	if (_font.openFromFile("arial.ttf")) {
-		std::cout << "SUCCESS" << std::endl;
-	} else {
-		std::cout << "FAILURE" << std::endl;
-	}
 
 	std::cout << "Loading soldier_red.png.....";
 	if (_soldier_texture.loadFromFile("soldier_red.png")) {
