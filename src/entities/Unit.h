@@ -47,13 +47,13 @@ public:
 
 	bool any_more_updates();
 private:
-	bool _is_selected{ false };
-	IdType _id{ -1 };
+	bool m_is_selected{ false };
+	IdType m_id{ -1 };
 
-	const int _MAX_HEALTH{ 100 };
-	int _health{ _MAX_HEALTH };
+	const int MAX_HEALTH{ 100 };
+	int m_health{ MAX_HEALTH };
 
-	std::unique_ptr<Weapon> _main_weapon;
-	std::unique_ptr<Weapon> _aux_weapon;
-	Weapon* _active_weapon{};
+	std::unique_ptr<Weapon> m_main_weapon;
+	std::unique_ptr<Weapon> m_aux_weapon;
+	Weapon* m_active_weapon{};
 };
