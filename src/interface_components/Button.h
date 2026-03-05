@@ -16,13 +16,13 @@ public:
 	void set_on_click_callback(std::function<void(const UI_InputEvent&)> callback);
 
 private:
-	bool _is_pressed{ false };
+	bool is_pressed{ false };
 
-	sf::Text _text;
-	std::string _text_string;
+	sf::Text text;
+	std::string text_string;
 
-	Rectangle _button_area; //used to store geometry
-	sf::RectangleShape _button_shape;
+	Rectangle button_area; //used to store geometry
+	sf::RectangleShape button_shape;
 
-	std::function<void(const UI_InputEvent&)> _callback;
+	std::function<void(const UI_InputEvent&)> callback;
 };
