@@ -1,11 +1,21 @@
 #include "HUD.h"
 #include <iostream>
 #include "../entities/Weapon.h"
+#include "../palette.h"
 
 HUD::HUD(sf::Font& _font, std::deque<GameCommand>& command_queue) :
-	_btn_activate_main_weapon("main", _font, {100, 100, 100, 50}), _btn_activate_aux_weapon("aux",_font, {300, 100, 100, 50}), _command_queue{command_queue},
+	m_screen_area{ 50, 550, 1000, 400 },
+	_btn_activate_main_weapon("main", _font, { m_screen_area.x + 700, m_screen_area.y + 50, 100, 50}),
+	_btn_activate_aux_weapon("aux",_font, { m_screen_area.x + 700, m_screen_area.y + 150, 100, 50}),
+	_command_queue{command_queue},
 	_font{_font}
 {
+	m_border_rectangle.setPosition({ static_cast<float>(m_screen_area.x), static_cast<float>(m_screen_area.y) });
+	m_border_rectangle.setSize({ static_cast<float>(m_screen_area.width), static_cast<float>(m_screen_area.height) });
+	m_border_rectangle.setFillColor(sf::Color::Transparent);
+	m_border_rectangle.setOutlineThickness(-2.f);
+	m_border_rectangle.setOutlineColor(palette::GRAY);
+
 	std::cout << "Loading HUD resources:" << std::endl;
 
 	std::cout << "Loading soldier_red.png.....";
@@ -32,7 +42,7 @@ HUD::HUD(sf::Font& _font, std::deque<GameCommand>& command_queue) :
 			_command_queue.push_back(GameCommand(CommandType::ACTIVATE_AUX_WEAPON, { 0,0 }, active_unit));
 		}
 
-		});
+	});
 }
 
 void HUD::set_active_unit(Unit* unit) {
@@ -73,7 +83,7 @@ void HUD::draw_weapon_status(sf::RenderWindow& window) {
 
 
 
-	weapon_status.setPosition({ 300.f, 700.f });
+	weapon_status.setPosition({ 300.f, 700.f }); //TODO: set to relative
 
 	window.draw(weapon_status);
 }
@@ -105,7 +115,7 @@ void HUD::draw_health_bar(sf::RenderWindow& window) {
 
 
 
-	health.setPosition({ 300.f, 600.f });
+	health.setPosition({ 300.f, 600.f }); //TODO: set to relative
 
 	window.draw(health);
 }
@@ -113,14 +123,14 @@ void HUD::draw_health_bar(sf::RenderWindow& window) {
 void HUD::draw_character_face(sf::RenderWindow& window) {
 	if (active_unit) {
 		sf::Sprite sprite(_soldier_texture);
-		sprite.setPosition({ 400.f, 600.f });
+		sprite.setPosition({ 400.f, 600.f }); //TODO: set to relative
 
 		window.draw(sprite);
 	}
 }
 
 void HUD::draw(sf::RenderWindow& window) {
-
+	window.draw(m_border_rectangle);
 
 	_btn_activate_main_weapon.draw(window);
 	_btn_activate_aux_weapon.draw(window);

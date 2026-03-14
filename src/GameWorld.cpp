@@ -122,22 +122,17 @@ void GameWorld::update_effects(sf::Time& delta_time) {
     );
 }
 
-void GameWorld::draw() {
-    //Draw here
-    terrain.draw();
+const std::map<IdType, std::unique_ptr<Unit>>& GameWorld::units_map() const {
+    return _units_map;
+}
 
-    for (const auto& unit : _units_map) {
-        unit.second->draw(world_renderer);
-    }
+const std::vector<std::unique_ptr<Effect>>& GameWorld::effects() const {
+    return _effects;
+}
 
-    //CHECK
-    for (const auto& projectile : _storage->projectiles_map) {
-        projectile.second->draw(world_renderer);
-    }
-
-    for (auto& effect : _effects) {
-        effect->draw(world_renderer);
-    }
+const std::map<int, std::unique_ptr<Projectile>>& GameWorld::projectiles_map() const {
+    //TODO: check if we still need these bonfire dances with _storage
+    return _storage->projectiles_map;
 }
 
 void GameWorld::check_collisions() {

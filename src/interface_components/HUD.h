@@ -17,6 +17,9 @@ public:
 	void set_active_unit(Unit* unit);
 
 private:
+	Rectangle m_screen_area;
+	sf::RectangleShape m_border_rectangle;
+
 	sf::Font& _font;
 	sf::Texture _soldier_texture;
 	std::deque<GameCommand>& _command_queue;

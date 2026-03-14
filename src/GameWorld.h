@@ -28,8 +28,6 @@ public:
 
     bool any_more_updates() const;
 
-    void draw();
-
     /*
         Game clock management
     */
@@ -53,6 +51,9 @@ public:
     */
     void check_collisions();
 
+    const std::vector<std::unique_ptr<Effect>>& effects() const;
+    const std::map<IdType, std::unique_ptr<Unit>>& units_map() const;
+    const std::map<int, std::unique_ptr<Projectile>>& projectiles_map() const;
 private:
     IdType _new_entity_id{ 1 };
 

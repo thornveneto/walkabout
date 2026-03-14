@@ -17,6 +17,7 @@
 #include "ui_state/UnitCommandExecutionState.h"
 #include "CommandQueue.h"
 #include "ResourceManager.h"
+#include "interface_components/PlayField.h"
 
 UI_InputEvent create_ui_event_from_input(sf::RenderWindow& window) {
     //---STAGE: READING INPUT
@@ -69,6 +70,9 @@ int main()
         WorldRenderer world_renderer{ window };
 
         GameWorld game_world{ world_renderer };
+
+        PlayField play_field{ game_world, world_renderer };
+
         game_world.init();
 
         //StateMachine<UIState, UI_InputEvent> command_state_machine(std::make_unique<DummyCommandState>(nullptr/*TODO: super bad*/, game_world, world_renderer, command_queue.command_queue));
@@ -105,7 +109,8 @@ int main()
             window.clear();
 
             //Draw here
-            game_world.draw();
+            play_field.draw();
+
             command_state_machine.get_current_state()->draw(window);
             hud.draw(window);
 
