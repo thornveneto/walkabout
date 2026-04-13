@@ -18,7 +18,9 @@
 #include "CommandQueue.h"
 #include "ResourceManager.h"
 #include "interface_components/PlayField.h"
+#include "GameState.h"
 
+#include "assert.h"
 UI_InputEvent create_ui_event_from_input(sf::RenderWindow& window) {
     //---STAGE: READING INPUT
     UI_InputEvent ui_input_event;
@@ -69,9 +71,11 @@ int main()
 
         WorldRenderer world_renderer{ window };
 
+        GameState game_state;
+
         GameWorld game_world{ world_renderer };
 
-        PlayField play_field{ game_world, world_renderer };
+        PlayField play_field{ game_world, world_renderer, command_queue.command_queue };
 
         game_world.init();
 
@@ -94,14 +98,15 @@ int main()
                 window.close();
             }
             hud.handle_event(ui_input_event);
+            play_field.handle_event(ui_input_event, game_state.game_state_desc);
             command_state_machine.process_event(ui_input_event);//TODO: temporary placement to test as state request must happen in the next frame
            
             //---STAGE: APPLYING INPUT
-            command_queue.process_commands(command_state_machine, game_world, world_renderer);
+            command_queue.process_commands(command_state_machine, game_world, world_renderer, game_state);
 
 
             //---STAGE: UPDATING - temporarily within the state
-            hud.set_active_unit(command_state_machine.get_current_state()->active_unit());
+            //hud.set_active_unit(command_state_machine.get_current_state()->active_unit());
             game_world.update();
 
             //---STAGE: DRAWING
@@ -109,10 +114,10 @@ int main()
             window.clear();
 
             //Draw here
-            play_field.draw();
+            play_field.draw(game_state.game_state_desc);
 
             command_state_machine.get_current_state()->draw(window);
-            hud.draw(window);
+            hud.draw(window, game_state.game_state_desc);
 
             //Call after drawn stuff
             window.display();

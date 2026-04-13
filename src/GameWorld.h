@@ -33,7 +33,7 @@ public:
     */
     void pause();
     void unpause();
-    bool is_paused() const;
+    bool is_paused() const; //TODO: move to GameStateDesc
 
     /*
         Entity factory methods

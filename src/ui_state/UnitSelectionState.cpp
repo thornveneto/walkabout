@@ -15,20 +15,8 @@ ui_cell_selection{ world_renderer.hw, world_renderer.hh, world_renderer.cell_hei
 void UnitSelectionState::on_enter() noexcept {}
 
 void UnitSelectionState::process_event(const UI_InputEvent& event) noexcept {
-    auto mouse_cell_ij = world_renderer.tile_ij_from_screen_xy(event.mouse_position);
 
-    if (game_world.terrain.within_boundaries(mouse_cell_ij)) {
 
-        const XY<float> tile_xy = world_renderer.tile_screen_xy(mouse_cell_ij);
-
-        if (event.left_key_pressed) {
-            Unit* unit = game_world.terrain.unit_at(mouse_cell_ij);
-
-            if (unit) {
-                command_queue.push_back(GameCommand(CommandType::SELECT_UNIT, mouse_cell_ij, unit));
-            }
-        }
-    }
 }
 
 void UnitSelectionState::on_exit() noexcept {}

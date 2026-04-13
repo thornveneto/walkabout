@@ -26,39 +26,38 @@ HUD::HUD(sf::Font& _font, std::deque<GameCommand>& command_queue) :
 	}
 
 	_btn_activate_main_weapon.set_on_click_callback([&](const UI_InputEvent& event) {
-		if (active_unit) {
+		if (1==2/*active_unit*/) {
 			std::cout << "clicked activate main weapon" << std::endl;
 
-			//_command_queue.push_back(GameCommand(CommandType::MOVE, { 5,5 }, active_unit));
-			_command_queue.push_back(GameCommand(CommandType::ACTIVATE_MAIN_WEAPON, { 0,0 }, active_unit));
+			//_command_queue.push_back(GameCommand(CommandType::ACTIVATE_MAIN_WEAPON, { 0,0 }, active_unit));
 		}
 
 	});
 
 	_btn_activate_aux_weapon.set_on_click_callback([&](const UI_InputEvent& event) {
-		if (active_unit) {
+		if (1 == 2/*active_unit*/) {
 			std::cout << "clicked activate aux weapon" << std::endl;
 
-			_command_queue.push_back(GameCommand(CommandType::ACTIVATE_AUX_WEAPON, { 0,0 }, active_unit));
+			//_command_queue.push_back(GameCommand(CommandType::ACTIVATE_AUX_WEAPON, { 0,0 }, active_unit));
 		}
 
 	});
 }
 
-void HUD::set_active_unit(Unit* unit) {
-	if (unit) {
-		active_unit = unit;
-	} else {
-		active_unit = nullptr;
-	}
-}
+//void HUD::set_active_unit(Unit* unit) {
+//	if (unit) {
+//		active_unit = unit;
+//	} else {
+//		active_unit = nullptr;
+//	}
+//}
 
-void HUD::draw_weapon_status(sf::RenderWindow& window) {
+void HUD::draw_weapon_status(sf::RenderWindow& window, GameStateDesc& game_state_desc) {
 	sf::Text weapon_status(_font);
 
 
-	if (active_unit) {
-		Weapon* active_weapon = active_unit->active_weapon();
+	if (game_state_desc.active_unit) {
+		Weapon* active_weapon = game_state_desc.active_unit->active_weapon();
 
 		if (active_weapon && active_weapon->is_melee()) {
 			weapon_status.setString("melee");
@@ -88,13 +87,13 @@ void HUD::draw_weapon_status(sf::RenderWindow& window) {
 	window.draw(weapon_status);
 }
 
-void HUD::draw_health_bar(sf::RenderWindow& window) {
+void HUD::draw_health_bar(sf::RenderWindow& window, GameStateDesc& game_state_desc) {
 	sf::Text health(_font);
 
-	if (active_unit) {
-		health.setString(std::to_string(active_unit->health()) + "/" + std::to_string(active_unit->max_health()));
+	if (game_state_desc.active_unit) {
+		health.setString(std::to_string(game_state_desc.active_unit->health()) + "/" + std::to_string(game_state_desc.active_unit->max_health()));
 
-		double health_ratio = static_cast<double>(active_unit->health()) / static_cast<double>(active_unit->max_health());
+		double health_ratio = static_cast<double>(game_state_desc.active_unit->health()) / static_cast<double>(game_state_desc.active_unit->max_health());
 
 		if (health_ratio < 0.25) {
 			health.setFillColor(sf::Color::Red);
@@ -120,8 +119,8 @@ void HUD::draw_health_bar(sf::RenderWindow& window) {
 	window.draw(health);
 }
 
-void HUD::draw_character_face(sf::RenderWindow& window) {
-	if (active_unit) {
+void HUD::draw_character_face(sf::RenderWindow& window, GameStateDesc& game_state_desc) {
+	if (game_state_desc.active_unit) {
 		sf::Sprite sprite(_soldier_texture);
 		sprite.setPosition({ 400.f, 600.f }); //TODO: set to relative
 
@@ -129,15 +128,15 @@ void HUD::draw_character_face(sf::RenderWindow& window) {
 	}
 }
 
-void HUD::draw(sf::RenderWindow& window) {
+void HUD::draw(sf::RenderWindow& window, GameStateDesc& game_state_desc) {
 	window.draw(m_border_rectangle);
 
 	_btn_activate_main_weapon.draw(window);
 	_btn_activate_aux_weapon.draw(window);
 
-	draw_health_bar(window);
-	draw_character_face(window);
-	draw_weapon_status(window);
+	draw_health_bar(window, game_state_desc);
+	draw_character_face(window, game_state_desc);
+	draw_weapon_status(window, game_state_desc);
 }
 
 void HUD::handle_event(UI_InputEvent& event) {

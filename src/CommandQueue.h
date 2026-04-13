@@ -8,16 +8,18 @@
 #include "ui_state/UnitSelectionState.h"
 #include "ui_state/UnitCommandExecutionState.h"
 #include "GameWorld.h"
+#include "GameState.h"
 
 class CommandQueue {
 public:
+
     std::deque<GameCommand> command_queue;
 
     void push_back(GameCommand game_command) {
         command_queue.push_back(game_command);
     }
 
-	void process_commands(StateMachine<UIState, UI_InputEvent>& command_state_machine, GameWorld& game_world, WorldRenderer& world_renderer) {
+	void process_commands(StateMachine<UIState, UI_InputEvent>& command_state_machine, GameWorld& game_world, WorldRenderer& world_renderer, GameState& game_state) {
         while (!command_queue.empty()) {
             GameCommand current_command = command_queue.front();
 
@@ -25,19 +27,22 @@ public:
 
             if (current_command.command_type == CommandType::SELECT_UNIT) {
                 std::cout << "CommandQueue::process_commands - CommandType::SELECT_UNIT" << std::endl;
-                current_command.target_unit->select();
-                command_state_machine.switch_state(
-                    std::make_unique<UnitSelectedState>(&command_state_machine, game_world, world_renderer, current_command.target_unit, command_queue/*TODO: not cool*/)
-                );
+                //current_command.target_unit->select();
+                //command_state_machine.switch_state(
+                //    std::make_unique<UnitSelectedState>(&command_state_machine, game_world, world_renderer, current_command.target_unit, command_queue/*TODO: not cool*/)
+                //);
+
+                game_state.select_unit(current_command.target_unit);
             }
 
             if (current_command.command_type == CommandType::DESELECT_UNIT) {
                 std::cout << "CommandQueue::process_commands - CommandType::DESELECT_UNIT" << std::endl;
-                current_command.target_unit->deselect();
+                //current_command.target_unit->deselect();
 
-                command_state_machine.switch_state(
-                    std::make_unique<UnitSelectionState>(&command_state_machine, game_world, world_renderer, nullptr, command_queue/*TODO: not cool*/)
-                );
+                //command_state_machine.switch_state(
+                //    std::make_unique<UnitSelectionState>(&command_state_machine, game_world, world_renderer, nullptr, command_queue/*TODO: not cool*/)
+                //);
+                game_state.deselect_unit(current_command.target_unit);
             }
 
             if (current_command.command_type == CommandType::ATTACK) {
@@ -78,6 +83,7 @@ public:
                 command_state_machine.switch_state(
                     std::make_unique<UnitCommandExecutionState>(&command_state_machine, game_world, world_renderer, current_command.target_unit, command_queue/*TODO: not cool*/)
                 );
+                //TODO: THIS IS THE NEW CURRENT STEP, NEED TO CHECK THAT EXECUTION IS CORRECT AND FINAL STATE CORRECT AS WELL
             }
 
             command_queue.pop_front();

@@ -23,28 +23,28 @@ void UnitSelectedState::on_enter() noexcept {}
 
 void UnitSelectedState::process_event(const UI_InputEvent& event) noexcept {
 
-    auto mouse_cell_ij = world_renderer.tile_ij_from_screen_xy(event.mouse_position);
+    //auto mouse_cell_ij = world_renderer.tile_ij_from_screen_xy(event.mouse_position);
 
-    if (game_world.terrain.within_boundaries(mouse_cell_ij)) {
+    //if (game_world.terrain.within_boundaries(mouse_cell_ij)) {
 
-        const XY<float> tile_xy = world_renderer.tile_screen_xy(mouse_cell_ij);
+    //    const XY<float> tile_xy = world_renderer.tile_screen_xy(mouse_cell_ij);
 
-        if (event.left_key_pressed) {
+    //    if (event.left_key_pressed) {
 
-            Unit* unit = game_world.terrain.unit_at(mouse_cell_ij);
+    //        Unit* unit = game_world.terrain.unit_at(mouse_cell_ij);
 
-            if (unit) {
-                command_queue.push_back(GameCommand(CommandType::ATTACK, mouse_cell_ij, _unit));
-            }
-            else {
-                command_queue.push_back(GameCommand(CommandType::MOVE, mouse_cell_ij, _unit));
-            }
-        }
-        else if (event.right_key_pressed) {
+    //        if (unit) {
+    //            command_queue.push_back(GameCommand(CommandType::ATTACK, mouse_cell_ij, _unit));
+    //        }
+    //        else {
+    //            command_queue.push_back(GameCommand(CommandType::MOVE, mouse_cell_ij, _unit));
+    //        }
+    //    }
+    //    else if (event.right_key_pressed) {
 
-            command_queue.push_back(GameCommand(CommandType::DESELECT_UNIT, mouse_cell_ij, _unit));
-        }
-    }
+    //        command_queue.push_back(GameCommand(CommandType::DESELECT_UNIT, mouse_cell_ij, _unit));
+    //    }
+    //}
 }
 
 void UnitSelectedState::draw(sf::RenderWindow& window) {

@@ -5,6 +5,7 @@
 #include "../UI_InputEvent.h"
 #include "../GameCommand.h"
 #include <deque>
+#include "../GameStateDesc.h"
 
 class HUD {
 public:
@@ -12,9 +13,9 @@ public:
 
 	void handle_event(UI_InputEvent& event);
 
-	void draw(sf::RenderWindow& window);
+	void draw(sf::RenderWindow& window, GameStateDesc& game_state_desc);
 
-	void set_active_unit(Unit* unit);
+	//void set_active_unit(Unit* unit);
 
 private:
 	Rectangle m_screen_area;
@@ -24,11 +25,11 @@ private:
 	sf::Texture _soldier_texture;
 	std::deque<GameCommand>& _command_queue;
 
-	Unit* active_unit{};
+	//Unit* active_unit{};
 
-	void draw_health_bar(sf::RenderWindow& window);
-	void draw_character_face(sf::RenderWindow& window);
-	void draw_weapon_status(sf::RenderWindow& window);
+	void draw_health_bar(sf::RenderWindow& window, GameStateDesc& game_state_desc);
+	void draw_character_face(sf::RenderWindow& window, GameStateDesc& game_state_desc);
+	void draw_weapon_status(sf::RenderWindow& window, GameStateDesc& game_state_desc);
 
 	Button _btn_activate_main_weapon;
 
