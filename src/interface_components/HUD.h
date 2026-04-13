@@ -11,7 +11,7 @@ class HUD {
 public:
 	HUD(sf::Font& _font, std::deque<GameCommand>& _command_queue);
 
-	void handle_event(UI_InputEvent& event);
+	void handle_event(UI_InputEvent& event, GameStateDesc& game_state_desc);
 
 	void draw(sf::RenderWindow& window, GameStateDesc& game_state_desc);
 

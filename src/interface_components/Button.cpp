@@ -3,7 +3,10 @@
 #include "../UI_InputEvent.h"
 #include "../palette.h"
 
-Button::Button(std::string text_string, sf::Font& _font, Rectangle button_area) : text_string{ text_string }, text { _font }, button_area{ button_area } {
+Button::Button(std::string text_string, sf::Font& _font, Rectangle button_area) 
+	: text_string{ text_string }, 
+	text{ _font }, button_area{ button_area }
+{
 	button_shape.setPosition({ static_cast<float>(button_area.x), static_cast<float>(button_area.y) });
 	button_shape.setSize({ static_cast<float>(button_area.width), static_cast<float>(button_area.height) });
 	button_shape.setFillColor(is_pressed ? palette::DARK_GRAY : palette::GRAY);
@@ -16,18 +19,17 @@ Button::Button(std::string text_string, sf::Font& _font, Rectangle button_area) 
 	text.setPosition({ static_cast<float>(button_area.x), static_cast<float>(button_area.y) });
 }
 
-void Button::handle_event(UI_InputEvent& event) {
+bool Button::fires_on_event(UI_InputEvent& event) {
 	if (event.left_key_pressed && button_area.within(event.mouse_position)) {
 		is_pressed = true;
 
-		if (callback) {
-			callback(event);
-		}
-	}
-	if (event.left_key_released && button_area.within(event.mouse_position)) {
+		return true;
+	} else if (event.left_key_released /* && button_area.within(event.mouse_position)*/) {
 
 		is_pressed = false;
 	}
+
+	return false;
 }
 
 void Button::draw(sf::RenderWindow& window) {
@@ -37,6 +39,7 @@ void Button::draw(sf::RenderWindow& window) {
 	window.draw(text);
 }
 
-void Button::set_on_click_callback(std::function<void(const UI_InputEvent&)> callback) {
-	this->callback = callback;
-}
+//TODO: REM
+//void Button::set_on_click_callback(std::function<void(const UI_InputEvent&)> callback) {
+//	this->callback = callback;
+//}

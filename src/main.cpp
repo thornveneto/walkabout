@@ -97,7 +97,7 @@ int main()
             if (ui_input_event.close_window_request) {
                 window.close();
             }
-            hud.handle_event(ui_input_event);
+            hud.handle_event(ui_input_event, game_state.game_state_desc);
             play_field.handle_event(ui_input_event, game_state.game_state_desc);
             command_state_machine.process_event(ui_input_event);//TODO: temporary placement to test as state request must happen in the next frame
            

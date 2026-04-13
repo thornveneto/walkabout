@@ -7,13 +7,14 @@ struct UI_InputEvent;
 
 class Button {
 public:
+	//TODO: crude straightforward now, until I decided which way to subscribe
 	Button(std::string text_string, sf::Font& _font, Rectangle button_area);
 
-	void handle_event(UI_InputEvent& event);
+	bool fires_on_event(UI_InputEvent& event);
 
 	void draw(sf::RenderWindow& window);
 
-	void set_on_click_callback(std::function<void(const UI_InputEvent&)> callback);
+	//TODO: REM - void set_on_click_callback(std::function<void(const UI_InputEvent&)> callback);
 
 private:
 	bool is_pressed{ false };
@@ -24,5 +25,5 @@ private:
 	Rectangle button_area; //used to store geometry
 	sf::RectangleShape button_shape;
 
-	std::function<void(const UI_InputEvent&)> callback;
+	//TODO: REM - std::function<void(const UI_InputEvent&)> callback;
 };

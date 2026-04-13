@@ -25,23 +25,25 @@ HUD::HUD(sf::Font& _font, std::deque<GameCommand>& command_queue) :
 		std::cout << "FAILURE" << std::endl;
 	}
 
-	_btn_activate_main_weapon.set_on_click_callback([&](const UI_InputEvent& event) {
-		if (1==2/*active_unit*/) {
-			std::cout << "clicked activate main weapon" << std::endl;
+	//TODO: REM
+	//_btn_activate_main_weapon.set_on_click_callback([&](const UI_InputEvent& event) {
+	//	if (1==2/*active_unit*/) {
+	//		std::cout << "clicked activate main weapon" << std::endl;
 
-			//_command_queue.push_back(GameCommand(CommandType::ACTIVATE_MAIN_WEAPON, { 0,0 }, active_unit));
-		}
+	//		//_command_queue.push_back(GameCommand(CommandType::ACTIVATE_MAIN_WEAPON, { 0,0 }, active_unit));
+	//	}
 
-	});
+	//});
 
-	_btn_activate_aux_weapon.set_on_click_callback([&](const UI_InputEvent& event) {
-		if (1 == 2/*active_unit*/) {
-			std::cout << "clicked activate aux weapon" << std::endl;
+	//TODO: REM
+	//_btn_activate_aux_weapon.set_on_click_callback([&](const UI_InputEvent& event) {
+	//	if (1 == 2/*active_unit*/) {
+	//		std::cout << "clicked activate aux weapon" << std::endl;
 
-			//_command_queue.push_back(GameCommand(CommandType::ACTIVATE_AUX_WEAPON, { 0,0 }, active_unit));
-		}
+	//		//_command_queue.push_back(GameCommand(CommandType::ACTIVATE_AUX_WEAPON, { 0,0 }, active_unit));
+	//	}
 
-	});
+	//});
 }
 
 //void HUD::set_active_unit(Unit* unit) {
@@ -139,8 +141,20 @@ void HUD::draw(sf::RenderWindow& window, GameStateDesc& game_state_desc) {
 	draw_weapon_status(window, game_state_desc);
 }
 
-void HUD::handle_event(UI_InputEvent& event) {
-	//TODO: not good that we need to copy this
-	_btn_activate_main_weapon.handle_event(event);
-	_btn_activate_aux_weapon.handle_event(event);
+void HUD::handle_event(UI_InputEvent& event, GameStateDesc& game_state_desc) {
+	//TODO: again, will be rearchitected when I decide which way to subscribe. 
+	// but at least it conceptually sort of aligned with PlayField
+	//TODO: IMPORTANT. Ifs must be separate because it handles the release as well
+	if (_btn_activate_main_weapon.fires_on_event(event)) {
+		if (game_state_desc.active_unit) {
+			_command_queue.push_back(GameCommand(CommandType::ACTIVATE_MAIN_WEAPON, { 0,0 }, game_state_desc.active_unit));
+		}
+
+	}
+
+	if (_btn_activate_aux_weapon.fires_on_event(event)) {
+		if (game_state_desc.active_unit) {
+			_command_queue.push_back(GameCommand(CommandType::ACTIVATE_AUX_WEAPON, { 0,0 }, game_state_desc.active_unit));
+		}
+	}
 }
