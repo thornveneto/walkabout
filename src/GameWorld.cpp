@@ -16,16 +16,16 @@ GameWorld::GameWorld(WorldRenderer& world_renderer) : _storage(std::make_unique<
 GameWorld::~GameWorld() = default;
 
 void GameWorld::pause() {
-    _paused = true;
+    paused = true;
 }
 
 void GameWorld::unpause() {
-    _paused = false;
+    paused = false;
     _clock.restart();
 }
 
 bool GameWorld::is_paused() const {
-    return _paused;
+    return paused;
 }
 
 sf::Time GameWorld::get_delta_time() {
@@ -181,6 +181,10 @@ void GameWorld::update() {
         check_out_of_bounds();
 
         update_effects(delta_time);
+
+        if (!any_more_updates()) {
+            pause();
+        }
     }
 }
 

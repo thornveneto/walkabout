@@ -27,21 +27,13 @@ public:
 
             if (current_command.command_type == CommandType::SELECT_UNIT) {
                 std::cout << "CommandQueue::process_commands - CommandType::SELECT_UNIT" << std::endl;
-                //current_command.target_unit->select();
-                //command_state_machine.switch_state(
-                //    std::make_unique<UnitSelectedState>(&command_state_machine, game_world, world_renderer, current_command.target_unit, command_queue/*TODO: not cool*/)
-                //);
 
                 game_state.select_unit(current_command.target_unit);
             }
 
             if (current_command.command_type == CommandType::DESELECT_UNIT) {
                 std::cout << "CommandQueue::process_commands - CommandType::DESELECT_UNIT" << std::endl;
-                //current_command.target_unit->deselect();
 
-                //command_state_machine.switch_state(
-                //    std::make_unique<UnitSelectionState>(&command_state_machine, game_world, world_renderer, nullptr, command_queue/*TODO: not cool*/)
-                //);
                 game_state.deselect_unit(current_command.target_unit);
             }
 
@@ -49,27 +41,19 @@ public:
                 std::cout << "CommandQueue::process_commands - CommandType::ATTACK" << std::endl;
                 current_command.target_unit->attack_at(current_command.target_cell_ij, world_renderer);
 
-                command_state_machine.switch_state(
-                    std::make_unique<UnitCommandExecutionState>(&command_state_machine, game_world, world_renderer, current_command.target_unit, command_queue/*TODO: not cool*/)
-                );
+                game_world.unpause();
             }
 
             if (current_command.command_type == CommandType::ACTIVATE_MAIN_WEAPON) {
                 std::cout << "CommandQueue::process_commands - CommandType::ACTIVATE_WEAPON" << std::endl;
                 current_command.target_unit->activate_main_weapon();
 
-                //command_state_machine.switch_state(
-                //    std::make_unique<UnitCommandExecutionState>(&command_state_machine, game_world, world_renderer, current_command.target_unit, command_queue/*TODO: not cool*/)
-                //);
             }
 
             if (current_command.command_type == CommandType::ACTIVATE_AUX_WEAPON) {
                 std::cout << "CommandQueue::process_commands - CommandType::ACTIVATE_AUX_WEAPON" << std::endl;
                 current_command.target_unit->activate_aux_weapon();
 
-                //command_state_machine.switch_state(
-                //    std::make_unique<UnitCommandExecutionState>(&command_state_machine, game_world, world_renderer, current_command.target_unit, command_queue/*TODO: not cool*/)
-                //);
             }
 
             if (current_command.command_type == CommandType::MOVE) {
@@ -80,10 +64,7 @@ public:
                 current_command.target_unit->set_waypoints(path);
                 current_command.target_unit->start_waypoints_following(world_renderer);
 
-                //command_state_machine.switch_state(
-                //    std::make_unique<UnitCommandExecutionState>(&command_state_machine, game_world, world_renderer, current_command.target_unit, command_queue/*TODO: not cool*/)
-                //);
-                //TODO: THIS IS THE NEW CURRENT STEP, NEED TO CHECK THAT EXECUTION IS CORRECT AND FINAL STATE CORRECT AS WELL
+                game_world.unpause();
             }
 
             command_queue.pop_front();

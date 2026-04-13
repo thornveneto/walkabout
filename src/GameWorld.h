@@ -58,7 +58,8 @@ private:
     IdType _new_entity_id{ 1 };
 
     sf::Clock _clock; // starts the clock
-    bool _paused = true;
+
+    bool paused = true;
 
     sf::Time get_delta_time();//WARNING destructive. Call once only
     std::vector<std::unique_ptr<Effect>> _effects;

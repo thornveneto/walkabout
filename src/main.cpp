@@ -99,14 +99,20 @@ int main()
             }
             hud.handle_event(ui_input_event, game_state.game_state_desc);
             play_field.handle_event(ui_input_event, game_state.game_state_desc);
+            //At this staget command will be released
+
+            //TODO: not sure we event need this one?
             command_state_machine.process_event(ui_input_event);//TODO: temporary placement to test as state request must happen in the next frame
            
             //---STAGE: APPLYING INPUT
+            //here command is actually actionend
+            //will unpause the game
             command_queue.process_commands(command_state_machine, game_world, world_renderer, game_state);
 
 
             //---STAGE: UPDATING - temporarily within the state
             //hud.set_active_unit(command_state_machine.get_current_state()->active_unit());
+            //will automatically pause the game when no updates
             game_world.update();
 
             //---STAGE: DRAWING
