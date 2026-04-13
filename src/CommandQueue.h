@@ -80,9 +80,9 @@ public:
                 current_command.target_unit->set_waypoints(path);
                 current_command.target_unit->start_waypoints_following(world_renderer);
 
-                command_state_machine.switch_state(
-                    std::make_unique<UnitCommandExecutionState>(&command_state_machine, game_world, world_renderer, current_command.target_unit, command_queue/*TODO: not cool*/)
-                );
+                //command_state_machine.switch_state(
+                //    std::make_unique<UnitCommandExecutionState>(&command_state_machine, game_world, world_renderer, current_command.target_unit, command_queue/*TODO: not cool*/)
+                //);
                 //TODO: THIS IS THE NEW CURRENT STEP, NEED TO CHECK THAT EXECUTION IS CORRECT AND FINAL STATE CORRECT AS WELL
             }
 

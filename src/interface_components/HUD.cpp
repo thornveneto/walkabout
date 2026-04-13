@@ -24,35 +24,7 @@ HUD::HUD(sf::Font& _font, std::deque<GameCommand>& command_queue) :
 	} else {
 		std::cout << "FAILURE" << std::endl;
 	}
-
-	//TODO: REM
-	//_btn_activate_main_weapon.set_on_click_callback([&](const UI_InputEvent& event) {
-	//	if (1==2/*active_unit*/) {
-	//		std::cout << "clicked activate main weapon" << std::endl;
-
-	//		//_command_queue.push_back(GameCommand(CommandType::ACTIVATE_MAIN_WEAPON, { 0,0 }, active_unit));
-	//	}
-
-	//});
-
-	//TODO: REM
-	//_btn_activate_aux_weapon.set_on_click_callback([&](const UI_InputEvent& event) {
-	//	if (1 == 2/*active_unit*/) {
-	//		std::cout << "clicked activate aux weapon" << std::endl;
-
-	//		//_command_queue.push_back(GameCommand(CommandType::ACTIVATE_AUX_WEAPON, { 0,0 }, active_unit));
-	//	}
-
-	//});
 }
-
-//void HUD::set_active_unit(Unit* unit) {
-//	if (unit) {
-//		active_unit = unit;
-//	} else {
-//		active_unit = nullptr;
-//	}
-//}
 
 void HUD::draw_weapon_status(sf::RenderWindow& window, GameStateDesc& game_state_desc) {
 	sf::Text weapon_status(_font);

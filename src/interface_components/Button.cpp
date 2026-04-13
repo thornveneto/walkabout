@@ -38,8 +38,3 @@ void Button::draw(sf::RenderWindow& window) {
 	window.draw(button_shape);
 	window.draw(text);
 }
-
-//TODO: REM
-//void Button::set_on_click_callback(std::function<void(const UI_InputEvent&)> callback) {
-//	this->callback = callback;
-//}

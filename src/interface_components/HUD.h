@@ -15,8 +15,6 @@ public:
 
 	void draw(sf::RenderWindow& window, GameStateDesc& game_state_desc);
 
-	//void set_active_unit(Unit* unit);
-
 private:
 	Rectangle m_screen_area;
 	sf::RectangleShape m_border_rectangle;
@@ -24,8 +22,6 @@ private:
 	sf::Font& _font;
 	sf::Texture _soldier_texture;
 	std::deque<GameCommand>& _command_queue;
-
-	//Unit* active_unit{};
 
 	void draw_health_bar(sf::RenderWindow& window, GameStateDesc& game_state_desc);
 	void draw_character_face(sf::RenderWindow& window, GameStateDesc& game_state_desc);

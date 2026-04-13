@@ -14,8 +14,6 @@ public:
 
 	void draw(sf::RenderWindow& window);
 
-	//TODO: REM - void set_on_click_callback(std::function<void(const UI_InputEvent&)> callback);
-
 private:
 	bool is_pressed{ false };
 
@@ -24,6 +22,4 @@ private:
 
 	Rectangle button_area; //used to store geometry
 	sf::RectangleShape button_shape;
-
-	//TODO: REM - std::function<void(const UI_InputEvent&)> callback;
 };
