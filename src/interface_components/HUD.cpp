@@ -5,8 +5,9 @@
 
 HUD::HUD(sf::Font& _font, std::deque<GameCommand>& command_queue) :
 	m_screen_area{ 50, 550, 1000, 400 },
-	_btn_activate_main_weapon("main", _font, { m_screen_area.x + 700, m_screen_area.y + 50, 100, 50}),
-	_btn_activate_aux_weapon("aux",_font, { m_screen_area.x + 700, m_screen_area.y + 150, 100, 50}),
+	btn_activate_main_weapon("main", _font, { m_screen_area.x + 700, m_screen_area.y + 50, 100, 50}),
+	btn_activate_aux_weapon("aux",_font, { m_screen_area.x + 700, m_screen_area.y + 150, 100, 50}),
+	btn_next_turn("turn", _font, { m_screen_area.x + 700, m_screen_area.y + 250, 100, 50 }),
 	_command_queue{command_queue},
 	_font{_font}
 {
@@ -53,9 +54,6 @@ void HUD::draw_weapon_status(sf::RenderWindow& window, GameStateDesc& game_state
 	}
 
 	weapon_status.setCharacterSize(24); // in pixels, not points!
-
-
-
 	weapon_status.setPosition({ 300.f, 700.f }); //TODO: set to relative
 
 	window.draw(weapon_status);
@@ -85,12 +83,42 @@ void HUD::draw_health_bar(sf::RenderWindow& window, GameStateDesc& game_state_de
 	}
 
 	health.setCharacterSize(24); // in pixels, not points!
-
-
-
 	health.setPosition({ 300.f, 600.f }); //TODO: set to relative
 
 	window.draw(health);
+}
+
+void HUD::draw_team_id(sf::RenderWindow& window, GameStateDesc& game_state_desc) {
+	sf::Text team_id(_font);
+
+	if (game_state_desc.active_team) {
+		team_id.setString(std::to_string(game_state_desc.active_team->team_id()));
+
+		team_id.setFillColor(game_state_desc.active_team->color());
+	}
+	else {
+		team_id.setString("na");
+		team_id.setFillColor(sf::Color::Red);
+	}
+
+	
+
+	team_id.setCharacterSize(24); // in pixels, not points!
+	team_id.setPosition({ 600.f, 600.f }); //TODO: set to relative
+
+	window.draw(team_id);
+}
+
+void HUD::draw_team_ap(sf::RenderWindow& window, GameStateDesc& game_state_desc) {
+	sf::Text ap_remaining(_font);
+
+	ap_remaining.setString(std::to_string(game_state_desc.team_ap_remaining));
+	ap_remaining.setFillColor(sf::Color::Blue);
+
+	ap_remaining.setCharacterSize(24); // in pixels, not points!
+	ap_remaining.setPosition({ 600.f, 700.f }); //TODO: set to relative
+
+	window.draw(ap_remaining);
 }
 
 void HUD::draw_character_face(sf::RenderWindow& window, GameStateDesc& game_state_desc) {
@@ -105,12 +133,15 @@ void HUD::draw_character_face(sf::RenderWindow& window, GameStateDesc& game_stat
 void HUD::draw(sf::RenderWindow& window, GameStateDesc& game_state_desc) {
 	window.draw(m_border_rectangle);
 
-	_btn_activate_main_weapon.draw(window);
-	_btn_activate_aux_weapon.draw(window);
+	btn_activate_main_weapon.draw(window);
+	btn_activate_aux_weapon.draw(window);
+	btn_next_turn.draw(window);
 
 	draw_health_bar(window, game_state_desc);
 	draw_character_face(window, game_state_desc);
 	draw_weapon_status(window, game_state_desc);
+	draw_team_id(window, game_state_desc);
+	draw_team_ap(window, game_state_desc);
 }
 
 void HUD::handle_event(UI_InputEvent& event, GameStateDesc& game_state_desc) {
@@ -118,7 +149,7 @@ void HUD::handle_event(UI_InputEvent& event, GameStateDesc& game_state_desc) {
 	// but at least it conceptually sort of aligned with PlayField
 	//TODO: IMPORTANT. Ifs must be separate because it handles the release as well
 
-	if (_btn_activate_main_weapon.fires_on_event(event)) {
+	if (btn_activate_main_weapon.fires_on_event(event)) {
 		if (game_state_desc.active_unit && !game_state_desc.active_unit->is_main_weapon_active()) {
 			_command_queue.push_back(GameCommand(CommandType::ACTIVATE_MAIN_WEAPON, { 0,0 }, game_state_desc.active_unit));
 		}
@@ -128,12 +159,16 @@ void HUD::handle_event(UI_InputEvent& event, GameStateDesc& game_state_desc) {
 
 	}
 
-	if (_btn_activate_aux_weapon.fires_on_event(event)) {
+	if (btn_activate_aux_weapon.fires_on_event(event)) {
 		if (game_state_desc.active_unit && !game_state_desc.active_unit->is_aux_weapon_active()) {
 			_command_queue.push_back(GameCommand(CommandType::ACTIVATE_AUX_WEAPON, { 0,0 }, game_state_desc.active_unit));
 		}
 		else if (game_state_desc.active_unit) {
 			_command_queue.push_back(GameCommand(CommandType::DE_ACTIVATE_AUX_WEAPON, { 0,0 }, game_state_desc.active_unit));
 		}
+	}
+
+	if (btn_next_turn.fires_on_event(event)) {
+		_command_queue.push_back(GameCommand(CommandType::NEXT_TURN, { 0,0 }, game_state_desc.active_unit));
 	}
 }

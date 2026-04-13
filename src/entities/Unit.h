@@ -4,6 +4,7 @@
 #include "../physics/ICollideable.h"
 #include "../_types.h"
 #include <memory>
+#include <SFML/Graphics.hpp>
 
 class GameWorld;
 class WorldRenderer;
@@ -12,7 +13,7 @@ class Weapon;
 
 class Unit : public MovingEntity, public ICollideable {
 public:
-	Unit(IJ at_cell, WorldRenderer& world_renderer, GameWorld& game_world, IdType id);
+	Unit(IJ at_cell, WorldRenderer& world_renderer, GameWorld& game_world, IdType id, sf::Color color);
 
 	virtual ~Unit();
 
@@ -72,4 +73,6 @@ private:
 	std::unique_ptr<Weapon> m_main_weapon;
 	std::unique_ptr<Weapon> m_aux_weapon;
 	Weapon* m_active_weapon{};
+
+	sf::Color color;
 };

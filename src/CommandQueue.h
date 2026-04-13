@@ -75,6 +75,19 @@ public:
                 game_world.unpause();
             }
 
+            if (current_command.command_type == CommandType::NEXT_TURN) {
+                std::cout << "CommandQueue::process_commands - CommandType::NEXT_TURN" << std::endl;
+
+                //TODO: temporary way
+                if (game_state.game_state_desc.active_team->team_id() == 1) {
+                    game_state.activate_team(game_world.get_team(2));
+                }
+                else {
+                    game_state.activate_team(game_world.get_team(1));
+                }
+                
+            }
+
             command_queue.pop_front();
         }
 	}

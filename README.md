@@ -7,6 +7,10 @@ Work and RE-work in progress.
 Major bugs, poor or temporary design decisions are plenty.
 No strict commit policy.
 
+# Coding guidelines I keep forgetting
+
+- use m_ to distinguish between a member variable and a const method to get its value
+
 # For History CMake SFML Project Template
 
 This repository template should allow for a fast and hassle-free kick start of your next SFML project using CMake.

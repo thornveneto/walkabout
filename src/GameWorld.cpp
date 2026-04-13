@@ -38,20 +38,29 @@ int GameWorld::allocate_entity_id() {
     return _new_entity_id++;
 }
 
+Team* GameWorld::get_team(IdType team_id) {
+    return teams.at(team_id).get();
+}
+
 void GameWorld::init() {
     terrain.init();
 
-    spawn_unit({ 0, 0 });
-    spawn_unit({ 2, 0 });
+    //TODO: messy id management
+    teams.emplace(1, std::make_unique<Team>(1, sf::Color::Blue));
+    teams.emplace(2, std::make_unique<Team>(2, sf::Color::White));
+
+    teams.at(1).get()->add_player(spawn_unit({0, 0}, teams.at(1).get()));
+
+    teams.at(2).get()->add_player(spawn_unit({ 2, 0 }, teams.at(2).get()));
     //spawn_projectile(4, 0, 4, 9, world_renderer);
 }
 
-IdType GameWorld::spawn_unit(IJ at_cell) {
+IdType GameWorld::spawn_unit(IJ at_cell, Team* team) {
 
     IdType unit_id = allocate_entity_id();
 
 
-    _units_map.emplace(unit_id, std::make_unique<Unit>(at_cell, world_renderer, *this, unit_id));
+    _units_map.emplace(unit_id, std::make_unique<Unit>(at_cell, world_renderer, *this, unit_id, team->color()));
 
     _units_map.at(unit_id)->equip_main_weapon(false); //TODO: find a better place
     _units_map.at(unit_id)->equip_aux_weapon(true); //TODO: find a better place

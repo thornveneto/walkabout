@@ -31,7 +31,7 @@ void PlayField::handle_event(UI_InputEvent& event, GameStateDesc& game_state_des
             if (event.left_key_pressed) {
                 Unit* clicked_unit = m_game_world.terrain.unit_at(mouse_cell_ij);
 
-                if (clicked_unit && game_state_desc.control_mode == ControlMode::UnitSelection) {
+                if (clicked_unit && game_state_desc.control_mode == ControlMode::UnitSelection && game_state_desc.active_team->has_player(clicked_unit->id())) {
                     std::cout << "PlayField::handle_event -> clicked_unit AND ControlMode::UnitSelection" << std::endl;
 
                     std::cout << "PlayField::handle_event -> emit SELECT_UNIT" << std::endl;

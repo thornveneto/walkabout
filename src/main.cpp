@@ -81,6 +81,8 @@ int main()
         //TODO: HOW COME THIS WORKS??? PROBABLY BECAUSE WE DONT CALL IT AND CAN REMOVE IT
         std::cout << "DONT FORGET TO FIX THIS LINE AND DELETE DUMMY COMMAND STATE" << std::endl;        
 
+        game_state.activate_team(game_world.get_team(1));
+
         //GAME LOOP
         while (window.isOpen())
         {

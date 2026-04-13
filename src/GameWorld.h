@@ -7,6 +7,7 @@
 #include "math/IJ.h"
 #include "math/Vector2D.h"
 #include "_types.h"
+#include "Team.h"
 
 class WorldRenderer;
 class Unit;
@@ -40,7 +41,7 @@ public:
     */
     void spawn_explosion(Vector2D centroid);
 
-    IdType spawn_unit(IJ at_cell);
+    IdType spawn_unit(IJ at_cell, Team* team);
 
     IdType spawn_projectile(IJ at_cell, IJ target_cell, int owner_id);
 
@@ -54,6 +55,8 @@ public:
     const std::vector<std::unique_ptr<Effect>>& effects() const;
     const std::map<IdType, std::unique_ptr<Unit>>& units_map() const;
     const std::map<int, std::unique_ptr<Projectile>>& projectiles_map() const;
+
+    Team* get_team(IdType team_id);
 private:
     IdType _new_entity_id{ 1 };
 
@@ -64,6 +67,7 @@ private:
     sf::Time get_delta_time();//WARNING destructive. Call once only
     std::vector<std::unique_ptr<Effect>> _effects;
     std::map<IdType, std::unique_ptr<Unit>> _units_map;
+    std::map<IdType, std::unique_ptr<Team>> teams;
     //std::map<int, std::unique_ptr<Projectile>> projectiles_map;
     std::unique_ptr<GameWorldInternal> _storage;
 

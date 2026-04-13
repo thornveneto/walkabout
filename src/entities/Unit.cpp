@@ -2,12 +2,13 @@
 #include "../GameWorld.h"
 #include "../WorldRenderer.h"
 #include "../physics/CollisionData.h"
-#include <SFML/Graphics.hpp>
 #include "Weapon.h"
 
 Unit::~Unit() = default;
 
-Unit::Unit(IJ at_cell, WorldRenderer& world_renderer, GameWorld& game_world, IdType id) : MovingEntity(at_cell, world_renderer, game_world), m_id{ id }, m_active_weapon{ nullptr } {
+Unit::Unit(IJ at_cell, WorldRenderer& world_renderer, GameWorld& game_world, IdType id, sf::Color color) :
+    MovingEntity(at_cell, world_renderer, game_world), m_id{ id }, m_active_weapon{ nullptr }, color{color}
+{
 
 }
 
@@ -85,7 +86,7 @@ void Unit::draw(WorldRenderer& world_renderer) {
             screen_point.x,
             screen_point.y - world_renderer.cell_height / 2,
             world_renderer.hh,
-            m_is_selected ? sf::Color::Yellow : sf::Color::Blue,
+            m_is_selected ? sf::Color::Yellow : color,//sf::Color::Blue,
             sf::Color::Black
         );
 
