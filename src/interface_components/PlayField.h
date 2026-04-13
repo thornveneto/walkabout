@@ -6,12 +6,13 @@
 #include <deque>
 #include "../GameCommand.h"
 #include "../GameStateDesc.h"
+#include "Cursor.h"
 
 class PlayField {
 public:
     PlayField(GameWorld& game_world, WorldRenderer& world_renderer, std::deque<GameCommand>& command_queue);
 
-	void draw(GameStateDesc& game_state_desc);
+	void draw(sf::RenderWindow& window, GameStateDesc& game_state_desc);
 
 	void handle_event(UI_InputEvent& event, GameStateDesc& game_state_desc);
 
@@ -21,4 +22,5 @@ private:
 	std::deque<GameCommand>& m_command_queue;
     Rectangle m_screen_area;
     sf::RectangleShape m_border_rectangle;
+	Cursor m_cursor;
 };

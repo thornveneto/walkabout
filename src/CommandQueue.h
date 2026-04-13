@@ -1,12 +1,8 @@
 #pragma once
 #include <deque>
 #include "GameCommand.h"
-#include "ui_state/UIState.h"
 #include "StateMachine.h"
 #include "UI_InputEvent.h"
-#include "ui_state/UnitSelectedState.h"
-#include "ui_state/UnitSelectionState.h"
-#include "ui_state/UnitCommandExecutionState.h"
 #include "GameWorld.h"
 #include "GameState.h"
 
@@ -19,7 +15,7 @@ public:
         command_queue.push_back(game_command);
     }
 
-	void process_commands(StateMachine<UIState, UI_InputEvent>& command_state_machine, GameWorld& game_world, WorldRenderer& world_renderer, GameState& game_state) {
+	void process_commands(GameWorld& game_world, WorldRenderer& world_renderer, GameState& game_state) {
         while (!command_queue.empty()) {
             GameCommand current_command = command_queue.front();
 

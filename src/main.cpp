@@ -7,14 +7,9 @@
 #include "GameWorld.h"
 #include "State.h"
 #include "StateMachine.h"
-#include "ui_state/UIState.h"
-#include "ui_state/DummyCommandState.h"
-#include "ui_state/UnitSelectionState.h"
 #include "interface_components/HUD.h"
 #include <deque>
 #include "GameCommand.h"
-#include "ui_state/UnitSelectedState.h"
-#include "ui_state/UnitCommandExecutionState.h"
 #include "CommandQueue.h"
 #include "ResourceManager.h"
 #include "interface_components/PlayField.h"
@@ -82,9 +77,7 @@ int main()
         //StateMachine<UIState, UI_InputEvent> command_state_machine(std::make_unique<DummyCommandState>(nullptr/*TODO: super bad*/, game_world, world_renderer, command_queue.command_queue));
 
         //TODO: HOW COME THIS WORKS??? PROBABLY BECAUSE WE DONT CALL IT AND CAN REMOVE IT
-        std::cout << "DONT FORGET TO FIX THIS LINE AND DELETE DUMMY COMMAND STATE" << std::endl;
-
-        StateMachine<UIState, UI_InputEvent> command_state_machine(std::make_unique<UnitSelectionState>(nullptr/*TODO: super bad*/, game_world, world_renderer, nullptr, command_queue.command_queue));
+        std::cout << "DONT FORGET TO FIX THIS LINE AND DELETE DUMMY COMMAND STATE" << std::endl;        
 
         //GAME LOOP
         while (window.isOpen())
@@ -100,14 +93,11 @@ int main()
             hud.handle_event(ui_input_event, game_state.game_state_desc);
             play_field.handle_event(ui_input_event, game_state.game_state_desc);
             //At this staget command will be released
-
-            //TODO: not sure we event need this one?
-            command_state_machine.process_event(ui_input_event);//TODO: temporary placement to test as state request must happen in the next frame
            
             //---STAGE: APPLYING INPUT
             //here command is actually actionend
             //will unpause the game
-            command_queue.process_commands(command_state_machine, game_world, world_renderer, game_state);
+            command_queue.process_commands(game_world, world_renderer, game_state);
 
 
             //---STAGE: UPDATING - temporarily within the state
@@ -120,9 +110,7 @@ int main()
             window.clear();
 
             //Draw here
-            play_field.draw(game_state.game_state_desc);
-
-            command_state_machine.get_current_state()->draw(window);
+            play_field.draw(window, game_state.game_state_desc);
             hud.draw(window, game_state.game_state_desc);
 
             //Call after drawn stuff
