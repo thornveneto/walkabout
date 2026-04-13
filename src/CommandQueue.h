@@ -46,9 +46,21 @@ public:
 
             }
 
+            if (current_command.command_type == CommandType::DE_ACTIVATE_MAIN_WEAPON) {
+                std::cout << "CommandQueue::process_commands - CommandType::DE_ACTIVATE_WEAPON" << std::endl;
+                current_command.target_unit->de_activate_main_weapon();
+
+            }
+
             if (current_command.command_type == CommandType::ACTIVATE_AUX_WEAPON) {
                 std::cout << "CommandQueue::process_commands - CommandType::ACTIVATE_AUX_WEAPON" << std::endl;
                 current_command.target_unit->activate_aux_weapon();
+
+            }
+
+            if (current_command.command_type == CommandType::DE_ACTIVATE_AUX_WEAPON) {
+                std::cout << "CommandQueue::process_commands - CommandType::DE_ACTIVATE_AUX_WEAPON" << std::endl;
+                current_command.target_unit->de_activate_aux_weapon();
 
             }
 

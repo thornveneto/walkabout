@@ -7,8 +7,7 @@
 
 PlayField::PlayField(GameWorld& game_world, WorldRenderer& world_renderer, std::deque<GameCommand>& command_queue) :
     m_game_world{ game_world }, m_world_renderer{ world_renderer }, m_command_queue{command_queue},
-    m_screen_area{ 50,50, 1000, 500 },
-    m_cursor{ game_world, world_renderer.hw, world_renderer.hh, world_renderer.cell_height}
+    m_screen_area{ 50,50, 1000, 500 }
 {
     m_border_rectangle.setPosition({ static_cast<float>(m_screen_area.x), static_cast<float>(m_screen_area.y) });
     m_border_rectangle.setSize({ static_cast<float>(m_screen_area.width), static_cast<float>(m_screen_area.height) });
@@ -87,8 +86,4 @@ void PlayField::draw(sf::RenderWindow& window, GameStateDesc& game_state_desc) {
     for (auto& effect : m_game_world.effects()) {
         effect->draw(m_world_renderer);
     }
-
-    //TODO: Drawing cursor should be in a separate place,
-    //because what if we move between HUD and PlayArea?
-    m_cursor.draw(m_world_renderer, window, game_state_desc);
 }

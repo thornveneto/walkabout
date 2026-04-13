@@ -22,5 +22,4 @@ private:
 	std::deque<GameCommand>& m_command_queue;
     Rectangle m_screen_area;
     sf::RectangleShape m_border_rectangle;
-	Cursor m_cursor;
 };

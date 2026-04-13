@@ -117,16 +117,23 @@ void HUD::handle_event(UI_InputEvent& event, GameStateDesc& game_state_desc) {
 	//TODO: again, will be rearchitected when I decide which way to subscribe. 
 	// but at least it conceptually sort of aligned with PlayField
 	//TODO: IMPORTANT. Ifs must be separate because it handles the release as well
+
 	if (_btn_activate_main_weapon.fires_on_event(event)) {
-		if (game_state_desc.active_unit) {
+		if (game_state_desc.active_unit && !game_state_desc.active_unit->is_main_weapon_active()) {
 			_command_queue.push_back(GameCommand(CommandType::ACTIVATE_MAIN_WEAPON, { 0,0 }, game_state_desc.active_unit));
+		}
+		else if (game_state_desc.active_unit) {
+			_command_queue.push_back(GameCommand(CommandType::DE_ACTIVATE_MAIN_WEAPON, { 0,0 }, game_state_desc.active_unit));
 		}
 
 	}
 
 	if (_btn_activate_aux_weapon.fires_on_event(event)) {
-		if (game_state_desc.active_unit) {
+		if (game_state_desc.active_unit && !game_state_desc.active_unit->is_aux_weapon_active()) {
 			_command_queue.push_back(GameCommand(CommandType::ACTIVATE_AUX_WEAPON, { 0,0 }, game_state_desc.active_unit));
+		}
+		else if (game_state_desc.active_unit) {
+			_command_queue.push_back(GameCommand(CommandType::DE_ACTIVATE_AUX_WEAPON, { 0,0 }, game_state_desc.active_unit));
 		}
 	}
 }

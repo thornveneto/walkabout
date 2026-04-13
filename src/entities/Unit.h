@@ -16,6 +16,10 @@ public:
 
 	virtual ~Unit();
 
+	/*
+		Weapon management
+	*/
+
 	void equip_main_weapon(bool is_melee);//TODO: add weapon props
 	void equip_aux_weapon(bool is_melee); //TODO: add weapon props
 
@@ -23,10 +27,22 @@ public:
 	void activate_aux_weapon();
 	Weapon* active_weapon();
 
+	bool is_main_weapon_active();
+	bool is_aux_weapon_active();
+
+	void de_activate_main_weapon();
+	void de_activate_aux_weapon();
+
+	/*
+		Selection Management
+	*/
 	void select();
 
 	void deselect();
 
+	/*
+		Misc
+	*/
 	void draw(WorldRenderer& world_renderer) override;
 
 	void attack_at(IJ target_cell, WorldRenderer& world_renderer);

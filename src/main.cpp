@@ -72,6 +72,8 @@ int main()
 
         PlayField play_field{ game_world, world_renderer, command_queue.command_queue };
 
+        Cursor cursor{ game_world, world_renderer.hw, world_renderer.hh, world_renderer.cell_height };
+
         game_world.init();
 
         //StateMachine<UIState, UI_InputEvent> command_state_machine(std::make_unique<DummyCommandState>(nullptr/*TODO: super bad*/, game_world, world_renderer, command_queue.command_queue));
@@ -112,6 +114,7 @@ int main()
             //Draw here
             play_field.draw(window, game_state.game_state_desc);
             hud.draw(window, game_state.game_state_desc);
+            cursor.draw(world_renderer, window, game_state.game_state_desc);
 
             //Call after drawn stuff
             window.display();

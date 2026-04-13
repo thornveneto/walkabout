@@ -30,6 +30,21 @@ Weapon* Unit::active_weapon() {
     return m_active_weapon;
 }
 
+void Unit::de_activate_main_weapon() {
+    m_active_weapon = nullptr;
+}
+void Unit::de_activate_aux_weapon() {
+    m_active_weapon = nullptr;
+}
+
+bool Unit::is_main_weapon_active() {
+    return m_active_weapon && m_active_weapon == m_main_weapon.get();
+}
+
+bool Unit::is_aux_weapon_active() {
+    return m_active_weapon && m_active_weapon == m_aux_weapon.get();
+}
+
 IdType Unit::id() const {
     return m_id;
 }
