@@ -1,3 +1,4 @@
+#pragma once
 #include "../GameWorld.h"
 #include "../WorldRenderer.h"
 #include <SFML/Graphics.hpp>

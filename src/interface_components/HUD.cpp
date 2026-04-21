@@ -8,8 +8,8 @@ HUD::HUD(sf::Font& _font, std::deque<GameCommand>& command_queue) :
 	btn_activate_main_weapon("main", _font, { m_screen_area.x + 700, m_screen_area.y + 50, 100, 50}),
 	btn_activate_aux_weapon("aux",_font, { m_screen_area.x + 700, m_screen_area.y + 150, 100, 50}),
 	btn_next_turn("turn", _font, { m_screen_area.x + 700, m_screen_area.y + 250, 100, 50 }),
-	_command_queue{command_queue},
-	_font{_font}
+	m_command_queue_ref{command_queue},
+	m_font{_font}
 {
 	m_border_rectangle.setPosition({ static_cast<float>(m_screen_area.x), static_cast<float>(m_screen_area.y) });
 	m_border_rectangle.setSize({ static_cast<float>(m_screen_area.width), static_cast<float>(m_screen_area.height) });
@@ -20,7 +20,7 @@ HUD::HUD(sf::Font& _font, std::deque<GameCommand>& command_queue) :
 	std::cout << "Loading HUD resources:" << std::endl;
 
 	std::cout << "Loading soldier_red.png.....";
-	if (_soldier_texture.loadFromFile("soldier_red.png")) {
+	if (m_soldier_texture.loadFromFile("soldier_red.png")) {
 		std::cout << "SUCCESS" << std::endl;
 	} else {
 		std::cout << "FAILURE" << std::endl;
@@ -28,7 +28,7 @@ HUD::HUD(sf::Font& _font, std::deque<GameCommand>& command_queue) :
 }
 
 void HUD::draw_weapon_status(sf::RenderWindow& window, GameStateDesc& game_state_desc) {
-	sf::Text weapon_status(_font);
+	sf::Text weapon_status(m_font);
 
 
 	if (game_state_desc.active_unit) {
@@ -60,7 +60,7 @@ void HUD::draw_weapon_status(sf::RenderWindow& window, GameStateDesc& game_state
 }
 
 void HUD::draw_health_bar(sf::RenderWindow& window, GameStateDesc& game_state_desc) {
-	sf::Text health(_font);
+	sf::Text health(m_font);
 
 	if (game_state_desc.active_unit) {
 		health.setString(std::to_string(game_state_desc.active_unit->health()) + "/" + std::to_string(game_state_desc.active_unit->max_health()));
@@ -89,7 +89,7 @@ void HUD::draw_health_bar(sf::RenderWindow& window, GameStateDesc& game_state_de
 }
 
 void HUD::draw_team_id(sf::RenderWindow& window, GameStateDesc& game_state_desc) {
-	sf::Text team_id(_font);
+	sf::Text team_id(m_font);
 
 	if (game_state_desc.active_team) {
 		team_id.setString(std::to_string(game_state_desc.active_team->team_id()));
@@ -110,7 +110,7 @@ void HUD::draw_team_id(sf::RenderWindow& window, GameStateDesc& game_state_desc)
 }
 
 void HUD::draw_team_ap(sf::RenderWindow& window, GameStateDesc& game_state_desc) {
-	sf::Text ap_remaining(_font);
+	sf::Text ap_remaining(m_font);
 
 	ap_remaining.setString(std::to_string(game_state_desc.team_ap_remaining));
 	ap_remaining.setFillColor(sf::Color::Blue);
@@ -123,7 +123,7 @@ void HUD::draw_team_ap(sf::RenderWindow& window, GameStateDesc& game_state_desc)
 
 void HUD::draw_character_face(sf::RenderWindow& window, GameStateDesc& game_state_desc) {
 	if (game_state_desc.active_unit) {
-		sf::Sprite sprite(_soldier_texture);
+		sf::Sprite sprite(m_soldier_texture);
 		sprite.setPosition({ 400.f, 600.f }); //TODO: set to relative
 
 		window.draw(sprite);
@@ -151,24 +151,24 @@ void HUD::handle_event(UI_InputEvent& event, GameStateDesc& game_state_desc) {
 
 	if (btn_activate_main_weapon.fires_on_event(event)) {
 		if (game_state_desc.active_unit && !game_state_desc.active_unit->is_main_weapon_active()) {
-			_command_queue.push_back(GameCommand(CommandType::ACTIVATE_MAIN_WEAPON, { 0,0 }, game_state_desc.active_unit));
+			m_command_queue_ref.push_back(GameCommand(CommandType::ACTIVATE_MAIN_WEAPON, { 0,0 }, game_state_desc.active_unit));
 		}
 		else if (game_state_desc.active_unit) {
-			_command_queue.push_back(GameCommand(CommandType::DE_ACTIVATE_MAIN_WEAPON, { 0,0 }, game_state_desc.active_unit));
+			m_command_queue_ref.push_back(GameCommand(CommandType::DE_ACTIVATE_MAIN_WEAPON, { 0,0 }, game_state_desc.active_unit));
 		}
 
 	}
 
 	if (btn_activate_aux_weapon.fires_on_event(event)) {
 		if (game_state_desc.active_unit && !game_state_desc.active_unit->is_aux_weapon_active()) {
-			_command_queue.push_back(GameCommand(CommandType::ACTIVATE_AUX_WEAPON, { 0,0 }, game_state_desc.active_unit));
+			m_command_queue_ref.push_back(GameCommand(CommandType::ACTIVATE_AUX_WEAPON, { 0,0 }, game_state_desc.active_unit));
 		}
 		else if (game_state_desc.active_unit) {
-			_command_queue.push_back(GameCommand(CommandType::DE_ACTIVATE_AUX_WEAPON, { 0,0 }, game_state_desc.active_unit));
+			m_command_queue_ref.push_back(GameCommand(CommandType::DE_ACTIVATE_AUX_WEAPON, { 0,0 }, game_state_desc.active_unit));
 		}
 	}
 
 	if (btn_next_turn.fires_on_event(event)) {
-		_command_queue.push_back(GameCommand(CommandType::NEXT_TURN, { 0,0 }, game_state_desc.active_unit));
+		m_command_queue_ref.push_back(GameCommand(CommandType::NEXT_TURN, { 0,0 }, game_state_desc.active_unit));
 	}
 }

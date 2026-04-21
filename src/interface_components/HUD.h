@@ -19,9 +19,9 @@ private:
 	Rectangle m_screen_area;
 	sf::RectangleShape m_border_rectangle;
 
-	sf::Font& _font;
-	sf::Texture _soldier_texture;
-	std::deque<GameCommand>& _command_queue;
+	sf::Font& m_font;
+	sf::Texture m_soldier_texture;
+	std::deque<GameCommand>& m_command_queue_ref;
 
 	void draw_health_bar(sf::RenderWindow& window, GameStateDesc& game_state_desc);
 	void draw_character_face(sf::RenderWindow& window, GameStateDesc& game_state_desc);

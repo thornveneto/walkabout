@@ -1,5 +1,5 @@
 #pragma once
-#include "../math/XY.h"
+#include "math/XY.h"
 struct UI_InputEvent {
 	bool left_key_pressed{ false };
 	bool left_key_released{ false };
