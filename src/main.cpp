@@ -6,6 +6,7 @@
 #include <deque>
 #include "assert.h"
 #include "CombatMode.h"
+#include "MainMenuMode.h"
 
 int main()
 {
@@ -16,29 +17,43 @@ int main()
 
         ResourceManager resource_manager;
 
+        
+        GameModeEnum game_mode_value{ GameModeEnum::MAIN_MENU };
+
         CombatMode combat_mode = CombatMode(window, resource_manager);
+        MainMenuMode main_menu_mode = MainMenuMode(window, resource_manager, game_mode_value);
+
+        GameMode* game_mode{ &main_menu_mode }; //TODO: change to proper state management
 
         //GAME LOOP
         while (window.isOpen())
         {
-            combat_mode.read_input_release_command();
-           
-            combat_mode.process_commands();
+            //TODO: hacko way until proper state management
+            if (game_mode_value == GameModeEnum::MAIN_MENU && game_mode != &main_menu_mode) {
+                game_mode = &main_menu_mode;
+            }
+            else if (game_mode_value == GameModeEnum::COMBAT && game_mode != &combat_mode) {
+                game_mode = &combat_mode;
+            }
 
-            combat_mode.update();
+            game_mode->read_input_release_command();
+
+            game_mode->process_commands();
+
+            game_mode->update();
 
             //---STAGE: DRAWING
             // Pre drawing
             window.clear();
 
-            ////Draw here
-            combat_mode.draw();
+            //Draw here
+            game_mode->draw();
 
             //Call after drawn stuff
             window.display();
 
-            //game_world.sweep_pending_elements();
-            combat_mode.final_loop_actions();
+            //post draw actions. TODO: why can't we just put them in update?
+            game_mode->final_loop_actions();
         }
     }
     catch (const std::exception& e) {

@@ -32,7 +32,7 @@ add_executable(main src/main.cpp "src/math/Matrix2D.h"
 "src/_types.h" "src/EllipseShape.h" "src/interface_components/HUD.h" 
 "src/interface_components/HUD.cpp" "src/interface_components/Button.h" "src/math/Rectangle.h"
 "src/GameCommand.h" "src/CommandQueue.h" "src/entities/Weapon.h" "src/entities/Weapon.cpp" "src/math/IJ.cpp" 
-"src/interface_components/Button.cpp" "src/terrain/TileDrawing.h" "src/ResourceManager.h" "src/interface_components/PlayField.cpp" "src/palette.h" "src/GameStateDesc.h" "src/GameState.h" "src/interface_components/Cursor.h" "src/interface_components/Cursor.cpp" "src/Team.h" "src/CombatMode.h")
+"src/interface_components/Button.cpp" "src/terrain/TileDrawing.h" "src/ResourceManager.h" "src/interface_components/PlayField.cpp" "src/palette.h" "src/GameStateDesc.h" "src/GameState.h" "src/interface_components/Cursor.h" "src/interface_components/Cursor.cpp" "src/Team.h" "src/CombatMode.h" "src/GameMode.h" "src/MainMenuMode.h" "src/ui_utils.h" )
 
 #added here
 if(MSVC)
