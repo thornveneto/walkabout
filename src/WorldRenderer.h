@@ -48,4 +48,6 @@ public:
     IJ tile_ij_from_screen_xy(XY<int> xy) const;
 
     Vector2D calculate_screen_point(Vector2D centroid) const;
+
+    sf::Vector2f project_point_to_sf(float x, float y);
 };

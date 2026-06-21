@@ -18,21 +18,23 @@ int main()
         ResourceManager resource_manager;
 
         
-        GameModeEnum game_mode_value{ GameModeEnum::MAIN_MENU };
+        GameModeEnum requested_game_mode{ GameModeEnum::MAIN_MENU };
 
         CombatMode combat_mode = CombatMode(window, resource_manager);
-        MainMenuMode main_menu_mode = MainMenuMode(window, resource_manager, game_mode_value);
+        MainMenuMode main_menu_mode = MainMenuMode(window, resource_manager, requested_game_mode);
 
         GameMode* game_mode{ &main_menu_mode }; //TODO: change to proper state management
 
         //GAME LOOP
+        //?next step add game over bit
+        //?on game over either start new game or exit
         while (window.isOpen())
         {
             //TODO: hacko way until proper state management
-            if (game_mode_value == GameModeEnum::MAIN_MENU && game_mode != &main_menu_mode) {
+            if (requested_game_mode == GameModeEnum::MAIN_MENU && game_mode != &main_menu_mode) {
                 game_mode = &main_menu_mode;
             }
-            else if (game_mode_value == GameModeEnum::COMBAT && game_mode != &combat_mode) {
+            else if (requested_game_mode == GameModeEnum::COMBAT && game_mode != &combat_mode) {
                 game_mode = &combat_mode;
             }
 

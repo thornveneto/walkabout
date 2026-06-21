@@ -7,9 +7,18 @@
 Unit::~Unit() = default;
 
 Unit::Unit(IJ at_cell, WorldRenderer& world_renderer, GameWorld& game_world, IdType id, sf::Color color) :
-    MovingEntity(at_cell, world_renderer, game_world), m_id{ id }, m_active_weapon{ nullptr }, color{color}
+    MovingEntity(at_cell, world_renderer, game_world), m_id{ id }, m_active_weapon{ nullptr }, color{color}    
 {
 
+    m_image.loadFromFile("stub.png"); //TODO: add safety here
+    m_image.createMaskFromColor(sf::Color::White);
+
+    m_texture.emplace();
+    m_texture->loadFromImage(m_image);
+    m_sprite.emplace(*m_texture);
+
+    m_sprite->setTextureRect(sf::IntRect({ 0,0 }, { 64,64 }));
+    m_sprite->setOrigin({ 32.f, 32.f });
 }
 
 void Unit::equip_main_weapon(bool is_melee) {
@@ -106,6 +115,20 @@ void Unit::draw(WorldRenderer& world_renderer) {
             sf::Color::Black
         );
     }
+
+    //TODO: custom code
+    //sprite.setPosition({
+    //    static_cast<float>(screen_point.x),
+    //    static_cast<float>(screen_point.y - world_renderer.cell_height / 2)
+    //    });
+    m_sprite->setPosition(
+        world_renderer.project_point_to_sf(
+            static_cast<float>(screen_point.x),
+            static_cast<float>(screen_point.y - world_renderer.cell_height / 2)
+        )
+    );
+
+    world_renderer.draw(*m_sprite);
 
 }
 

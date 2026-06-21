@@ -21,6 +21,10 @@ Vector2D WorldRenderer::calculate_screen_point(Vector2D centroid) const {
     return _tm * centroid;
 }
 
+sf::Vector2f WorldRenderer::project_point_to_sf(float x, float y) {
+    return { _start_x + x, _start_y + y };
+}
+
 void WorldRenderer::draw_circle(float x, float y, float r, const sf::Color& fill_color, const sf::Color& outline_color) {
     sf::CircleShape circle(r); // Radius of 50 pixels
 
@@ -30,7 +34,8 @@ void WorldRenderer::draw_circle(float x, float y, float r, const sf::Color& fill
     circle.setOutlineThickness(-1.f);
     circle.setOutlineColor(outline_color);
     circle.setOrigin({ r, r });
-    circle.setPosition({ _start_x + x, _start_y + y });
+    //circle.setPosition({ _start_x + x, _start_y + y });
+    circle.setPosition(project_point_to_sf(x,y));
 
     _window.draw(circle);
 }
@@ -43,7 +48,8 @@ void WorldRenderer::draw_ellipse(float x, float y, float ra, float rb, const sf:
     ellipse.setOutlineThickness(-1.f);
     ellipse.setOutlineColor(outline_color);
     ellipse.setOrigin({ ra,rb });
-    ellipse.setPosition({ _start_x + x, _start_y + y });
+    //ellipse.setPosition({ _start_x + x, _start_y + y });
+    ellipse.setPosition(project_point_to_sf(x, y));
 
     _window.draw(ellipse);
 }

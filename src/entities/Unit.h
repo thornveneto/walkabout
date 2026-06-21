@@ -75,4 +75,8 @@ private:
 	Weapon* m_active_weapon{};
 
 	sf::Color color;
+
+	std::optional<sf::Texture> m_texture;
+	std::optional<sf::Sprite> m_sprite;
+	sf::Image m_image;
 };

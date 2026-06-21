@@ -8,10 +8,10 @@
 
 class MainMenuMode : public GameMode {
 public:
-    MainMenuMode(sf::RenderWindow& window, ResourceManager& resource_manager,GameModeEnum& game_mode_value) :
+    MainMenuMode(sf::RenderWindow& window, ResourceManager& resource_manager,GameModeEnum& requested_game_mode) :
         window{ window }, resource_manager{ resource_manager },
         btn_new_game("new game", resource_manager.main_font(), { /*m_screen_area.x +*/ 700, /*m_screen_area.y + */400, 100, 50}),
-        game_mode_value{ game_mode_value }
+        requested_game_mode{ requested_game_mode }
     {
 
     }
@@ -43,7 +43,7 @@ public:
         //TODO: we simplify it for the time being no command queue as in CombatMode, 
         // just a simple state but use the same function for similar pattern
         if (switch_state) {
-            game_mode_value = GameModeEnum::COMBAT;
+            requested_game_mode = GameModeEnum::COMBAT;
         }
     }
 
@@ -72,5 +72,5 @@ private:
     Button btn_new_game;
     bool switch_state{ false };
 
-    GameModeEnum& game_mode_value;//TODO: change to proper state management
+    GameModeEnum& requested_game_mode;//TODO: change to proper state management
 };
