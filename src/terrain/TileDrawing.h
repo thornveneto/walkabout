@@ -5,14 +5,15 @@
 
 class TileDrawing {
 public:
-	TileDrawing(XY<float> tile_xy, const sf::Color& fill_color, const sf::Color& outline_color)
+	TileDrawing(XY<float> tile_xy, const sf::Color& fill_color, const sf::Color& outline_color, WorldRenderer& world_renderer) :
+		world_renderer{world_renderer}
 	{
 		tile.setPointCount(4);
 
-		tile.setPoint(0, { tile_xy.x, tile_xy.y - vertical_size });
-		tile.setPoint(1, { tile_xy.x + horizontal_size, tile_xy.y });
-		tile.setPoint(2, { tile_xy.x, tile_xy.y + vertical_size });
-		tile.setPoint(3, { tile_xy.x - horizontal_size, tile_xy.y });
+		tile.setPoint(0, { tile_xy.x, tile_xy.y - world_renderer.hh });
+		tile.setPoint(1, { tile_xy.x + world_renderer.hw, tile_xy.y });
+		tile.setPoint(2, { tile_xy.x, tile_xy.y + world_renderer.hh });
+		tile.setPoint(3, { tile_xy.x - world_renderer.hw, tile_xy.y });
 
 		tile.setFillColor(fill_color);
 
@@ -22,7 +23,8 @@ public:
 	}
 
 	// Move
-	TileDrawing(TileDrawing&& other) noexcept {}
+	TileDrawing(TileDrawing&& other, WorldRenderer& world_renderer) noexcept : world_renderer( world_renderer ) {}
+
 	TileDrawing& operator=(TileDrawing&& other) noexcept {
 		if (this != &other) {
 			tile = std::move(other.tile);
@@ -40,7 +42,5 @@ public:
 	}
 private:
 	sf::ConvexShape tile;
-
-	const float horizontal_size{ 20.f };
-	const float vertical_size{ 10.f };
+	WorldRenderer& world_renderer;
 };

@@ -49,7 +49,7 @@ Cell::Cell(
     _south_slot{ std::move(south_slot) },
     _west_slot{ std::move(west_slot) },
     //TODO: this is absolutely horrible
-    tile_drawing{ world_renderer->tile_screen_xy({ i,j }), fill_from_code(cell_code), border_from_code(cell_code) },
+    tile_drawing{ world_renderer->tile_screen_xy({ i,j }), fill_from_code(cell_code), border_from_code(cell_code), *world_renderer },
     world_renderer{ world_renderer }
 
 {
@@ -83,7 +83,7 @@ Cell::Cell(Cell&& other) noexcept
     _west_slot(std::move(other._west_slot)),
 
     //TODO: this is absolutely horrible
-    tile_drawing{ world_renderer->tile_screen_xy({ other._i,other._i }), fill_from_code(other._cell_code), border_from_code(other._cell_code) },
+    tile_drawing{ world_renderer->tile_screen_xy({ other._i,other._i }), fill_from_code(other._cell_code), border_from_code(other._cell_code), *world_renderer },
     world_renderer(other.world_renderer)
 {
 }

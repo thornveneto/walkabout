@@ -21,8 +21,8 @@ public:
     const float cell_height{ 30.f };
 
     //tile display sides
-    const float hw{ 20.f };
-    const float hh{ 10.f };
+    const float hw{ 16.f };
+    const float hh{ 8.f };
 
 private:
     Matrix2D _tm{

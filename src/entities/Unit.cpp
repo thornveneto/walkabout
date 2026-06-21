@@ -17,8 +17,8 @@ Unit::Unit(IJ at_cell, WorldRenderer& world_renderer, GameWorld& game_world, IdT
     m_texture->loadFromImage(m_image);
     m_sprite.emplace(*m_texture);
 
-    m_sprite->setTextureRect(sf::IntRect({ 0,0 }, { 64,64 }));
-    m_sprite->setOrigin({ 32.f, 32.f });
+    m_sprite->setTextureRect(sf::IntRect({ 0,0 }, { 32,32 }));
+    m_sprite->setOrigin({ 16.f, 16.f });
 }
 
 void Unit::equip_main_weapon(bool is_melee) {
@@ -91,13 +91,28 @@ void Unit::draw(WorldRenderer& world_renderer) {
     Vector2D screen_point = world_renderer.calculate_screen_point(centroid());
 
     if (is_alive()) {
-        world_renderer.draw_circle(
-            screen_point.x,
-            screen_point.y - world_renderer.cell_height / 2,
-            world_renderer.hh,
-            m_is_selected ? sf::Color::Yellow : color,//sf::Color::Blue,
-            sf::Color::Black
+
+        //TODO: custom code
+        //sprite.setPosition({
+        //    static_cast<float>(screen_point.x),
+        //    static_cast<float>(screen_point.y - world_renderer.cell_height / 2)
+        //    });
+        m_sprite->setPosition(
+            world_renderer.project_point_to_sf(
+                static_cast<float>(screen_point.x),
+                static_cast<float>(screen_point.y - world_renderer.cell_height / 2)
+            )
         );
+
+        world_renderer.draw(*m_sprite);
+
+        //world_renderer.draw_circle(
+        //    screen_point.x,
+        //    screen_point.y - world_renderer.cell_height / 2,
+        //    world_renderer.hh,
+        //    m_is_selected ? sf::Color::Yellow : color,//sf::Color::Blue,
+        //    sf::Color::Black
+        //);
 
         Weapon* unit_active_weapon = active_weapon();
 
@@ -115,21 +130,6 @@ void Unit::draw(WorldRenderer& world_renderer) {
             sf::Color::Black
         );
     }
-
-    //TODO: custom code
-    //sprite.setPosition({
-    //    static_cast<float>(screen_point.x),
-    //    static_cast<float>(screen_point.y - world_renderer.cell_height / 2)
-    //    });
-    m_sprite->setPosition(
-        world_renderer.project_point_to_sf(
-            static_cast<float>(screen_point.x),
-            static_cast<float>(screen_point.y - world_renderer.cell_height / 2)
-        )
-    );
-
-    world_renderer.draw(*m_sprite);
-
 }
 
 void Unit::attack_at(IJ target_cell, WorldRenderer& world_renderer) {
