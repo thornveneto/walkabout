@@ -22,7 +22,7 @@ Vector2D WorldRenderer::calculate_screen_point(Vector2D centroid) const {
 }
 
 sf::Vector2f WorldRenderer::project_point_to_sf(float x, float y) {
-    return { _start_x + x, _start_y + y };
+    return { m_start_x + x, m_start_y + y };
 }
 
 void WorldRenderer::draw_circle(float x, float y, float r, const sf::Color& fill_color, const sf::Color& outline_color) {
@@ -37,7 +37,7 @@ void WorldRenderer::draw_circle(float x, float y, float r, const sf::Color& fill
     //circle.setPosition({ _start_x + x, _start_y + y });
     circle.setPosition(project_point_to_sf(x,y));
 
-    _window.draw(circle);
+    m_window.draw(circle);
 }
 
 void WorldRenderer::draw_ellipse(float x, float y, float ra, float rb, const sf::Color& fill_color, const sf::Color& outline_color) {
@@ -51,18 +51,18 @@ void WorldRenderer::draw_ellipse(float x, float y, float ra, float rb, const sf:
     //ellipse.setPosition({ _start_x + x, _start_y + y });
     ellipse.setPosition(project_point_to_sf(x, y));
 
-    _window.draw(ellipse);
+    m_window.draw(ellipse);
 }
 
 XY<float> WorldRenderer::tile_screen_xy(IJ ij) const {
     return {
-        _start_x + ij.i * hw + hw * ij.j,
-        _start_y + ij.i * hh - hh * ij.j
+        m_start_x + ij.i * hw + hw * ij.j,
+        m_start_y + ij.i * hh - hh * ij.j
     };
 }
 IJ WorldRenderer::tile_ij_from_screen_xy(XY<int> xy) const {
-    float x = xy.x - _start_x;
-    float y = xy.y - _start_y;
+    float x = xy.x - m_start_x;
+    float y = xy.y - m_start_y;
 
     float j = (x / hw - y / hh) / 2;
 
@@ -72,5 +72,5 @@ IJ WorldRenderer::tile_ij_from_screen_xy(XY<int> xy) const {
 }
 
 void WorldRenderer::draw(const sf::Drawable& drawable) {
-    _window.draw(drawable);
+    m_window.draw(drawable);
 }

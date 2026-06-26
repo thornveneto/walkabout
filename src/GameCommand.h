@@ -16,7 +16,7 @@ enum class CommandType {
 struct GameCommand {
 public:
 	const CommandType command_type;
-	const IJ target_cell_ij;
+	/*const TODO*/ IJ target_cell_ij;
 	Unit* const target_unit;
 
 	GameCommand(CommandType command_type, IJ target_cell_ij, Unit* target_unit) :

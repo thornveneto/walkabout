@@ -59,6 +59,36 @@ void HUD::draw_weapon_status(sf::RenderWindow& window, GameStateDesc& game_state
 	window.draw(weapon_status);
 }
 
+void HUD::draw_action_points(sf::RenderWindow& window, GameStateDesc& game_state_desc) {
+	sf::Text action_points(m_font);
+
+	if (game_state_desc.active_unit) {
+		action_points.setString(std::to_string(game_state_desc.active_unit->action_points()) + "/" + std::to_string(game_state_desc.active_unit->max_action_points()));
+
+		double action_points_ratio = static_cast<double>(game_state_desc.active_unit->action_points()) / static_cast<double>(game_state_desc.active_unit->max_action_points());
+
+		if (action_points_ratio < 0.25) {
+			action_points.setFillColor(sf::Color::Red);
+		}
+		else if (action_points_ratio < 0.75) {
+			action_points.setFillColor(sf::Color::Yellow);
+		}
+		else {
+			action_points.setFillColor(sf::Color::Green);
+		}
+
+	}
+	else {
+		action_points.setString("-/-");
+		action_points.setFillColor(sf::Color::Blue);
+	}
+
+	action_points.setCharacterSize(24); // in pixels, not points!
+	action_points.setPosition({ 300.f, 650.f }); //TODO: set to relative
+
+	window.draw(action_points);
+}
+
 void HUD::draw_health_bar(sf::RenderWindow& window, GameStateDesc& game_state_desc) {
 	sf::Text health(m_font);
 
@@ -109,17 +139,17 @@ void HUD::draw_team_id(sf::RenderWindow& window, GameStateDesc& game_state_desc)
 	window.draw(team_id);
 }
 
-void HUD::draw_team_ap(sf::RenderWindow& window, GameStateDesc& game_state_desc) {
-	sf::Text ap_remaining(m_font);
-
-	ap_remaining.setString(std::to_string(game_state_desc.team_ap_remaining));
-	ap_remaining.setFillColor(sf::Color::Blue);
-
-	ap_remaining.setCharacterSize(24); // in pixels, not points!
-	ap_remaining.setPosition({ 600.f, 700.f }); //TODO: set to relative
-
-	window.draw(ap_remaining);
-}
+//void HUD::draw_team_ap(sf::RenderWindow& window, GameStateDesc& game_state_desc) {
+//	sf::Text ap_remaining(m_font);
+//
+//	ap_remaining.setString(std::to_string(game_state_desc.team_ap_remaining));
+//	ap_remaining.setFillColor(sf::Color::Blue);
+//
+//	ap_remaining.setCharacterSize(24); // in pixels, not points!
+//	ap_remaining.setPosition({ 600.f, 700.f }); //TODO: set to relative
+//
+//	window.draw(ap_remaining);
+//}
 
 void HUD::draw_character_face(sf::RenderWindow& window, GameStateDesc& game_state_desc) {
 	if (game_state_desc.active_unit) {
@@ -138,10 +168,11 @@ void HUD::draw(sf::RenderWindow& window, GameStateDesc& game_state_desc) {
 	btn_next_turn.draw(window);
 
 	draw_health_bar(window, game_state_desc);
+	draw_action_points(window, game_state_desc);
 	draw_character_face(window, game_state_desc);
 	draw_weapon_status(window, game_state_desc);
 	draw_team_id(window, game_state_desc);
-	draw_team_ap(window, game_state_desc);
+	//draw_team_ap(window, game_state_desc);
 }
 
 void HUD::handle_event(UI_InputEvent& event, GameStateDesc& game_state_desc) {

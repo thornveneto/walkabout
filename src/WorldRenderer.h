@@ -11,9 +11,9 @@
 #include "math/IJ.h"
 //TODO: it's growing two responsibilities, rendering and parameters
 class WorldRenderer {
-    sf::RenderWindow& _window;
-    const float _start_x{ 200.f };
-    const float _start_y{ 400.f };
+    sf::RenderWindow& m_window;
+    const float m_start_x{ 200.f };
+    const float m_start_y{ 400.f };
 
 public:
     //game world sizes
@@ -31,7 +31,7 @@ private:
     };
 
 public:
-    WorldRenderer(sf::RenderWindow& window) : _window{ window } {}
+    WorldRenderer(sf::RenderWindow& window) : m_window{ window } {}
 
     Vector2D tile_centroid_from_ij(IJ tile_ij);
 

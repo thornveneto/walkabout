@@ -16,6 +16,32 @@ PlayField::PlayField(GameWorld& game_world, WorldRenderer& world_renderer, std::
     m_border_rectangle.setOutlineColor(palette::GRAY);
 }
 
+bool PlayField::can_select_clicked_player(Unit* clicked_unit, GameStateDesc& game_state_desc) {
+    //TODO: assert clicked_unit
+
+    return clicked_unit &&
+        game_state_desc.control_mode == ControlMode::UnitSelection &&
+        game_state_desc.active_team->has_player(clicked_unit->id());
+}
+
+bool PlayField::can_attack_clicked_player(Unit* clicked_unit, GameStateDesc& game_state_desc) {
+    //TODO: assert clicked_unit
+
+    return clicked_unit &&
+        game_state_desc.control_mode == ControlMode::UnitSelected &&
+        clicked_unit != game_state_desc.active_unit &&
+        game_state_desc.active_unit->enough_action_points(
+            game_state_desc.active_unit->active_weapon()->action_points_required()
+        )
+        ;
+}
+
+bool PlayField::can_order_unit_move(Unit* clicked_unit, GameStateDesc& game_state_desc) {
+    return !clicked_unit && 
+        game_state_desc.control_mode == ControlMode::UnitSelected &&
+        game_state_desc.active_unit->action_points() > 0;
+}
+
 void PlayField::handle_event(UI_InputEvent& event, GameStateDesc& game_state_desc) {
     if ((event.left_key_pressed || event.right_key_pressed ) && m_screen_area.within(event.mouse_position)) {
         std::cout << "PlayField::handle_event -> Button clicked" << std::endl;
@@ -31,20 +57,20 @@ void PlayField::handle_event(UI_InputEvent& event, GameStateDesc& game_state_des
             if (event.left_key_pressed) {
                 Unit* clicked_unit = m_game_world.terrain.unit_at(mouse_cell_ij);
 
-                if (clicked_unit && game_state_desc.control_mode == ControlMode::UnitSelection && game_state_desc.active_team->has_player(clicked_unit->id())) {
+                if(clicked_unit && can_select_clicked_player(clicked_unit, game_state_desc)) {
                     std::cout << "PlayField::handle_event -> clicked_unit AND ControlMode::UnitSelection" << std::endl;
 
                     std::cout << "PlayField::handle_event -> emit SELECT_UNIT" << std::endl;
 
                     //TODO: move this to interpreter
                     m_command_queue.push_back(GameCommand(CommandType::SELECT_UNIT, mouse_cell_ij, clicked_unit));
-                } else if (clicked_unit && game_state_desc.control_mode == ControlMode::UnitSelected && clicked_unit != game_state_desc.active_unit) {
+                } else if (clicked_unit && can_attack_clicked_player(clicked_unit, game_state_desc)) {
                     std::cout << "PlayField::handle_event -> clicked_unit AND ControlMode::UnitSelected AND clicked_unit != active_unit" << std::endl;
 
                     std::cout << "PlayField::handle_event -> emit ATTACK" << std::endl;
 
                     m_command_queue.push_back(GameCommand(CommandType::ATTACK, mouse_cell_ij, game_state_desc.active_unit));
-                } else if (!clicked_unit && game_state_desc.control_mode == ControlMode::UnitSelected) {
+                } else if (!clicked_unit && can_order_unit_move(clicked_unit, game_state_desc)) {
                     std::cout << "PlayField::handle_event -> NOT clicked_unit AND ControlMode::UnitSelected" << std::endl;
 
                     std::cout << "PlayField::handle_event -> emit MOVE" << std::endl;

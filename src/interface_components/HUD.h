@@ -27,8 +27,9 @@ private:
 	void draw_character_face(sf::RenderWindow& window, GameStateDesc& game_state_desc);
 	void draw_weapon_status(sf::RenderWindow& window, GameStateDesc& game_state_desc);
 	void draw_team_id(sf::RenderWindow& window, GameStateDesc& game_state_desc);
-	void draw_team_ap(sf::RenderWindow& window, GameStateDesc& game_state_desc);
+	//void draw_team_ap(sf::RenderWindow& window, GameStateDesc& game_state_desc);
 
+	void draw_action_points(sf::RenderWindow& window, GameStateDesc& game_state_desc);
 	Button btn_activate_main_weapon;
 
 	Button btn_activate_aux_weapon;

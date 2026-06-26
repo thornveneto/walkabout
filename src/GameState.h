@@ -32,7 +32,9 @@ public:
 		game_state_desc.active_unit = nullptr;
 		game_state_desc.control_mode = ControlMode::UnitSelection;
 		game_state_desc.active_team = team;
-		game_state_desc.team_ap_remaining = 250;//TODO: hardcoded hacko
+
+
+		//game_state_desc.team_ap_remaining = 250;//TODO: hardcoded hacko
 
 	}
 };

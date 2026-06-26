@@ -21,8 +21,8 @@ public:
 		Weapon management
 	*/
 
-	void equip_main_weapon(bool is_melee);//TODO: add weapon props
-	void equip_aux_weapon(bool is_melee); //TODO: add weapon props
+	void equip_main_weapon(bool is_melee, int action_points);//TODO: add weapon props
+	void equip_aux_weapon(bool is_melee, int action_points); //TODO: add weapon props
 
 	void activate_main_weapon();
 	void activate_aux_weapon();
@@ -57,8 +57,13 @@ public:
 	bool is_alive() const;
 
 	int health() const;
-
 	int max_health() const;
+
+	int action_points() const;
+	int max_action_points() const;
+	void reduce_action_points(int new_value);
+	void reset_action_points();
+	bool enough_action_points(int needed_action_points);
 
 	virtual void update(sf::Time& deltaTime, WorldRenderer& world_renderer) override;
 
@@ -69,6 +74,9 @@ private:
 
 	const int MAX_HEALTH{ 100 };
 	int m_health{ MAX_HEALTH };
+
+	const int MAX_ACTION_POINTS{ 5 };
+	int m_action_points{ MAX_ACTION_POINTS };
 
 	std::unique_ptr<Weapon> m_main_weapon;
 	std::unique_ptr<Weapon> m_aux_weapon;

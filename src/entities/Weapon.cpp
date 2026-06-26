@@ -5,7 +5,10 @@
 #include "Unit.h"
 
 
-Weapon::Weapon(GameWorld& game_world, IdType owner_id, bool is_melee) : _game_world{ game_world }, _owner_id{ owner_id }, _is_melee{ is_melee } {}
+Weapon::Weapon(GameWorld& game_world, IdType owner_id, bool is_melee, int action_points_required) : 
+	_game_world{ game_world }, _owner_id{ owner_id }, _is_melee{ is_melee },
+	m_action_points_required{action_points_required}
+{}
 
 void Weapon::attack(IJ source_cell, IJ target_cell, WorldRenderer& world_renderer)
 {
@@ -69,4 +72,8 @@ void Weapon::draw(WorldRenderer& world_renderer, const Vector2D& screen_point) {
 
 bool Weapon::more_updates() const {
 	return _update_frame != 0;
+}
+
+int Weapon::action_points_required() const {
+	return m_action_points_required;
 }

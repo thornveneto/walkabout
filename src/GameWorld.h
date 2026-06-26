@@ -57,21 +57,23 @@ public:
     const std::map<int, std::unique_ptr<Projectile>>& projectiles_map() const;
 
     Team* get_team(IdType team_id);
+
+    void reset_team_action_points(IdType team_id);
 private:
-    IdType _new_entity_id{ 1 };
+    IdType m_new_entity_id{ 1 };
 
-    sf::Clock _clock; // starts the clock
+    sf::Clock m_clock; // starts the clock
 
-    bool paused = true;
+    bool m_paused = true;
 
     sf::Time get_delta_time();//WARNING destructive. Call once only
-    std::vector<std::unique_ptr<Effect>> _effects;
-    std::map<IdType, std::unique_ptr<Unit>> _units_map;
-    std::map<IdType, std::unique_ptr<Team>> teams;
+    std::vector<std::unique_ptr<Effect>> m_effects;
+    std::map<IdType, std::unique_ptr<Unit>> m_units_map;
+    std::map<IdType, std::unique_ptr<Team>> m_teams;
     //std::map<int, std::unique_ptr<Projectile>> projectiles_map;
-    std::unique_ptr<GameWorldInternal> _storage;
+    std::unique_ptr<GameWorldInternal> m_storage;
 
-    WorldRenderer& world_renderer;
+    WorldRenderer& m_world_renderer;
 
     void check_out_of_bounds();
 

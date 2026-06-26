@@ -23,4 +23,10 @@ private:
 	std::deque<GameCommand>& m_command_queue;
     Rectangle m_screen_area;
     sf::RectangleShape m_border_rectangle;
+
+	bool can_select_clicked_player(Unit* clicked_unit, GameStateDesc& game_state_desc);
+
+	bool can_attack_clicked_player(Unit* clicked_unit, GameStateDesc& game_state_desc);
+
+	bool can_order_unit_move(Unit* clicked_unit, GameStateDesc& game_state_desc);
 };

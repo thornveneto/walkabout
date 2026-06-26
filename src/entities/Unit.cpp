@@ -3,6 +3,7 @@
 #include "../WorldRenderer.h"
 #include "../physics/CollisionData.h"
 #include "Weapon.h"
+#include <algorithm>
 
 Unit::~Unit() = default;
 
@@ -21,12 +22,12 @@ Unit::Unit(IJ at_cell, WorldRenderer& world_renderer, GameWorld& game_world, IdT
     m_sprite->setOrigin({ 16.f, 16.f });
 }
 
-void Unit::equip_main_weapon(bool is_melee) {
-    m_main_weapon = std::make_unique<Weapon>(_game_world, m_id, is_melee);
+void Unit::equip_main_weapon(bool is_melee, int action_points) {
+    m_main_weapon = std::make_unique<Weapon>(_game_world, m_id, is_melee, action_points);
 }
 
-void Unit::equip_aux_weapon(bool is_melee) {
-    m_aux_weapon = std::make_unique<Weapon>(_game_world, m_id, is_melee);
+void Unit::equip_aux_weapon(bool is_melee, int action_points) {
+    m_aux_weapon = std::make_unique<Weapon>(_game_world, m_id, is_melee, action_points);
 }
 
 void Unit::activate_main_weapon() {
@@ -92,11 +93,16 @@ void Unit::draw(WorldRenderer& world_renderer) {
 
     if (is_alive()) {
 
+        //TODO: this is kept to dinstinguish which are active and which are not
+        world_renderer.draw_circle(
+            screen_point.x,
+            screen_point.y - world_renderer.cell_height / 2,
+            world_renderer.hh,
+            m_is_selected ? sf::Color::Yellow : color,//sf::Color::Blue,
+            sf::Color::Black
+        );
+
         //TODO: custom code
-        //sprite.setPosition({
-        //    static_cast<float>(screen_point.x),
-        //    static_cast<float>(screen_point.y - world_renderer.cell_height / 2)
-        //    });
         m_sprite->setPosition(
             world_renderer.project_point_to_sf(
                 static_cast<float>(screen_point.x),
@@ -105,14 +111,6 @@ void Unit::draw(WorldRenderer& world_renderer) {
         );
 
         world_renderer.draw(*m_sprite);
-
-        //world_renderer.draw_circle(
-        //    screen_point.x,
-        //    screen_point.y - world_renderer.cell_height / 2,
-        //    world_renderer.hh,
-        //    m_is_selected ? sf::Color::Yellow : color,//sf::Color::Blue,
-        //    sf::Color::Black
-        //);
 
         Weapon* unit_active_weapon = active_weapon();
 
@@ -135,6 +133,8 @@ void Unit::draw(WorldRenderer& world_renderer) {
 void Unit::attack_at(IJ target_cell, WorldRenderer& world_renderer) {
     if (m_active_weapon) {
         m_active_weapon->attack(get_home_ij(), target_cell, world_renderer);
+
+        reduce_action_points(m_active_weapon->action_points_required());
     }
 }
 
@@ -157,4 +157,24 @@ int Unit::health() const {
 
 int Unit::max_health() const {
     return MAX_HEALTH;
+}
+
+int Unit::action_points() const {
+    return m_action_points;
+}
+
+int Unit::max_action_points() const {
+    return MAX_ACTION_POINTS;
+}
+
+void Unit::reduce_action_points(int reduce_by) {
+    m_action_points = std::max(0, m_action_points - reduce_by);
+}
+
+void Unit::reset_action_points() {
+    m_action_points = MAX_ACTION_POINTS;
+}
+
+bool Unit::enough_action_points(int needed_action_points) {
+    return m_action_points >= needed_action_points;
 }
